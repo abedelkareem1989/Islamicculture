@@ -1,819 +1,939 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+  <title>الثقافة الإسلامية ويب PRO</title>
+  
+  <!-- أيقونات التطبيق -->
+  <link rel="icon" href="https://s5files.mobeasy.com/static/u/722316/file-722316-820191.jpg" type="image/jpeg">
+  <link rel="apple-touch-icon" href="https://s5files.mobeasy.com/static/u/722316/file-722316-820191.jpg">
+  <link rel="apple-touch-icon-precomposed" href="https://s5files.mobeasy.com/static/u/722316/file-722316-820191.jpg">
 
-<title>الثقافة الإسلامية ويب</title>
-
-<!-- أيقونات التطبيق -->
-<link rel="icon" href="https://s5files.mobeasy.com/static/u/722316/file-722316-820191.jpg" type="image/jpeg">
-<link rel="apple-touch-icon" href="https://s5files.mobeasy.com/static/u/722316/file-722316-820191.jpg">
-<link rel="apple-touch-icon-precomposed" href="https://s5files.mobeasy.com/static/u/722316/file-722316-820191.jpg">
-
-<!-- بيانات تطبيق الويب (PWA) -->
-<link rel="manifest" href="data:application/json;charset=utf-8,{
-  %22name%22:%22%D8%A7%D9%84%D8%AB%D9%82%D8%A7%D9%81%D8%A9%20%D8%A7%D9%84%D8%A5%D8%B3%D9%84%D8%A7%D9%85%D9%8A%D8%A9%20%D9%88%D9%8A%D8%A8%22,
-  %22short_name%22:%22%D8%AB%D9%82%D8%A7%D9%81%D8%A9%20%D8%A5%D8%B3%D9%84%D8%A7%D9%85%D9%8A%D8%A9%22,
-  %22start_url%22:%22.%22,
-  %22display%22:%22standalone%22,
-  %22background_color%22:%22%230f6b43%22,
-  %22theme_color%22:%22%230f6b43%22,
-  %22icons%22:[
-    {
-      %22src%22:%22https://s5files.mobeasy.com/static/u/722316/file-722316-820191.jpg%22,
-      %22sizes%22:%22192x192%22,
-      %22type%22:%22image/jpeg%22
-    },
-    {
-      %22src%22:%22https://s5files.mobeasy.com/static/u/722316/file-722316-820191.jpg%22,
-      %22sizes%22:%22512x512%22,
-      %22type%22:%22image/jpeg%22
+  <!-- بيانات تطبيق الويب (PWA) -->
+  <link rel="manifest" href="data:application/json;charset=utf-8,{
+    %22name%22:%22%D8%A7%D9%84%D8%AB%D9%82%D8%A7%D9%81%D8%A9%20%D8%A7%D9%84%D8%A5%D8%B3%D9%84%D8%A7%D9%85%D9%8A%D8%A9%20%D9%88%D9%8A%D8%A8%22,
+    %22short_name%22:%22%D8%AB%D9%82%D8%A7%D9%81%D8%A9%20%D8%A5%D8%B3%D9%84%D8%A7%D9%85%D9%8A%D8%A9%22,
+    %22start_url%22:%22.%22,
+    %22display%22:%22standalone%22,
+    %22background_color%22:%22%230f6b43%22,
+    %22theme_color%22:%22%230f6b43%22,
+    %22icons%22:[
+      {
+        %22src%22:%22https://s5files.mobeasy.com/static/u/722316/file-722316-820191.jpg%22,
+        %22sizes%22:%22192x192%22,
+        %22type%22:%22image/jpeg%22
+      },
+      {
+        %22src%22:%22https://s5files.mobeasy.com/static/u/722316/file-722316-820191.jpg%22,
+        %22sizes%22:%22512x512%22,
+        %22type%22:%22image/jpeg%22
+      }
+    ]
+  }">
+  
+  <meta name="theme-color" content="#0a3d2e">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
     }
-  ]
-}">
 
-<style>
-
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-font-family:Tahoma,Arial,sans-serif;
-}
-
-body{
-background:#f5f5ef;
-transition: background 0.4s ease;
-}
-
-body.dark-mode {
-background: #1a1a1a;
-}
-
-body.dark-mode header {
-background: linear-gradient(180deg, #0a2a1a, #061f12);
-}
-
-body.dark-mode .search {
-background: #2a2a2a;
-box-shadow: 0 2px 10px rgba(0,0,0,.5);
-}
-
-body.dark-mode .search input {
-background: #333;
-color: #eee;
-border-color: #2d8f5e;
-}
-
-body.dark-mode .card {
-background: #2a2a2a;
-color: #eee;
-box-shadow: 0 4px 15px rgba(0,0,0,.4);
-}
-
-body.dark-mode .card:hover {
-transform: translateY(-5px) scale(1.02);
-box-shadow: 0 8px 25px rgba(0,200,100,0.15);
-}
-
-body.dark-mode .section-title {
-color: #ffd700;
-border-bottom-color: #2d8f5e;
-}
-
-body.dark-mode .section-title span {
-background: #1a1a1a;
-}
-
-body.dark-mode .install-btn {
-background: #2d8f5e;
-box-shadow: 0 4px 20px rgba(45, 143, 94, 0.4);
-}
-
-body.dark-mode .install-btn:hover {
-background: #1a6b42;
-}
-
-body.dark-mode .share-btn {
-background: rgba(255,255,255,0.05);
-border-color: rgba(255,255,255,0.15);
-}
-
-body.dark-mode .share-btn:hover {
-background: rgba(255,215,0,0.15);
-border-color: gold;
-}
-
-header{
-background:linear-gradient(180deg,#0f6b43,#0b4f33);
-padding:20px 25px;
-text-align:center;
-color:#fff;
-box-shadow:0 5px 20px rgba(0,0,0,.25);
-position:relative;
-display:flex;
-align-items:center;
-justify-content:space-between;
-flex-wrap:wrap;
-gap:10px;
-}
-
-.header-center {
-flex:1;
-display:flex;
-flex-direction:column;
-align-items:center;
-}
-
-.header-actions {
-display:flex;
-align-items:center;
-gap:10px;
-flex-shrink:0;
-}
-
-.logo{
-width:90px;
-height:90px;
-border-radius:12px;
-border:4px solid gold;
-background:#fff;
-object-fit:cover;
-flex-shrink:0;
-}
-
-h1{
-margin-top:8px;
-font-size:28px;
-letter-spacing:1px;
-}
-
-.dark-toggle {
-position:relative;
-width:60px;
-height:30px;
-background:#ddd;
-border-radius:50px;
-border:none;
-cursor:pointer;
-transition:0.4s;
-flex-shrink:0;
-box-shadow:0 2px 10px rgba(0,0,0,.2);
-outline:none;
-}
-
-.dark-toggle::after {
-content:"🌙";
-position:absolute;
-top:3px;
-right:4px;
-width:24px;
-height:24px;
-background:white;
-border-radius:50%;
-display:flex;
-align-items:center;
-justify-content:center;
-font-size:14px;
-transition:0.4s;
-box-shadow:0 2px 5px rgba(0,0,0,.2);
-}
-
-.dark-toggle.active {
-background:#2d8f5e;
-}
-
-.dark-toggle.active::after {
-content:"☀️";
-right:auto;
-left:4px;
-background:#ffd700;
-}
-
-.dark-toggle:hover {
-transform:scale(1.05);
-box-shadow:0 4px 15px rgba(0,200,100,0.3);
-}
-
-.dark-toggle:active {
-transform:scale(0.95);
-}
-
-/* زر المشاركة */
-.share-btn {
-background: rgba(255,255,255,0.15);
-border: 2px solid rgba(255,255,255,0.3);
-border-radius: 50%;
-width: 44px;
-height: 44px;
-display: flex;
-align-items: center;
-justify-content: center;
-cursor: pointer;
-color: #fff;
-transition: all 0.3s;
-flex-shrink: 0;
-backdrop-filter: blur(5px);
-}
-
-.share-btn:hover {
-background: rgba(255,255,255,0.25);
-border-color: gold;
-transform: scale(1.05);
-}
-
-.share-btn:active {
-transform: scale(0.95);
-}
-
-.share-btn svg {
-width: 24px;
-height: 24px;
-}
-
-.search{
-padding:15px;
-background:#fff;
-position:sticky;
-top:0;
-z-index:100;
-box-shadow:0 2px 10px rgba(0,0,0,.1);
-transition: background 0.4s ease;
-}
-
-.search input{
-width:100%;
-padding:14px;
-font-size:18px;
-border-radius:50px;
-border:2px solid #0f6b43;
-outline:none;
-transition: all 0.3s;
-background:white;
-}
-
-.search input:focus {
-border-color: #ffd700;
-box-shadow: 0 0 20px rgba(255,215,0,0.15);
-}
-
-body.dark-mode .search input:focus {
-border-color: #ffd700;
-box-shadow: 0 0 25px rgba(255,215,0,0.1);
-}
-
-.section {
-padding: 10px 15px 5px;
-}
-
-.section-title {
-font-size: 22px;
-color: #0f6b43;
-border-bottom: 3px solid #0f6b43;
-padding-bottom: 10px;
-margin-bottom: 15px;
-display: flex;
-align-items: center;
-gap: 12px;
-position: relative;
-}
-
-.section-title span {
-background: #f5f5ef;
-padding-left: 15px;
-display: flex;
-align-items: center;
-gap: 10px;
-}
-
-body.dark-mode .section-title span {
-background: #1a1a1a;
-}
-
-.section-title .icon {
-font-size: 28px;
-}
-
-.grid{
-display:grid;
-grid-template-columns:repeat(3,1fr);
-gap:15px;
-}
-
-.card{
-background:white;
-border-radius:20px;
-overflow:hidden;
-box-shadow:0 4px 15px rgba(0,0,0,.15);
-transition:all 0.3s ease;
-cursor:pointer;
-text-decoration:none;
-color:#222;
-display:block;
-}
-
-.card:hover{
-transform:translateY(-5px);
-box-shadow:0 8px 25px rgba(0,0,0,.2);
-}
-
-.card img{
-width:100%;
-aspect-ratio:1/1;
-object-fit:cover;
-display:block;
-}
-
-.card h3{
-padding:12px;
-text-align:center;
-font-size:15px;
-line-height:1.4;
-}
-
-/* زر تثبيت التطبيق */
-.install-btn {
-position: fixed;
-bottom: 20px;
-left: 50%;
-transform: translateX(-50%);
-background: #0f6b43;
-color: #fff;
-border: none;
-padding: 14px 30px;
-border-radius: 50px;
-font-size: 18px;
-font-weight: bold;
-cursor: pointer;
-box-shadow: 0 4px 20px rgba(15, 107, 67, 0.4);
-z-index: 999;
-display: none;
-animation: pulse 2s infinite;
-transition: all 0.3s;
-}
-
-.install-btn:hover {
-transform: translateX(-50%) scale(1.05);
-background: #0b4f33;
-}
-
-.install-btn.hidden {
-display: none !important;
-}
-
-@keyframes pulse {
-0%, 100% { box-shadow: 0 4px 20px rgba(15, 107, 67, 0.4); }
-50% { box-shadow: 0 4px 35px rgba(15, 107, 67, 0.7); }
-}
-
-@media(max-width:700px){
-.grid{
-grid-template-columns:repeat(2,1fr);
-}
-.dark-toggle {
-width:50px;
-height:26px;
-}
-.dark-toggle::after {
-width:20px;
-height:20px;
-font-size:12px;
-}
-.logo {
-width:70px;
-height:70px;
-}
-h1 {
-font-size:22px;
-}
-.section-title {
-font-size: 18px;
-}
-.install-btn {
-padding: 12px 20px;
-font-size: 16px;
-bottom: 15px;
-}
-.share-btn {
-width: 38px;
-height: 38px;
-}
-.share-btn svg {
-width: 20px;
-height: 20px;
-}
-}
-
-@media(max-width:500px){
-header {
-flex-direction:row;
-justify-content:center;
-}
-.header-center {
-order:2;
-flex:0 1 auto;
-}
-.dark-toggle {
-order:3;
-}
-.logo {
-order:1;
-}
-.header-actions {
-order:4;
-}
-.grid{
-grid-template-columns:repeat(2,1fr);
-gap:10px;
-}
-}
-
-</style>
-
-</head>
-
-<body>
-
-<header>
-
-<img class="logo" src="https://s5files.mobeasy.com/static/u/722316/file-722316-820191.jpg" alt="شعار الموقع">
-
-<div class="header-center">
-<h1>الثقافة الإسلامية ويب</h1>
-</div>
-
-<div class="header-actions">
-  <!-- زر المشاركة -->
-  <button class="share-btn" id="shareBtn" aria-label="مشاركة التطبيق">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-      <circle cx="18" cy="5" r="3"></circle>
-      <circle cx="6" cy="12" r="3"></circle>
-      <circle cx="18" cy="19" r="3"></circle>
-      <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line>
-      <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
-    </svg>
-  </button>
-
-  <button class="dark-toggle" id="darkToggle" aria-label="تفعيل الوضع الليلي"></button>
-</div>
-
-</header>
-
-<div class="search">
-<input id="search" placeholder="ابحث عن قسم...">
-</div>
-
-<div id="apps">
-
-<!-- ===== القسم 1: القرآن الكريم ===== -->
-<div class="section">
-<div class="section-title">
-<span>
-<span class="icon">📖</span>
-القرآن الكريم
-</span>
-</div>
-<div class="grid">
-<a class="card" href="https://abedelkareem1989.github.io/bidjade.github.io/2026.index.html">
-<img src="https://s5files.mobeasy.com/static/u/722316/file-722316-489120.jpg" alt="المصحف المعلم">
-<h3>المصحف المعلم</h3>
-</a>
-<a class="card" href="https://abedelkareem1989.github.io/bidjade.github.io/12345.index.html">
-<img src="https://s5files.mobeasy.com/static/u/722316/file-722316-29850.jpg" alt="جزء قد سمع">
-<h3>جزء قد سمع</h3>
-</a>
-</div>
-</div>
-
-<!-- ===== القسم 2: التحصين صوتي ===== -->
-<div class="section">
-<div class="section-title">
-<span>
-<span class="icon">🛡️</span>
-التحصين صوتي
-</span>
-</div>
-<div class="grid">
-<a class="card" href="https://abedelkareem1989.github.io/Islamicculture/44.index.html">
-<img src="https://s5files.mobeasy.com/static/u/722316/file-722316-665630.jpg" alt="التحصين صوتي">
-<h3>التحصين صوتي</h3>
-</a>
-</div>
-</div>
-
-<!-- ===== القسم 3: إذاعات أهل السنة ===== -->
-<div class="section">
-<div class="section-title">
-<span>
-<span class="icon">📻</span>
-إذاعات أهل السنة
-</span>
-</div>
-<div class="grid">
-<a class="card" href="https://luxury-parfait-79d9ba.netlify.app">
-<img src="https://s5files.mobeasy.com/static/u/722316/file-722316-19625.jpg" alt="إذاعات أهل السنة">
-<h3>إذاعات أهل السنة</h3>
-</a>
-</div>
-</div>
-
-<!-- ===== القسم 4: الدروس الصوتية ===== -->
-<div class="section">
-<div class="section-title">
-<span>
-<span class="icon">🎙️</span>
-الدروس الصوتية
-</span>
-</div>
-<div class="grid">
-<a class="card" href="https://abedelkareem1989.github.io/bidjade.github.io/nizar.index.html">
-<img src="https://s5files.mobeasy.com/static/u/722316/file-722316-259061.jpg" alt="دروس الشيخ نزار الحلبي">
-<h3>دروس الشيخ نزار الحلبي</h3>
-</a>
-<a class="card" href="https://abedelkareem1989.github.io/Islamicculture/7.index.html">
-<img src="https://s5files.mobeasy.com/static/u/722316/file-722316-652036.jpg" alt="خطب  الجمعة ">
-<h3> الجمعة<br>خطب </h3>  
-<a class="card" href="https://abedelkareem1989.github.io/bidjade.github.io/222.index.html">
-<img src="https://s5files.mobeasy.com/static/u/722316/file-722316-390716.jpg" alt="شرح العقيدة الطحاوية - سمير القاضي">
-<h3>شرح العقيدة الطحاوية<br>الدكتور سمير القاضي</h3>
-</a>
-<a class="card" href="https://abedelkareem1989.github.io/bidjade.github.io/222.index.html">
-<img src="https://s5files.mobeasy.com/static/u/722316/file-722316-629250.jpg" alt="قواعد مهمة">
-<h3>قواعد مهمة<br>الدكتور سمير القاضي</h3>
-</a>
-<a class="card" href="https://abedelkareem1989.github.io/Islamicculture/31.index.html">
-<img src="https://s5files.mobeasy.com/static/u/722316/file-722316-179273.jpg" alt="حل ألفاظ الصراط المستقيم">
-<h3>حل ألفاظ الصراط المستقيم<br>الشيخ سمير القاضي</h3>
-</a>
-<a class="card" href="https://abedelkareem1989.github.io/bidjade.github.io/27.index.html">
-<img src="https://s5files.mobeasy.com/static/u/722316/file-722316-424670.jpg" alt="الحيدة فنون الرد">
-<h3>الحيدة فنون الرد</h3>
-</a>
-<a class="card" href="https://abedelkareem1989.github.io/Islamicculture/5.index.html">
-<img src="https://s5files.mobeasy.com/static/u/722316/file-722316-649939.jpg" alt="شرح العقيدة الطحاوية - جميل حليم">
-<h3>شرح العقيدة الطحاوية<br>الشيخ جميل حليم</h3>
-</a>
-<a class="card" href="https://widget.spreaker.com/player?show_id=6281103&theme=light&playlist=show&playlist-continuous=true&chapters-image=true">
-<img src="https://s5files.mobeasy.com/static/u/722316/file-722316-21272.jpg" alt="الدروس الصوتية العامة">
-<h3>الدروس الصوتية العامة</h3>
-</a>
-</div>
-</div>
-
-<!-- ===== القسم 5: المدائح ===== -->
-<div class="section">
-<div class="section-title">
-<span>
-<span class="icon">🎵</span>
-المدائح
-</span>
-</div>
-<div class="grid">
-<a class="card" href="https://resonant-piroshki-be0974.netlify.app">
-<img src="https://s5files.mobeasy.com/static/u/722316/file-722316-51719.jpg" alt="المداح أحمد الرفاعي">
-<h3>المداح أحمد الرفاعي</h3>
-</a>
-<a class="card" href="https://abedelkareem1989.github.io/bidjade.github.io">
-<img src="https://s5files.mobeasy.com/static/u/722316/file-722316-55268.jpg" alt="المنشد الحاج محمد الخير">
-<h3>المنشد الحاج محمد الخير</h3>
-</a>
-<a class="card" href="https://6a5f9206d41b4d235dfd7b77--starlit-pie-68dbbd.netlify.app">
-<img src="https://s5files.mobeasy.com/static/u/722316/file-722316-47117.jpg" alt="المداح محمد معروف">
-<h3>المداح محمد معروف</h3>
-</a>
-</div>
-</div>
-
-<!-- ===== القسم 6: المكتبة الإسلامية ===== -->
-<div class="section">
-<div class="section-title">
-<span>
-<span class="icon">📚</span>
-المكتبة الإسلامية
-</span>
-</div>
-<div class="grid">
-<a class="card" href="https://abedelkareem2.blogspot.com/2022/09/blog-post_9.html?m=1">
-<img src="https://s5files.mobeasy.com/static/u/722316/file-722316-816366.jpg" alt="المكتبة الإسلامية">
-<h3>المكتبة الإسلامية</h3>
-</a>
-</div>
-</div>
-
-<!-- ===== القسم 7: المقالات ===== -->
-<div class="section">
-<div class="section-title">
-<span>
-<span class="icon">📝</span>
-المقالات
-</span>
-</div>
-<div class="grid">
-<a class="card" href="https://abedelkareem1989.github.io/Islamicculture/66.index.html">
-<img src="https://s5files.mobeasy.com/static/u/722316/file-722316-612684.jpg" alt="تفسير بعض آيات القرآن الكريم ">
-<h3>تفسير بعض آيات القرآن الكريم </h3>
-</a>  
-<a class="card" href="https://prayertimescalc.app/index.html">
-<img src="https://s5files.mobeasy.com/static/u/722316/file-722316-992765.jpg" alt="أوقات الصلاة">
-<h3>أوقات الصلاة</h3>
-</a>
-<a class="card" href="https://effervescent-meerkat-bcf7cd.netlify.app/">
-<img src="https://s5files.mobeasy.com/static/u/722316/file-722316-345170.jpg" alt="تطبيق أذكاري">
-<h3>تطبيق أذكاري</h3>
-</a>
-<a class="card" href="https://abedelkareem1989.github.io/Islamicculture/1.index.html">
-<img src="https://s5files.mobeasy.com/static/u/722316/file-722316-901454.jpg" alt="شرح الصفات الثلاث عشر">
-<h3>شرح الصفات الثلاث عشر</h3>
-</a>
-<a class="card" href="https://abedelkareem1989.github.io/Islamicculture/2.index.html">
-<img src="https://s5files.mobeasy.com/static/u/722316/file-722316-225005.jpg" alt="كتب عقيدة المسلمين">
-<h3>كتب عقيدة المسلمين</h3>
-</a>
-</div>
-</div>
-
-<!-- ===== القسم 8: الفيديوهات ===== -->
-<div class="section">
-<div class="section-title">
-<span>
-<span class="icon">🎬</span>
-الفيديوهات
-</span>
-</div>
-<div class="grid">
-<a class="card" href="http://dulcet-cuchufli-abfcb8.netlify.app">
-<img src="https://s5files.mobeasy.com/static/u/722316/file-722316-964428.jpg" alt="الدروس الأساسية لفهم العقيدة الإسلامية">
-<h3>الدروس الأساسية<br>لفهم العقيدة الإسلامية</h3>
-</a>
-</div>
-</div>
-
-<!-- ===== القسم 9: الصور ===== -->
-<div class="section">
-<div class="section-title">
-<span>
-<span class="icon">🖼️</span>
-الصور
-</span>
-</div>
-<div class="grid">
-<a class="card" href="https://photos.app.goo.gl/Y2DJfjyHqxjC8e4X7">
-<img src="https://s5files.mobeasy.com/static/u/722316/file-722316-3101.jpg" alt="لوحات إسلامية">
-<h3>لوحات إسلامية</h3>
-</a>
-</div>
-</div>
-
-<!-- ===== القسم 10: مواقع أهل السنة ===== -->
-<div class="section">
-<div class="section-title">
-<span>
-<span class="icon">🔗</span>
-مواقع أهل السنة
-</span>
-</div>
-<div class="grid">
-<a class="card" href="https://linkfly.to/Sunnis2023">
-<img src="https://s5files.mobeasy.com/static/u/722316/file-722316-669859.jpg" alt="مواقع أهل السنة">
-<h3>مواقع أهل السنة</h3>
-</a>
-</div>
-</div>
-
-<!-- ===== القسم 11: التطبيقات الإسلامية ===== -->
-<div class="section">
-<div class="section-title">
-<span>
-<span class="icon">📱</span>
-التطبيقات الإسلامية
-</span>
-</div>
-<div class="grid">
-<a class="card" href="https://www.appcreator24.com/app1858151-uamrj1">
-<img src="https://s5files.mobeasy.com/static/u/722316/file-722316-648686.jpg" alt="تطبيق الثقافة الإسلامية">
-<h3>تطبيق الثقافة الإسلامية</h3>
-</a>
-<a class="card" href="https://abedelkareem1989.github.io/Islamicculture/index.html">
-<img src="https://s5files.mobeasy.com/static/u/722316/file-722316-820191.jpg" alt="تطبيق الثقافة الإسلامية ويب">
-<h3>تطبيق الثقافة الإسلامية ويب</h3>
-</a>
-</div>
-</div>
-
-</div>
-
-<!-- زر تثبيت التطبيق -->
-<button class="install-btn" id="installBtn">📲 تثبيت التطبيق</button>
-
-<script>
-
-// =============================================
-// كود تثبيت التطبيق (PWA)
-// =============================================
-
-let deferredPrompt;
-const installBtn = document.getElementById('installBtn');
-
-// إظهار زر التثبيت عند توفر الحدث
-window.addEventListener('beforeinstallprompt', (e) => {
-  e.preventDefault();
-  deferredPrompt = e;
-  installBtn.style.display = 'block';
-  installBtn.classList.remove('hidden');
-});
-
-// عند الضغط على زر التثبيت
-installBtn.addEventListener('click', async () => {
-  if (deferredPrompt) {
-    deferredPrompt.prompt();
-    const result = await deferredPrompt.userChoice;
-    if (result.outcome === 'accepted') {
-      console.log('✅ تم تثبيت التطبيق');
-      installBtn.style.display = 'none';
-    } else {
-      console.log('❌ تم رفض التثبيت');
+    :root {
+      --primary: #0f5c47;
+      --primary-light: #1a7a5f;
+      --gold: #d4af37;
+      --gold-light: #f0d080;
+      --glass-bg: rgba(255, 255, 255, 0.15);
+      --glass-border: rgba(255, 255, 255, 0.25);
+      --shadow: 0 12px 30px rgba(0, 0, 0, 0.2);
+      --radius: 24px;
+      --text: #1e2a2a;
+      --bg: #f6f4ed;
+      --card-bg: rgba(255, 255, 255, 0.7);
+      --nav-bg: rgba(255, 255, 255, 0.85);
     }
-    deferredPrompt = null;
-  }
-});
 
-// إخفاء الزر بعد التثبيت
-window.addEventListener('appinstalled', () => {
-  console.log('✅ تم تثبيت التطبيق بنجاح');
-  installBtn.style.display = 'none';
-});
-
-// عرض الزر فقط في المتصفحات التي تدعم PWA
-if (window.matchMedia('(display-mode: standalone)').matches) {
-  // التطبيق يعمل كـ PWA بالفعل
-  installBtn.style.display = 'none';
-}
-
-// =============================================
-// كود المشاركة
-// =============================================
-
-const shareBtn = document.getElementById('shareBtn');
-
-shareBtn.addEventListener('click', async () => {
-  const shareData = {
-    title: 'الثقافة الإسلامية ويب',
-    text: '📖 تطبيق الثقافة الإسلامية ويب - قرآن، دروس، مدائح، ومكتبة إسلامية',
-    url: 'https://abedelkareem1989.github.io/Islamicculture/index.html'
-  };
-
-  try {
-    if (navigator.share) {
-      await navigator.share(shareData);
-    } else {
-      await navigator.clipboard.writeText(shareData.url);
-      alert('✅ تم نسخ رابط التطبيق! يمكنك الآن مشاركته مع أصدقائك.');
+    body.dark {
+      --bg: #121a18;
+      --text: #e8e0d4;
+      --card-bg: rgba(30, 40, 38, 0.8);
+      --nav-bg: rgba(18, 26, 24, 0.9);
+      --glass-bg: rgba(255, 255, 255, 0.05);
+      --glass-border: rgba(255, 215, 0, 0.15);
     }
-  } catch (err) {
-    if (err.name !== 'AbortError') {
-      try {
-        await navigator.clipboard.writeText(shareData.url);
-        alert('✅ تم نسخ رابط التطبيق!');
-      } catch {
-        alert('❌ حدث خطأ، الرابط: ' + shareData.url);
+
+    body {
+      font-family: 'Segoe UI', 'Tahoma', system-ui, -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      transition: background 0.3s, color 0.3s;
+      padding-bottom: 80px;
+      direction: rtl;
+      min-height: 100vh;
+    }
+
+    /* GLASS & PREMIUM */
+    .glass {
+      background: var(--glass-bg);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid var(--glass-border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+    }
+
+    .card {
+      background: var(--card-bg);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+      border-radius: 20px;
+      border: 1px solid rgba(212, 175, 55, 0.2);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+      transition: transform 0.2s ease, box-shadow 0.2s;
+      overflow: hidden;
+      padding: 16px;
+      margin-bottom: 16px;
+    }
+
+    .card:active {
+      transform: scale(0.98);
+    }
+
+    /* header */
+    .app-header {
+      padding: 20px 16px 12px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: linear-gradient(135deg, #0a3d2e 0%, #1a6b52 100%);
+      color: #fff;
+      border-radius: 0 0 32px 32px;
+      box-shadow: 0 8px 30px rgba(10, 61, 46, 0.4);
+      position: sticky;
+      top: 0;
+      z-index: 20;
+    }
+
+    .app-header .logo-area {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .app-logo {
+      width: 48px;
+      height: 48px;
+      background: radial-gradient(circle at 30% 30%, #f5e6b0, #b8860b);
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 28px;
+      font-weight: bold;
+      color: #0a3d2e;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    }
+
+    .app-title {
+      font-size: 22px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-shadow: 0 2px 6px rgba(0,0,0,0.3);
+    }
+
+    .app-title small {
+      font-size: 14px;
+      font-weight: 300;
+      opacity: 0.8;
+      display: block;
+      margin-top: -4px;
+    }
+
+    .header-actions {
+      display: flex;
+      gap: 8px;
+    }
+
+    .header-actions button {
+      background: rgba(255,255,255,0.15);
+      border: none;
+      border-radius: 40px;
+      padding: 8px 14px;
+      color: #fff;
+      font-size: 18px;
+      backdrop-filter: blur(4px);
+      cursor: pointer;
+      transition: 0.2s;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .header-actions button:hover {
+      background: rgba(255,215,0,0.3);
+    }
+
+    /* welcome */
+    .welcome-section {
+      padding: 12px 16px 0;
+    }
+
+    .welcome-card {
+      background: linear-gradient(145deg, var(--primary), #0a4d3a);
+      color: #fff;
+      border-radius: 28px;
+      padding: 20px 24px;
+      box-shadow: 0 12px 28px rgba(15, 92, 71, 0.4);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .welcome-card::after {
+      content: "✦";
+      position: absolute;
+      left: -10px;
+      top: -20px;
+      font-size: 120px;
+      opacity: 0.08;
+      color: #ffd966;
+    }
+
+    .welcome-card h2 {
+      font-size: 20px;
+      font-weight: 600;
+    }
+
+    .welcome-card p {
+      opacity: 0.9;
+      margin-top: 4px;
+      font-size: 14px;
+    }
+
+    .ayah-hadith {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-top: 14px;
+    }
+
+    .ayah-box, .hadith-box {
+      background: rgba(255,255,255,0.08);
+      padding: 12px 16px;
+      border-radius: 18px;
+      border-right: 4px solid var(--gold);
+      backdrop-filter: blur(4px);
+    }
+
+    .ayah-box .label, .hadith-box .label {
+      font-size: 12px;
+      text-transform: uppercase;
+      opacity: 0.7;
+      letter-spacing: 1px;
+    }
+
+    .ayah-box p, .hadith-box p {
+      font-size: 15px;
+      line-height: 1.6;
+      margin-top: 4px;
+      font-weight: 300;
+    }
+
+    /* sections grid */
+    .section-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 12px;
+      padding: 0 16px;
+      margin-top: 8px;
+    }
+
+    .section-card {
+      background: var(--card-bg);
+      border-radius: 20px;
+      padding: 18px 10px;
+      text-align: center;
+      box-shadow: 0 6px 16px rgba(0,0,0,0.04);
+      backdrop-filter: blur(4px);
+      border: 1px solid rgba(212, 175, 55, 0.15);
+      transition: all 0.2s;
+      cursor: pointer;
+    }
+
+    .section-card .icon {
+      font-size: 32px;
+      margin-bottom: 6px;
+    }
+
+    .section-card h4 {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    .section-card:active {
+      transform: scale(0.95);
+      background: var(--gold-light);
+    }
+
+    /* content area */
+    .content-area {
+      padding: 12px 16px 20px;
+    }
+
+    .content-area h3 {
+      font-size: 20px;
+      font-weight: 700;
+      margin: 16px 0 8px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .content-area h3 span {
+      background: var(--gold);
+      width: 6px;
+      height: 28px;
+      display: inline-block;
+      border-radius: 8px;
+    }
+
+    .item-card {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      background: var(--card-bg);
+      backdrop-filter: blur(4px);
+      border-radius: 18px;
+      padding: 12px 14px;
+      margin-bottom: 12px;
+      border: 1px solid rgba(212, 175, 55, 0.1);
+      transition: 0.2s;
+      cursor: pointer;
+    }
+
+    .item-card:active {
+      transform: scale(0.97);
+    }
+
+    .item-card img {
+      width: 60px;
+      height: 60px;
+      border-radius: 14px;
+      object-fit: cover;
+      background: #ddd;
+      flex-shrink: 0;
+    }
+
+    .item-card .info {
+      flex: 1;
+    }
+
+    .item-card .info h4 {
+      font-size: 16px;
+      font-weight: 600;
+    }
+
+    .item-card .info p {
+      font-size: 13px;
+      opacity: 0.7;
+      margin-top: 2px;
+    }
+
+    .item-card .fav-btn {
+      background: none;
+      border: none;
+      font-size: 24px;
+      cursor: pointer;
+      color: var(--gold);
+      transition: 0.2s;
+    }
+
+    /* bottom nav */
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: var(--nav-bg);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-top: 1px solid rgba(212, 175, 55, 0.2);
+      display: flex;
+      justify-content: space-around;
+      padding: 8px 0 env(safe-area-inset-bottom);
+      z-index: 100;
+      box-shadow: 0 -8px 30px rgba(0,0,0,0.06);
+      flex-wrap: wrap;
+    }
+
+    .bottom-nav button {
+      background: transparent;
+      border: none;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      font-size: 10px;
+      color: var(--text);
+      opacity: 0.5;
+      transition: 0.2s;
+      padding: 4px 8px;
+      border-radius: 30px;
+      cursor: pointer;
+      font-family: inherit;
+      min-width: 50px;
+    }
+
+    .bottom-nav button .nav-icon {
+      font-size: 22px;
+      line-height: 1;
+    }
+
+    .bottom-nav button.active {
+      opacity: 1;
+      color: var(--primary);
+      font-weight: 600;
+      background: rgba(15, 92, 71, 0.08);
+    }
+
+    .bottom-nav button.active .nav-icon {
+      color: var(--gold);
+    }
+
+    /* search */
+    .search-bar {
+      display: flex;
+      align-items: center;
+      background: var(--card-bg);
+      border-radius: 40px;
+      padding: 6px 16px;
+      margin: 12px 16px;
+      border: 1px solid rgba(212, 175, 55, 0.2);
+      backdrop-filter: blur(4px);
+    }
+
+    .search-bar input {
+      flex: 1;
+      border: none;
+      background: transparent;
+      padding: 12px 8px;
+      font-size: 16px;
+      color: var(--text);
+      outline: none;
+      font-family: inherit;
+    }
+
+    .search-bar input::placeholder {
+      color: var(--text);
+      opacity: 0.5;
+    }
+
+    .search-bar button {
+      background: var(--gold);
+      border: none;
+      border-radius: 40px;
+      padding: 8px 18px;
+      color: #0a3d2e;
+      font-weight: 600;
+      cursor: pointer;
+      font-size: 14px;
+    }
+
+    /* hidden sections */
+    .page {
+      display: none;
+    }
+
+    .page.active {
+      display: block;
+    }
+
+    /* settings */
+    .setting-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 14px 0;
+      border-bottom: 1px solid rgba(0,0,0,0.04);
+    }
+
+    .toggle {
+      width: 50px;
+      height: 28px;
+      background: #ccc;
+      border-radius: 40px;
+      position: relative;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .toggle.active {
+      background: var(--primary);
+    }
+
+    .toggle::after {
+      content: "";
+      width: 22px;
+      height: 22px;
+      background: white;
+      border-radius: 50%;
+      position: absolute;
+      top: 3px;
+      right: 3px;
+      transition: 0.3s;
+    }
+
+    .toggle.active::after {
+      right: 25px;
+    }
+
+    /* responsive */
+    @media (min-width: 600px) {
+      .section-grid {
+        grid-template-columns: repeat(4, 1fr);
+      }
+      .content-area {
+        max-width: 720px;
+        margin: 0 auto;
       }
     }
-  }
-});
 
-// =============================================
-// كود الوضع الليلي والبحث
-// =============================================
+    @media (max-width: 380px) {
+      .app-title { font-size: 18px; }
+      .app-logo { width: 40px; height: 40px; font-size: 22px; }
+      .bottom-nav button { font-size: 9px; min-width: 40px; }
+      .bottom-nav button .nav-icon { font-size: 18px; }
+    }
 
-const toggle = document.getElementById('darkToggle');
-const body = document.body;
+    /* utilities */
+    .text-gold { color: var(--gold); }
+    .mt-2 { margin-top: 12px; }
+    .mb-2 { margin-bottom: 12px; }
+    .flex-between { display: flex; justify-content: space-between; align-items: center; }
+    .gap-2 { gap: 12px; }
 
-if (localStorage.getItem('darkMode') === 'enabled') {
-  body.classList.add('dark-mode');
-  toggle.classList.add('active');
-}
+    /* lazy load blur */
+    img.lazy {
+      filter: blur(4px);
+      transition: filter 0.3s;
+    }
+    img.lazy.loaded {
+      filter: blur(0);
+    }
 
-toggle.addEventListener('click', function() {
-  body.classList.toggle('dark-mode');
-  this.classList.toggle('active');
+    /* toast */
+    .toast {
+      position: fixed;
+      bottom: 100px;
+      left: 50%;
+      transform: translateX(-50%) translateY(20px);
+      background: var(--primary);
+      color: #fff;
+      padding: 12px 24px;
+      border-radius: 40px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+      opacity: 0;
+      transition: 0.3s;
+      z-index: 999;
+      font-weight: 500;
+      pointer-events: none;
+    }
+    .toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+  </style>
+</head>
+<body>
 
-  if (body.classList.contains('dark-mode')) {
-    localStorage.setItem('darkMode', 'enabled');
-  } else {
-    localStorage.setItem('darkMode', 'disabled');
-  }
-});
+  <!-- TOAST -->
+  <div id="toast" class="toast">تم</div>
 
-const input = document.getElementById("search");
-input.onkeyup = function() {
-  let filter = this.value.toLowerCase();
-  document.querySelectorAll(".card").forEach(card => {
-    card.style.display = card.innerText.toLowerCase().includes(filter) ? "block" : "none";
-  });
-};
+  <!-- HEADER -->
+  <header class="app-header">
+    <div class="logo-area">
+      <div class="app-logo">۞</div>
+      <div class="app-title">
+        الثقافة الإسلامية
+        <small>ويب PRO</small>
+      </div>
+    </div>
+    <div class="header-actions">
+      <button id="shareBtn" aria-label="مشاركة">📤</button>
+      <button id="refreshBtn" aria-label="تحديث">🔄</button>
+      <button id="darkToggle" aria-label="الوضع الليلي">🌙</button>
+      <button id="installBtn" style="display:none;" aria-label="تثبيت التطبيق">📲</button>
+    </div>
+  </header>
 
-</script>
+  <!-- SEARCH -->
+  <div class="search-bar glass">
+    <input type="text" id="globalSearch" placeholder="ابحث في المكتبة...">
+    <button id="searchBtn">🔍</button>
+  </div>
 
+  <!-- MAIN PAGES -->
+  <div id="page-home" class="page active">
+    <div class="welcome-section">
+      <div class="welcome-card">
+        <h2>السلام عليكم ورحمة الله</h2>
+        <p>مرحباً بك في موسوعتك الإسلامية الشاملة</p>
+        <div class="ayah-hadith">
+          <div class="ayah-box"><div class="label">آية اليوم</div><p id="ayahDisplay">"وَمَن يَتَّقِ اللَّهَ يَجْعَل لَّهُ مَخْرَجًا"</p></div>
+          <div class="hadith-box"><div class="label">حديث اليوم</div><p id="hadithDisplay">"خيركم من تعلم القرآن وعلمه"</p></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-grid" id="quickSections">
+      <div class="section-card" data-section="quran"><div class="icon">📖</div><h4>القرآن</h4></div>
+      <div class="section-card" data-section="audio"><div class="icon">🎧</div><h4>الصوتيات</h4></div>
+      <div class="section-card" data-section="library"><div class="icon">📚</div><h4>المكتبة</h4></div>
+      <div class="section-card" data-section="gallery"><div class="icon">🖼️</div><h4>الصور</h4></div>
+      <div class="section-card" data-section="video"><div class="icon">🎬</div><h4>الفيديوهات</h4></div>
+      <div class="section-card" data-section="apps"><div class="icon">📱</div><h4>التطبيقات</h4></div>
+      <div class="section-card" data-section="favorites"><div class="icon">⭐</div><h4>المفضلة</h4></div>
+    </div>
+
+    <div class="content-area">
+      <h3><span></span> آخر الإضافات</h3>
+      <div id="latestItems"></div>
+    </div>
+  </div>
+
+  <!-- صفحات الأقسام -->
+  <div id="page-quran" class="page"><div class="content-area" id="quranContent"></div></div>
+  <div id="page-audio" class="page"><div class="content-area" id="audioContent"></div></div>
+  <div id="page-library" class="page"><div class="content-area" id="libraryContent"></div></div>
+  <div id="page-gallery" class="page"><div class="content-area" id="galleryContent"></div></div>
+  <div id="page-video" class="page"><div class="content-area" id="videoContent"></div></div>
+  <div id="page-apps" class="page"><div class="content-area" id="appsContent"></div></div>
+  <div id="page-favorites" class="page"><div class="content-area" id="favoritesContent"></div></div>
+  <div id="page-settings" class="page"><div class="content-area" id="settingsContent"></div></div>
+
+  <!-- BOTTOM NAV -->
+  <nav class="bottom-nav" id="bottomNav">
+    <button class="active" data-page="home"><span class="nav-icon">🏠</span>الرئيسية</button>
+    <button data-page="quran"><span class="nav-icon">📖</span>القرآن</button>
+    <button data-page="audio"><span class="nav-icon">🎧</span>الصوتيات</button>
+    <button data-page="library"><span class="nav-icon">📚</span>المكتبة</button>
+    <button data-page="video"><span class="nav-icon">🎬</span>فيديوهات</button>
+    <button data-page="favorites"><span class="nav-icon">⭐</span>المفضلة</button>
+    <button data-page="settings"><span class="nav-icon">⚙️</span>الإعدادات</button>
+  </nav>
+
+  <script>
+    // ========== DATA ==========
+    const DATA = [
+      // القرآن
+      { category:"quran", title:"المصحف المعلم", image:"https://s5files.mobeasy.com/static/u/722316/file-722316-148458.jpg", description:"تلاوة معلم", url:"https://abedelkareem1989.github.io/bidjade.github.io/2026.index.html" },
+      { category:"quran", title:"جزء قد سمع", image:"https://s5files.mobeasy.com/static/u/722316/file-722316-29850.jpg", description:"تلاوة ميسرة", url:"https://abedelkareem1989.github.io/bidjade.github.io/12345.index.html" },
+      // الصوتيات
+      { category:"audio", title:"التحصين صوتي", image:"https://s5files.mobeasy.com/static/u/722316/file-722316-665630.jpg", description:"تحصين ورقية", url:"https://abedelkareem1989.github.io/Islamicculture/44.index.html" },
+      { category:"audio", title:"إذاعات أهل السنة", image:"https://s5files.mobeasy.com/static/u/722316/file-722316-19625.jpg", description:"إذاعات مباشرة", url:"https://luxury-parfait-79d9ba.netlify.app" },
+      { category:"audio", title:"دروس الشيخ نزار الحلبي", image:"https://s5files.mobeasy.com/static/u/722316/file-722316-259061.jpg", description:"دروس صوتية", url:"https://abedelkareem1989.github.io/bidjade.github.io/nizar.index.html" },
+      { category:"audio", title:"خطب الجمعة", image:"https://s5files.mobeasy.com/static/u/722316/file-722316-652036.jpg", description:"خطب منبرية", url:"https://abedelkareem1989.github.io/Islamicculture/7.index.html" },
+      { category:"audio", title:"شرح العقيدة الطحاوية - سمير القاضي", image:"https://s5files.mobeasy.com/static/u/722316/file-722316-390716.jpg", description:"شرح الدرة", url:"https://abedelkareem1989.github.io/bidjade.github.io/222.index.html" },
+      { category:"audio", title:"قواعد مهمة - سمير القاضي", image:"https://s5files.mobeasy.com/static/u/722316/file-722316-629250.jpg", description:"قواعد العقيدة", url:"https://abedelkareem1989.github.io/bidjade.github.io/222.index.html" },
+      { category:"audio", title:"حل ألفاظ الصراط المستقيم", image:"https://s5files.mobeasy.com/static/u/722316/file-722316-179273.jpg", description:"شرح مهم", url:"https://abedelkareem1989.github.io/Islamicculture/31.index.html" },
+      { category:"audio", title:"الحيدة فنون الرد", image:"https://s5files.mobeasy.com/static/u/722316/file-722316-424670.jpg", description:"فنون الرد", url:"https://abedelkareem1989.github.io/bidjade.github.io/27.index.html" },
+      { category:"audio", title:"شرح العقيدة الطحاوية - جميل حليم", image:"https://s5files.mobeasy.com/static/u/722316/file-722316-649939.jpg", description:"شرح وافي", url:"https://abedelkareem1989.github.io/Islamicculture/5.index.html" },
+      { category:"audio", title:"الدروس الصوتية العامة", image:"https://s5files.mobeasy.com/static/u/722316/file-722316-21272.jpg", description:"متنوع", url:"https://widget.spreaker.com/player?show_id=6281103&theme=light&playlist=show&playlist-continuous=true&chapters-image=true" },
+      { category:"audio", title:"المداح أحمد الرفاعي", image:"https://s5files.mobeasy.com/static/u/722316/file-722316-51719.jpg", description:"مدائح", url:"https://resonant-piroshki-be0974.netlify.app" },
+      { category:"audio", title:"المنشد الحاج محمد الخير", image:"https://s5files.mobeasy.com/static/u/722316/file-722316-55268.jpg", description:"أناشيد", url:"https://abedelkareem1989.github.io/bidjade.github.io" },
+      { category:"audio", title:"المداح محمد معروف", image:"https://s5files.mobeasy.com/static/u/722316/file-722316-47117.jpg", description:"مدائح نبوية", url:"https://6a5f9206d41b4d235dfd7b77--starlit-pie-68dbbd.netlify.app" },
+      // المكتبة
+      { category:"library", title:"المكتبة الإسلامية", image:"https://s5files.mobeasy.com/static/u/722316/file-722316-816366.jpg", description:"كتب ومراجع", url:"https://abedelkareem2.blogspot.com/2022/09/blog-post_9.html?m=1" },
+      { category:"library", title:"تفسير آيات", image:"https://s5files.mobeasy.com/static/u/722316/file-722316-612684.jpg", description:"تفسير مختصر", url:"https://abedelkareem1989.github.io/Islamicculture/66.index.html" },
+      { category:"library", title:"أوقات الصلاة", image:"https://s5files.mobeasy.com/static/u/722316/file-722316-992765.jpg", description:"مواقيت الصلاة", url:"https://prayertimescalc.app/index.html" },
+      { category:"library", title:"تطبيق أذكاري", image:"https://s5files.mobeasy.com/static/u/722316/file-722316-345170.jpg", description:"أذكار المسلم", url:"https://effervescent-meerkat-bcf7cd.netlify.app/" },
+      { category:"library", title:"شرح الصفات الثلاث عشر", image:"https://s5files.mobeasy.com/static/u/722316/file-722316-901454.jpg", description:"عقيدة", url:"https://abedelkareem1989.github.io/Islamicculture/1.index.html" },
+      { category:"library", title:"كتب عقيدة المسلمين", image:"https://s5files.mobeasy.com/static/u/722316/file-722316-225005.jpg", description:"كتب", url:"https://abedelkareem1989.github.io/Islamicculture/2.index.html" },
+      // صور
+      { category:"gallery", title:"لوحات إسلامية", image:"https://s5files.mobeasy.com/static/u/722316/file-722316-3101.jpg", description:"معرض صور", url:"https://photos.app.goo.gl/Y2DJfjyHqxjC8e4X7" },
+      // فيديوهات
+      { category:"video", title:"الدروس الأساسية لفهم العقيدة الإسلامية ", image:"https://s5files.mobeasy.com/static/u/722316/file-722316-964428.jpg", description:"سلسلة محاضرات", url:"http://dulcet-cuchufli-abfcb8.netlify.app" },
+      // تطبيقات
+      { category:"apps", title:"تطبيق الثقافة الإسلامية", image:"https://s5files.mobeasy.com/static/u/722316/file-722316-648686.jpg", description:"تطبيق شامل", url:"https://www.appcreator24.com/app1858151-uamrj1" },
+      { category:"apps", title:"مواقع أهل السنة", image:"https://s5files.mobeasy.com/static/u/722316/file-722316-669859.jpg", description:"دليل مواقع", url:"https://linkfly.to/Sunnis2023" },
+    ];
+
+    // ========== STATE ==========
+    let favorites = JSON.parse(localStorage.getItem('islamic_favs')) || [];
+    let darkMode = localStorage.getItem('islamic_dark') === 'true';
+    let currentPage = 'home';
+
+    // ========== DOM REFS ==========
+    const $ = id => document.getElementById(id);
+    const pages = {
+      home: $('page-home'),
+      quran: $('page-quran'),
+      audio: $('page-audio'),
+      library: $('page-library'),
+      gallery: $('page-gallery'),
+      video: $('page-video'),
+      apps: $('page-apps'),
+      favorites: $('page-favorites'),
+      settings: $('page-settings')
+    };
+
+    // ========== TOAST ==========
+    function showToast(msg) {
+      const t = $('toast');
+      t.textContent = msg;
+      t.classList.add('show');
+      clearTimeout(t._timeout);
+      t._timeout = setTimeout(() => t.classList.remove('show'), 2200);
+    }
+
+    // ========== RENDER ==========
+    function renderItems(category, containerId, filter = '') {
+      const container = document.getElementById(containerId);
+      if (!container) return;
+      let items = DATA.filter(d => d.category === category);
+      if (filter) items = items.filter(d => d.title.includes(filter) || d.description.includes(filter));
+      if (items.length === 0) {
+        container.innerHTML = `<div class="card" style="text-align:center;padding:30px;">لا توجد عناصر</div>`;
+        return;
+      }
+      container.innerHTML = items.map((item, idx) => {
+        const isFav = favorites.includes(item.title) ? '⭐' : '☆';
+        return `
+          <div class="item-card" data-url="${item.url}" data-title="${item.title}">
+            <img src="${item.image}" alt="${item.title}" loading="lazy" class="lazy" onload="this.classList.add('loaded')">
+            <div class="info">
+              <h4>${item.title}</h4>
+              <p>${item.description}</p>
+            </div>
+            <button class="fav-btn" data-title="${item.title}">${isFav}</button>
+          </div>
+        `;
+      }).join('');
+
+      container.querySelectorAll('.item-card').forEach(el => {
+        el.addEventListener('click', (e) => {
+          if (e.target.closest('.fav-btn')) return;
+          const url = el.dataset.url;
+          if (url) window.open(url, '_blank');
+        });
+      });
+      container.querySelectorAll('.fav-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          const title = btn.dataset.title;
+          toggleFav(title);
+          renderItems(category, containerId);
+        });
+      });
+    }
+
+    function toggleFav(title) {
+      const idx = favorites.indexOf(title);
+      if (idx > -1) favorites.splice(idx, 1);
+      else favorites.push(title);
+      localStorage.setItem('islamic_favs', JSON.stringify(favorites));
+      showToast(idx > -1 ? '❌ تم الإزالة من المفضلة' : '⭐ أضيف إلى المفضلة');
+    }
+
+    function renderFavorites() {
+      const container = $('favoritesContent');
+      const favItems = DATA.filter(d => favorites.includes(d.title));
+      if (favItems.length === 0) {
+        container.innerHTML = `<div class="card" style="text-align:center;padding:30px;">لا توجد مفضلات</div>`;
+        return;
+      }
+      container.innerHTML = favItems.map(item => `
+        <div class="item-card" data-url="${item.url}">
+          <img src="${item.image}" loading="lazy" class="lazy" onload="this.classList.add('loaded')">
+          <div class="info"><h4>${item.title}</h4><p>${item.description}</p></div>
+          <button class="fav-btn" data-title="${item.title}">⭐</button>
+        </div>
+      `).join('');
+      container.querySelectorAll('.item-card').forEach(el => {
+        el.addEventListener('click', (e) => {
+          if (e.target.closest('.fav-btn')) return;
+          const url = el.dataset.url;
+          if (url) window.open(url, '_blank');
+        });
+      });
+      container.querySelectorAll('.fav-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          const title = btn.dataset.title;
+          toggleFav(title);
+          renderFavorites();
+        });
+      });
+    }
+
+    function renderLatest() {
+      const container = $('latestItems');
+      const latest = DATA.slice(-8).reverse();
+      container.innerHTML = latest.map(item => `
+        <div class="item-card" data-url="${item.url}">
+          <img src="${item.image}" loading="lazy" class="lazy" onload="this.classList.add('loaded')">
+          <div class="info"><h4>${item.title}</h4><p>${item.description}</p></div>
+        </div>
+      `).join('');
+      container.querySelectorAll('.item-card').forEach(el => {
+        el.addEventListener('click', () => {
+          const url = el.dataset.url;
+          if (url) window.open(url, '_blank');
+        });
+      });
+    }
+
+    function renderSettings() {
+      const container = $('settingsContent');
+      container.innerHTML = `
+        <h3><span></span> الإعدادات</h3>
+        <div class="card">
+          <div class="setting-item"><span>🌙 الوضع الليلي</span><div class="toggle ${darkMode?'active':''}" id="darkToggleSetting"></div></div>
+          <div class="setting-item"><span>📢 الإشعارات</span><div class="toggle active" id="notifToggle"></div></div>
+          <div class="setting-item"><span>📱 عن التطبيق</span><button style="background:var(--gold);border:none;padding:8px 20px;border-radius:40px;cursor:pointer;">عرض</button></div>
+          <div class="setting-item"><span>🔒 سياسة الخصوصية</span><button style="background:var(--gold);border:none;padding:8px 20px;border-radius:40px;cursor:pointer;">عرض</button></div>
+        </div>
+      `;
+      document.getElementById('darkToggleSetting').addEventListener('click', toggleDark);
+    }
+
+    // ========== NAVIGATION ==========
+    function navigate(page) {
+      Object.keys(pages).forEach(key => pages[key].classList.remove('active'));
+      if (pages[page]) pages[page].classList.add('active');
+      currentPage = page;
+      document.querySelectorAll('.bottom-nav button').forEach(b => b.classList.remove('active'));
+      document.querySelector(`.bottom-nav button[data-page="${page}"]`)?.classList.add('active');
+
+      if (page === 'quran') renderItems('quran', 'quranContent');
+      else if (page === 'audio') renderItems('audio', 'audioContent');
+      else if (page === 'library') renderItems('library', 'libraryContent');
+      else if (page === 'gallery') renderItems('gallery', 'galleryContent');
+      else if (page === 'video') renderItems('video', 'videoContent');
+      else if (page === 'apps') renderItems('apps', 'appsContent');
+      else if (page === 'favorites') renderFavorites();
+      else if (page === 'settings') renderSettings();
+      else if (page === 'home') { renderLatest(); }
+      window.scrollTo(0, 0);
+    }
+
+    // ========== DARK MODE ==========
+    function toggleDark() {
+      darkMode = !darkMode;
+      document.body.classList.toggle('dark', darkMode);
+      localStorage.setItem('islamic_dark', darkMode);
+      document.getElementById('darkToggle').textContent = darkMode ? '☀️' : '🌙';
+      renderSettings();
+    }
+
+    // ========== SEARCH ==========
+    function searchGlobal() {
+      const q = document.getElementById('globalSearch').value.trim();
+      if (!q) { showToast('⚠️ أدخل نصاً للبحث'); return; }
+      const results = DATA.filter(d => d.title.includes(q) || d.description.includes(q));
+      if (results.length === 0) { showToast('❌ لا نتائج'); return; }
+      navigate('library');
+      const container = document.getElementById('libraryContent');
+      container.innerHTML = results.map(item => `
+        <div class="item-card" data-url="${item.url}">
+          <img src="${item.image}" loading="lazy" class="lazy" onload="this.classList.add('loaded')">
+          <div class="info"><h4>${item.title}</h4><p>${item.description}</p></div>
+        </div>
+      `).join('');
+      container.querySelectorAll('.item-card').forEach(el => {
+        el.addEventListener('click', () => { if (el.dataset.url) window.open(el.dataset.url, '_blank'); });
+      });
+      showToast(`🔍 ${results.length} نتيجة`);
+    }
+
+    // ========== SHARE ==========
+    function shareApp() {
+      const shareData = {
+        title: 'الثقافة الإسلامية ويب',
+        text: '📖 تطبيق الثقافة الإسلامية ويب - قرآن، دروس، مدائح، ومكتبة إسلامية',
+        url: 'https://abedelkareem1989.github.io/Islamicculture/index.html'
+      };
+      if (navigator.share) {
+        navigator.share(shareData).catch(() => {});
+      } else {
+        navigator.clipboard.writeText(shareData.text + ' ' + shareData.url).then(() => {
+          showToast('📋 تم نسخ الرابط');
+        }).catch(() => {
+          showToast('📤 ' + shareData.text + ' ' + shareData.url);
+        });
+      }
+    }
+
+    // ========== REFRESH ==========
+    function refreshPage() {
+      showToast('🔄 جاري التحديث...');
+      setTimeout(() => window.location.reload(), 400);
+    }
+
+    // ========== PWA INSTALL ==========
+    let deferredPrompt;
+    window.addEventListener('beforeinstallprompt', (e) => {
+      e.preventDefault();
+      deferredPrompt = e;
+      document.getElementById('installBtn').style.display = 'flex';
+    });
+    document.getElementById('installBtn').addEventListener('click', () => {
+      if (deferredPrompt) {
+        deferredPrompt.prompt();
+        deferredPrompt.userChoice.then(() => { document.getElementById('installBtn').style.display = 'none'; });
+      } else {
+        showToast('📲 يمكنك تثبيت التطبيق من قائمة المتصفح');
+      }
+    });
+
+    // ========== INIT ==========
+    function init() {
+      if (darkMode) document.body.classList.add('dark');
+      document.getElementById('darkToggle').textContent = darkMode ? '☀️' : '🌙';
+      renderLatest();
+      renderSettings();
+      
+      document.querySelectorAll('.section-card').forEach(card => {
+        card.addEventListener('click', () => {
+          const section = card.dataset.section;
+          if (section === 'favorites') navigate('favorites');
+          else if (section === 'quran') navigate('quran');
+          else if (section === 'audio') navigate('audio');
+          else if (section === 'library') navigate('library');
+          else if (section === 'gallery') navigate('gallery');
+          else if (section === 'video') navigate('video');
+          else if (section === 'apps') navigate('apps');
+        });
+      });
+
+      document.querySelectorAll('.bottom-nav button').forEach(btn => {
+        btn.addEventListener('click', () => navigate(btn.dataset.page));
+      });
+
+      document.getElementById('darkToggle').addEventListener('click', toggleDark);
+      document.getElementById('shareBtn').addEventListener('click', shareApp);
+      document.getElementById('refreshBtn').addEventListener('click', refreshPage);
+      document.getElementById('searchBtn').addEventListener('click', searchGlobal);
+      document.getElementById('globalSearch').addEventListener('keyup', (e) => { if (e.key === 'Enter') searchGlobal(); });
+
+      document.getElementById('ayahDisplay').textContent = '"وَمَن يَتَّقِ اللَّهَ يَجْعَل لَّهُ مَخْرَجًا" (الطلاق 2)';
+      document.getElementById('hadithDisplay').textContent = '"خيركم من تعلم القرآن وعلمه" (البخاري)';
+    }
+
+    document.addEventListener('DOMContentLoaded', init);
+
+    // ========== SERVICE WORKER ==========
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('data:text/javascript;base64,' + btoa(`
+        self.addEventListener('install', e => e.waitUntil(skipWaiting()));
+        self.addEventListener('activate', e => e.waitUntil(clients.claim()));
+        self.addEventListener('fetch', e => e.respondWith(fetch(e.request).catch(() => caches.match(e.request))));
+      `)).catch(() => {});
+    }
+  </script>
 </body>
-  </html>
+</html>
