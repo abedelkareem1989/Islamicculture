@@ -491,6 +491,121 @@
       right: 25px;
     }
 
+    /* ===== MODAL ===== */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0,0,0,0.6);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      z-index: 999;
+      display: none;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+      animation: fadeIn 0.3s ease;
+    }
+    .modal-overlay.active {
+      display: flex;
+    }
+    .modal-box {
+      background: var(--card-bg);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-radius: 32px;
+      max-width: 500px;
+      width: 100%;
+      padding: 32px 24px;
+      border: 1px solid rgba(212, 175, 55, 0.3);
+      box-shadow: 0 30px 60px rgba(0,0,0,0.5);
+      position: relative;
+      animation: slideUp 0.3s ease;
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+    .modal-box .close-modal {
+      position: absolute;
+      top: 12px;
+      left: 16px;
+      background: none;
+      border: none;
+      font-size: 28px;
+      color: var(--text);
+      opacity: 0.6;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+    .modal-box .close-modal:hover {
+      opacity: 1;
+      transform: rotate(90deg);
+    }
+    .modal-box .modal-icon {
+      text-align: center;
+      font-size: 56px;
+      margin-bottom: 8px;
+    }
+    .modal-box h2 {
+      text-align: center;
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 12px;
+    }
+    .modal-box .divider {
+      width: 60px;
+      height: 3px;
+      background: var(--gold);
+      margin: 0 auto 16px;
+      border-radius: 6px;
+    }
+    .modal-box p {
+      line-height: 1.8;
+      font-size: 15px;
+      text-align: center;
+      color: var(--text);
+      opacity: 0.9;
+    }
+    .modal-box .phone-row {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      margin-top: 18px;
+      background: var(--glass-bg);
+      padding: 12px 16px;
+      border-radius: 40px;
+      border: 1px solid var(--glass-border);
+      direction: ltr;
+    }
+    .modal-box .phone-row a {
+      color: var(--primary);
+      font-weight: 600;
+      text-decoration: none;
+      font-size: 18px;
+      direction: ltr;
+    }
+    .modal-box .phone-row .phone-icon {
+      font-size: 24px;
+    }
+    .modal-box .footer-note {
+      margin-top: 16px;
+      font-size: 13px;
+      opacity: 0.7;
+      text-align: center;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    @keyframes slideUp {
+      from { transform: translateY(40px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+
     /* responsive */
     @media (min-width: 600px) {
       .section-grid {
@@ -507,6 +622,7 @@
       .app-logo { width: 40px; height: 40px; font-size: 22px; }
       .bottom-nav button { font-size: 9px; min-width: 40px; }
       .bottom-nav button .nav-icon { font-size: 18px; }
+      .modal-box { padding: 24px 16px; }
     }
 
     /* utilities */
@@ -553,6 +669,32 @@
   <!-- TOAST -->
   <div id="toast" class="toast">تم</div>
 
+  <!-- MODAL عن التطبيق -->
+  <div class="modal-overlay" id="aboutModal">
+    <div class="modal-box">
+      <button class="close-modal" id="closeAboutModal">✕</button>
+      <div class="modal-icon">📖</div>
+      <h2>تطبيق الثقافة الإسلامية</h2>
+      <div class="divider"></div>
+      <p>
+        تطبيق تعليمي يهدف إلى نشر العلم والمعرفة الإسلامية بطريقة سهلة وميسرة، ويضم محتوى متنوعًا من الدروس، القرآن الكريم، الخطب، المحاضرات، الفوائد الإسلامية، والمزيد من المحتويات النافعة.
+      </p>
+      <p style="margin-top:12px;">
+        نسعى من خلال هذا التطبيق إلى خدمة المسلمين ونشر الخير والعلم النافع.
+      </p>
+      <p style="margin-top:12px; font-weight:500;">
+        لإضافة محتوى جديد أو لدعم صاحب التطبيق والمساهمة في تطويره، يرجى التواصل عبر الرقم:
+      </p>
+      <div class="phone-row">
+        <span class="phone-icon">📱</span>
+        <a href="tel:+970598259842">+970598259842</a>
+      </div>
+      <div class="footer-note">
+        جزاكم الله خيرًا، ونسأل الله أن يجعل هذا العمل صدقة جارية ونفعًا للمسلمين.
+      </div>
+    </div>
+  </div>
+
   <!-- HEADER -->
   <header class="app-header">
     <div class="logo-area">
@@ -591,7 +733,8 @@
 
     <div class="section-grid" id="quickSections">
       <div class="section-card" data-section="quran"><div class="icon">📖</div><h4>القرآن</h4></div>
-      <div class="section-card" data-section="audio"><div class="icon">🎧</div><h4>الصوتيات</h4></div>
+      <div class="section-card" data-section="audio"><div class="icon">🎧</div><h4>الدروس الصوتية</h4></div>
+      <div class="section-card" data-section="madaih"><div class="icon">🎵</div><h4>المدائح</h4></div>
       <div class="section-card" data-section="library"><div class="icon">📚</div><h4>المكتبة</h4></div>
       <div class="section-card" data-section="gallery"><div class="icon">🖼️</div><h4>الصور</h4></div>
       <div class="section-card" data-section="video"><div class="icon">🎬</div><h4>الفيديوهات</h4></div>
@@ -608,6 +751,7 @@
   <!-- صفحات الأقسام -->
   <div id="page-quran" class="page"><div class="content-area" id="quranContent"></div></div>
   <div id="page-audio" class="page"><div class="content-area" id="audioContent"></div></div>
+  <div id="page-madaih" class="page"><div class="content-area" id="madaihContent"></div></div>
   <div id="page-library" class="page"><div class="content-area" id="libraryContent"></div></div>
   <div id="page-gallery" class="page"><div class="content-area" id="galleryContent"></div></div>
   <div id="page-video" class="page"><div class="content-area" id="videoContent"></div></div>
@@ -619,7 +763,8 @@
   <nav class="bottom-nav" id="bottomNav">
     <button class="active" data-page="home"><span class="nav-icon">🏠</span>الرئيسية</button>
     <button data-page="quran"><span class="nav-icon">📖</span>القرآن</button>
-    <button data-page="audio"><span class="nav-icon">🎧</span>الصوتيات</button>
+    <button data-page="audio"><span class="nav-icon">🎧</span>الدروس</button>
+    <button data-page="madaih"><span class="nav-icon">🎵</span>المدائح</button>
     <button data-page="library"><span class="nav-icon">📚</span>المكتبة</button>
     <button data-page="video"><span class="nav-icon">🎬</span>فيديوهات</button>
     <button data-page="favorites"><span class="nav-icon">⭐</span>المفضلة</button>
@@ -634,20 +779,26 @@
       { category:"quran", title:"جزء قد سمع", image:"https://s5files.mobeasy.com/static/u/722316/file-722316-29850.jpg", description:"تلاوة ميسرة", url:"https://abedelkareem1989.github.io/bidjade.github.io/12345.index.html" },
       { category:"quran", title:"جزء عم ", image:"https://s5files.mobeasy.com/static/u/722316/file-722316-565791.jpg", description:"تلاوة ميسرة", url:"https://abedelkareem.freehosting.dev/1.html" },
 
-      // الصوتيات
+      // الدروس الصوتية (تم فصل المدائح)
       { category:"audio", title:"التحصين صوتي", image:"https://s5files.mobeasy.com/static/u/722316/file-722316-665630.jpg", description:"تحصين ورقية", url:"https://abedelkareem1989.github.io/Islamicculture/44.index.html" },
       { category:"audio", title:"إذاعات أهل السنة", image:"https://s5files.mobeasy.com/static/u/722316/file-722316-19625.jpg", description:"إذاعات مباشرة", url:"https://luxury-parfait-79d9ba.netlify.app" },
       { category:"audio", title:"دروس الشيخ نزار الحلبي", image:"https://s5files.mobeasy.com/static/u/722316/file-722316-259061.jpg", description:"دروس صوتية", url:"https://abedelkareem1989.github.io/bidjade.github.io/nizar.index.html" },
       { category:"audio", title:"خطب الجمعة", image:"https://s5files.mobeasy.com/static/u/722316/file-722316-652036.jpg", description:"خطب منبرية", url:"https://abedelkareem1989.github.io/Islamicculture/7.index.html" },
       { category:"audio", title:"شرح العقيدة الطحاوية - سمير القاضي", image:"https://s5files.mobeasy.com/static/u/722316/file-722316-390716.jpg", description:"شرح الدرة", url:"https://abedelkareem1989.github.io/bidjade.github.io/222.index.html" },
       { category:"audio", title:"قواعد مهمة - سمير القاضي", image:"https://s5files.mobeasy.com/static/u/722316/file-722316-629250.jpg", description:"قواعد العقيدة", url:"https://abedelkareem1989.github.io/bidjade.github.io/222.index.html" },
+      { category:"audio", title:"  شمائل النبي | الشيخ الدكتور سمير القاضي", image:"https://s5files.mobeasy.com/static/u/722316/file-722316-3801.jpg", description:"دروس ", url:"https://abedelkareem.freehosting.dev/13.index.html" },
       { category:"audio", title:"حل ألفاظ الصراط المستقيم", image:"https://s5files.mobeasy.com/static/u/722316/file-722316-179273.jpg", description:"شرح مهم", url:"https://abedelkareem1989.github.io/Islamicculture/31.index.html" },
       { category:"audio", title:"الحيدة فنون الرد", image:"https://s5files.mobeasy.com/static/u/722316/file-722316-424670.jpg", description:"فنون الرد", url:"https://abedelkareem1989.github.io/bidjade.github.io/27.index.html" },
       { category:"audio", title:"شرح العقيدة الطحاوية - جميل حليم", image:"https://s5files.mobeasy.com/static/u/722316/file-722316-649939.jpg", description:"شرح وافي", url:"https://abedelkareem1989.github.io/Islamicculture/5.index.html" },
       { category:"audio", title:"الدروس الصوتية العامة", image:"https://s5files.mobeasy.com/static/u/722316/file-722316-21272.jpg", description:"متنوع", url:"https://widget.spreaker.com/player?show_id=6281103&theme=light&playlist=show&playlist-continuous=true&chapters-image=true" },
-      { category:"audio", title:"المداح أحمد الرفاعي", image:"https://s5files.mobeasy.com/static/u/722316/file-722316-51719.jpg", description:"مدائح", url:"https://resonant-piroshki-be0974.netlify.app" },
-      { category:"audio", title:"المنشد الحاج محمد الخير", image:"https://s5files.mobeasy.com/static/u/722316/file-722316-55268.jpg", description:"أناشيد", url:"https://abedelkareem1989.github.io/bidjade.github.io" },
-      { category:"audio", title:"المداح محمد معروف", image:"https://s5files.mobeasy.com/static/u/722316/file-722316-47117.jpg", description:"مدائح نبوية", url:"https://6a5f9206d41b4d235dfd7b77--starlit-pie-68dbbd.netlify.app" },
+      { category:"audio", title:"سيد الشهداء  حمزه", image:"https://s5files.mobeasy.com/static/u/722316/file-722316-391953.jpg", description:"دروس ", url:"https://abedelkareem.freehosting.dev/12.index.html" },
+
+      // المدائح (قسم جديد)
+      { category:"madaih", title:"المداح أحمد الرفاعي", image:"https://s5files.mobeasy.com/static/u/722316/file-722316-51719.jpg", description:"مدائح نبوية", url:"https://resonant-piroshki-be0974.netlify.app" },
+      { category:"madaih", title:"المنشد الحاج محمد الخير", image:"https://s5files.mobeasy.com/static/u/722316/file-722316-55268.jpg", description:"أناشيد إسلامية", url:"https://abedelkareem1989.github.io/bidjade.github.io" },
+      { category:"madaih", title:"المداح محمد معروف", image:"https://s5files.mobeasy.com/static/u/722316/file-722316-47117.jpg", description:"مدائح نبوية", url:"https://6a5f9206d41b4d235dfd7b77--starlit-pie-68dbbd.netlify.app" },
+      // يمكن إضافة المزيد من المدائح هنا
+
       // المكتبة
       { category:"library", title:"المكتبة الإسلامية", image:"https://s5files.mobeasy.com/static/u/722316/file-722316-816366.jpg", description:"كتب ومراجع", url:"https://abedelkareem2.blogspot.com/2022/09/blog-post_9.html?m=1" },
       { category:"library", title:"تفسير آيات", image:"https://s5files.mobeasy.com/static/u/722316/file-722316-612684.jpg", description:"تفسير مختصر", url:"https://abedelkareem1989.github.io/Islamicculture/66.index.html" },
@@ -680,6 +831,7 @@
       home: $('page-home'),
       quran: $('page-quran'),
       audio: $('page-audio'),
+      madaih: $('page-madaih'),
       library: $('page-library'),
       gallery: $('page-gallery'),
       video: $('page-video'),
@@ -696,6 +848,19 @@
       clearTimeout(t._timeout);
       t._timeout = setTimeout(() => t.classList.remove('show'), 2200);
     }
+
+    // ========== MODAL ==========
+    function showAboutModal() {
+      $('aboutModal').classList.add('active');
+    }
+    function hideAboutModal() {
+      $('aboutModal').classList.remove('active');
+    }
+    // إغلاق عند النقر خارج المحتوى
+    $('aboutModal').addEventListener('click', (e) => {
+      if (e.target === $('aboutModal')) hideAboutModal();
+    });
+    $('closeAboutModal').addEventListener('click', hideAboutModal);
 
     // ========== RENDER ==========
     function renderItems(category, containerId, filter = '') {
@@ -801,11 +966,12 @@
         <div class="card">
           <div class="setting-item"><span>🌙 الوضع الليلي</span><div class="toggle ${darkMode?'active':''}" id="darkToggleSetting"></div></div>
           <div class="setting-item"><span>📢 الإشعارات</span><div class="toggle active" id="notifToggle"></div></div>
-          <div class="setting-item"><span>📱 عن التطبيق</span><button style="background:var(--gold);border:none;padding:8px 20px;border-radius:40px;cursor:pointer;">عرض</button></div>
-          <div class="setting-item"><span>🔒 سياسة الخصوصية</span><button style="background:var(--gold);border:none;padding:8px 20px;border-radius:40px;cursor:pointer;">عرض</button></div>
+          <div class="setting-item"><span>📱 عن التطبيق</span><button id="aboutAppBtn" style="background:var(--gold);border:none;padding:8px 20px;border-radius:40px;cursor:pointer;font-weight:600;">عرض</button></div>
+          <div class="setting-item"><span>🔒 سياسة الخصوصية</span><button style="background:var(--gold);border:none;padding:8px 20px;border-radius:40px;cursor:pointer;font-weight:600;">عرض</button></div>
         </div>
       `;
       document.getElementById('darkToggleSetting').addEventListener('click', toggleDark);
+      document.getElementById('aboutAppBtn').addEventListener('click', showAboutModal);
     }
 
     // ========== NAVIGATION ==========
@@ -818,6 +984,7 @@
 
       if (page === 'quran') renderItems('quran', 'quranContent');
       else if (page === 'audio') renderItems('audio', 'audioContent');
+      else if (page === 'madaih') renderItems('madaih', 'madaihContent');
       else if (page === 'library') renderItems('library', 'libraryContent');
       else if (page === 'gallery') renderItems('gallery', 'galleryContent');
       else if (page === 'video') renderItems('video', 'videoContent');
@@ -910,6 +1077,7 @@
           if (section === 'favorites') navigate('favorites');
           else if (section === 'quran') navigate('quran');
           else if (section === 'audio') navigate('audio');
+          else if (section === 'madaih') navigate('madaih');
           else if (section === 'library') navigate('library');
           else if (section === 'gallery') navigate('gallery');
           else if (section === 'video') navigate('video');
