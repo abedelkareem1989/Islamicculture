@@ -72,7 +72,7 @@
       background: var(--bg);
       color: var(--text);
       transition: background 0.3s, color 0.3s;
-      padding-bottom: 80px;
+      padding-bottom: 120px;
       direction: rtl;
       min-height: 100vh;
     }
@@ -662,6 +662,91 @@
       opacity: 1;
       transform: translateX(-50%) translateY(0);
     }
+
+    /* ===== VISITOR COUNTER (real) - أسفل الموقع ===== */
+    .visitor-footer {
+      position: fixed;
+      bottom: 62px;
+      left: 0;
+      right: 0;
+      z-index: 90;
+      display: flex;
+      justify-content: center;
+      padding: 0 16px;
+      pointer-events: none;
+    }
+    .visitor-counter {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      background: var(--nav-bg);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(212, 175, 55, 0.3);
+      border-radius: 40px;
+      padding: 8px 18px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.12);
+      direction: rtl;
+      pointer-events: auto;
+      font-size: 13px;
+    }
+    .visitor-counter .vc-icon {
+      font-size: 16px;
+      line-height: 1;
+    }
+    .visitor-counter .vc-label {
+      font-size: 12px;
+      opacity: 0.75;
+      font-weight: 500;
+      color: var(--text);
+    }
+    .visitor-counter .vc-number {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--primary);
+      letter-spacing: 0.3px;
+      font-variant-numeric: tabular-nums;
+      min-width: 2ch;
+    }
+    body.dark .visitor-counter .vc-number {
+      color: var(--gold);
+    }
+    .visitor-counter .vc-loading {
+      opacity: 0.6;
+      font-size: 13px;
+    }
+    body.dark .visitor-counter {
+      border-color: rgba(212, 175, 55, 0.2);
+    }
+    .settings-visitor {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 0;
+      border-bottom: 1px solid rgba(0,0,0,0.04);
+    }
+    .settings-visitor .vc-big {
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--primary);
+      font-variant-numeric: tabular-nums;
+    }
+    body.dark .settings-visitor .vc-big {
+      color: var(--gold);
+    }
+    @media (max-width: 380px) {
+      .visitor-footer {
+        bottom: 58px;
+      }
+      .visitor-counter {
+        padding: 6px 14px;
+        font-size: 12px;
+      }
+      .visitor-counter .vc-number {
+        font-size: 14px;
+      }
+    }
   </style>
 </head>
 <body>
@@ -758,6 +843,15 @@
   <div id="page-apps" class="page"><div class="content-area" id="appsContent"></div></div>
   <div id="page-favorites" class="page"><div class="content-area" id="favoritesContent"></div></div>
   <div id="page-settings" class="page"><div class="content-area" id="settingsContent"></div></div>
+
+  <!-- عداد الزوار الحقيقي - أسفل الموقع -->
+  <div class="visitor-footer" id="visitorFooter">
+    <div class="visitor-counter" id="visitorCounter" title="عدد الزيارات الحقيقي">
+      <span class="vc-icon">👥</span>
+      <span class="vc-label">عدد الزيارات</span>
+      <span class="vc-number" id="visitorCount"><span class="vc-loading">...</span></span>
+    </div>
+  </div>
 
   <!-- BOTTOM NAV -->
   <nav class="bottom-nav" id="bottomNav">
@@ -967,14 +1061,20 @@
 
     function renderSettings() {
       const container = $('settingsContent');
+      const countText = window.__visitorCountFormatted || '...';
       container.innerHTML = `
         <h3><span></span> الإعدادات</h3>
         <div class="card">
+          <div class="settings-visitor">
+            <span>👥 إجمالي الزيارات</span>
+            <span class="vc-big" id="settingsVisitorCount">${countText}</span>
+          </div>
           <div class="setting-item"><span>🌙 الوضع الليلي</span><div class="toggle ${darkMode?'active':''}" id="darkToggleSetting"></div></div>
           <div class="setting-item"><span>📢 الإشعارات</span><div class="toggle active" id="notifToggle"></div></div>
           <div class="setting-item"><span>📱 عن التطبيق</span><button id="aboutAppBtn" style="background:var(--gold);border:none;padding:8px 20px;border-radius:40px;cursor:pointer;font-weight:600;">عرض</button></div>
           <div class="setting-item"><span>🔒 سياسة الخصوصية</span><button style="background:var(--gold);border:none;padding:8px 20px;border-radius:40px;cursor:pointer;font-weight:600;">عرض</button></div>
         </div>
+        <p style="text-align:center;font-size:12px;opacity:0.6;margin-top:8px;">العداد حقيقي يعتمد على زيارات فعلية للصفحة</p>
       `;
       document.getElementById('darkToggleSetting').addEventListener('click', toggleDark);
       document.getElementById('aboutAppBtn').addEventListener('click', showAboutModal);
@@ -1070,12 +1170,70 @@
       }
     });
 
+    // ========== REAL VISITOR COUNTER ==========
+    // يستخدم خدمة عدّ مجانية حقيقية (بدون تسجيل) - كل زيارة صفحة تُحسب فعليًا
+    const VISITOR_KEY = 'thaqafa-islamiya-web-pro-visitors-v1';
+    function formatCount(n) {
+      try {
+        return Number(n).toLocaleString('ar-EG');
+      } catch (e) {
+        return String(n);
+      }
+    }
+    function updateVisitorUI(value) {
+      const formatted = formatCount(value);
+      window.__visitorCountFormatted = formatted;
+      const el = document.getElementById('visitorCount');
+      if (el) el.textContent = formatted;
+      const settingsEl = document.getElementById('settingsVisitorCount');
+      if (settingsEl) settingsEl.textContent = formatted;
+    }
+    async function loadRealVisitorCount() {
+      // نمنع العدّ المكرر في نفس الجلسة (refresh سريع أو تنقل داخل الصفحة)
+      const sessionKey = 'islamic_vc_session_' + VISITOR_KEY;
+      const alreadyCounted = sessionStorage.getItem(sessionKey) === '1';
+
+      try {
+        let data = null;
+
+        if (alreadyCounted) {
+          // محاولة جلب القيمة الحالية فقط
+          try {
+            const res = await fetch('https://countapi.mileshilliard.com/api/v1/get/' + encodeURIComponent(VISITOR_KEY));
+            if (res.ok) {
+              data = await res.json();
+            }
+          } catch (_) {}
+        }
+
+        // إذا لم تكن الجلسة محسوبة أو فشل الجلب → نزيد العداد (زيارة حقيقية)
+        if (!data || typeof data.value !== 'number') {
+          const res = await fetch('https://countapi.mileshilliard.com/api/v1/hit/' + encodeURIComponent(VISITOR_KEY));
+          if (!res.ok) throw new Error('hit failed');
+          data = await res.json();
+          sessionStorage.setItem(sessionKey, '1');
+        }
+
+        if (data && typeof data.value === 'number') {
+          updateVisitorUI(data.value);
+        } else {
+          updateVisitorUI('—');
+        }
+      } catch (err) {
+        // في حال فشل الشبكة نعرض رمزًا هادئًا
+        const el = document.getElementById('visitorCount');
+        if (el) el.innerHTML = '<span class="vc-loading">—</span>';
+        console.warn('Visitor counter unavailable:', err);
+      }
+    }
+
     // ========== INIT ==========
     function init() {
       if (darkMode) document.body.classList.add('dark');
       document.getElementById('darkToggle').textContent = darkMode ? '☀️' : '🌙';
       renderLatest();
       renderSettings();
+      loadRealVisitorCount(); // عدّاد الزوار الحقيقي
       
       document.querySelectorAll('.section-card').forEach(card => {
         card.addEventListener('click', () => {
