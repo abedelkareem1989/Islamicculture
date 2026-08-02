@@ -13,7 +13,7 @@
   <!-- بيانات تطبيق الويب (PWA) -->
   <link rel="manifest" href="data:application/json;charset=utf-8,{
     %22name%22:%22%D8%A7%D9%84%D8%AB%D9%82%D8%A7%D9%81%D8%A9%20%D8%A7%D9%84%D8%A5%D8%B3%D9%84%D8%A7%D9%85%D9%8A%D8%A9%20%D9%88%D9%8A%D8%A8%22,
-    %22short_name%22:%22%D8%AB%D9%82%D8%A7%D9%81%D8%A9%20%D8%A5%D8%B3%D9%84%D8%A7%D9%85%D9%8A%D8%A9%22,
+    %22short_name%22:%22%D8%A7%D9%84%D8%AB%D9%82%D8%A7%D9%81%D8%A9%20%D8%A7%D9%84%D8%A5%D8%B3%D9%84%D8%A7%D9%85%D9%8A%D8%A9%22,
     %22start_url%22:%22.%22,
     %22display%22:%22standalone%22,
     %22background_color%22:%22%230f6b43%22,
@@ -807,11 +807,12 @@
   <div id="page-home" class="page active">
     <div class="welcome-section">
       <div class="welcome-card">
-        <h2>السلام عليكم ورحمة الله</h2>
-        <p>مرحباً بك في موسوعتك الإسلامية الشاملة</p>
+        <h2 id="greetingText">السلام عليكم ورحمة الله</h2>
+        <p id="welcomeSub">مرحباً بك في موسوعتك الإسلامية الشاملة</p>
+        <p id="hijriDate" style="margin-top:6px;font-size:13px;opacity:0.85;"></p>
         <div class="ayah-hadith">
-          <div class="ayah-box"><div class="label">آية اليوم</div><p id="ayahDisplay">"وَمَن يَتَّقِ اللَّهَ يَجْعَل لَّهُ مَخْرَجًا"</p></div>
-          <div class="hadith-box"><div class="label">حديث اليوم</div><p id="hadithDisplay">"خيركم من تعلم القرآن وعلمه"</p></div>
+          <div class="ayah-box"><div class="label">آية اليوم</div><p id="ayahDisplay">جاري التحميل...</p></div>
+          <div class="hadith-box"><div class="label">حديث اليوم</div><p id="hadithDisplay">جاري التحميل...</p></div>
         </div>
       </div>
     </div>
@@ -1074,7 +1075,6 @@
           <div class="setting-item"><span>📱 عن التطبيق</span><button id="aboutAppBtn" style="background:var(--gold);border:none;padding:8px 20px;border-radius:40px;cursor:pointer;font-weight:600;">عرض</button></div>
           <div class="setting-item"><span>🔒 سياسة الخصوصية</span><button style="background:var(--gold);border:none;padding:8px 20px;border-radius:40px;cursor:pointer;font-weight:600;">عرض</button></div>
         </div>
-        <p style="text-align:center;font-size:12px;opacity:0.6;margin-top:8px;">العداد حقيقي يعتمد على زيارات فعلية للصفحة</p>
       `;
       document.getElementById('darkToggleSetting').addEventListener('click', toggleDark);
       document.getElementById('aboutAppBtn').addEventListener('click', showAboutModal);
@@ -1259,8 +1259,102 @@
       document.getElementById('searchBtn').addEventListener('click', searchGlobal);
       document.getElementById('globalSearch').addEventListener('keyup', (e) => { if (e.key === 'Enter') searchGlobal(); });
 
-      document.getElementById('ayahDisplay').textContent = '"وَمَن يَتَّقِ اللَّهَ يَجْعَل لَّهُ مَخْرَجًا" (الطلاق 2)';
-      document.getElementById('hadithDisplay').textContent = '"خيركم من تعلم القرآن وعلمه" (البخاري)';
+      updateDailyContent();
+    }
+
+    // ========== تحية + آية وحديث اليوم + التاريخ الهجري ==========
+    const DAILY_AYAHS = [
+      { text: 'وَمَن يَتَّقِ اللَّهَ يَجْعَل لَّهُ مَخْرَجًا', ref: 'الطلاق: 2' },
+      { text: 'إِنَّ مَعَ الْعُسْرِ يُسْرًا', ref: 'الشرح: 6' },
+      { text: 'وَقُل رَّبِّ زِدْنِي عِلْمًا', ref: 'طه: 114' },
+      { text: 'فَاذْكُرُونِي أَذْكُرْكُمْ وَاشْكُرُوا لِي وَلَا تَكْفُرُونِ', ref: 'البقرة: 152' },
+      { text: 'وَبَشِّرِ الصَّابِرِينَ', ref: 'البقرة: 155' },
+      { text: 'أَلَا بِذِكْرِ اللَّهِ تَطْمَئِنُّ الْقُلُوبُ', ref: 'الرعد: 28' },
+      { text: 'وَمَا تَوْفِيقِي إِلَّا بِاللَّهِ', ref: 'هود: 88' },
+      { text: 'رَبَّنَا آتِنَا فِي الدُّنْيَا حَسَنَةً وَفِي الْآخِرَةِ حَسَنَةً وَقِنَا عَذَابَ النَّارِ', ref: 'البقرة: 201' },
+      { text: 'وَاعْتَصِمُوا بِحَبْلِ اللَّهِ جَمِيعًا وَلَا تَفَرَّقُوا', ref: 'آل عمران: 103' },
+      { text: 'إِنَّ اللَّهَ مَعَ الصَّابِرِينَ', ref: 'البقرة: 153' },
+      { text: 'وَتَوَكَّلْ عَلَى اللَّهِ ۚ وَكَفَىٰ بِاللَّهِ وَكِيلًا', ref: 'الأحزاب: 3' },
+      { text: 'يَا أَيُّهَا الَّذِينَ آمَنُوا اتَّقُوا اللَّهَ وَقُولُوا قَوْلًا سَدِيدًا', ref: 'الأحزاب: 70' },
+      { text: 'وَاسْتَعِينُوا بِالصَّبْرِ وَالصَّلَاةِ', ref: 'البقرة: 45' },
+      { text: 'فَإِنَّ مَعَ الْعُسْرِ يُسْرًا', ref: 'الشرح: 5' },
+      { text: 'وَمَن يَتَوَكَّلْ عَلَى اللَّهِ فَهُوَ حَسْبُهُ', ref: 'الطلاق: 3' }
+    ];
+
+    const DAILY_HADITHS = [
+      { text: 'خيركم من تعلم القرآن وعلمه', ref: 'البخاري' },
+      { text: 'إنما الأعمال بالنيات', ref: 'البخاري ومسلم' },
+      { text: 'المسلم من سلم المسلمون من لسانه ويده', ref: 'البخاري' },
+      { text: 'لا يؤمن أحدكم حتى يحب لأخيه ما يحب لنفسه', ref: 'البخاري ومسلم' },
+      { text: 'من حسن إسلام المرء تركه ما لا يعنيه', ref: 'الترمذي' },
+      { text: 'الدين النصيحة', ref: 'مسلم' },
+      { text: 'اتق الله حيثما كنت', ref: 'الترمذي' },
+      { text: 'الكلمة الطيبة صدقة', ref: 'البخاري ومسلم' },
+      { text: 'تبسمك في وجه أخيك صدقة', ref: 'الترمذي' },
+      { text: 'من كان يؤمن بالله واليوم الآخر فليقل خيرا أو ليصمت', ref: 'البخاري ومسلم' },
+      { text: 'الحياء شعبة من الإيمان', ref: 'البخاري ومسلم' },
+      { text: 'طلب العلم فريضة على كل مسلم', ref: 'ابن ماجه' },
+      { text: 'يسروا ولا تعسروا وبشروا ولا تنفروا', ref: 'البخاري' },
+      { text: 'أحب الأعمال إلى الله أدومها وإن قل', ref: 'البخاري ومسلم' },
+      { text: 'من سلك طريقا يلتمس فيه علما سهل الله له طريقا إلى الجنة', ref: 'مسلم' }
+    ];
+
+    function getDayOfYear() {
+      const now = new Date();
+      const start = new Date(now.getFullYear(), 0, 0);
+      const diff = now - start;
+      return Math.floor(diff / (1000 * 60 * 60 * 24));
+    }
+
+    function updateGreeting() {
+      const hour = new Date().getHours();
+      const greetingEl = document.getElementById('greetingText');
+      const subEl = document.getElementById('welcomeSub');
+      if (!greetingEl) return;
+
+      if (hour >= 5 && hour < 12) {
+        greetingEl.textContent = 'صباح الخير ☀️';
+        if (subEl) subEl.textContent = 'أسعد الله صباحكم بكل خير وبركة';
+      } else if (hour >= 12 && hour < 17) {
+        greetingEl.textContent = 'السلام عليكم ورحمة الله';
+        if (subEl) subEl.textContent = 'مرحباً بك في موسوعتك الإسلامية الشاملة';
+      } else {
+        greetingEl.textContent = 'مساء الخير 🌙';
+        if (subEl) subEl.textContent = 'أسعد الله مساءكم بكل خير وطمأنينة';
+      }
+    }
+
+    function updateHijriDate() {
+      const el = document.getElementById('hijriDate');
+      if (!el) return;
+      try {
+        const hijri = new Intl.DateTimeFormat('ar-SA-u-ca-islamic', {
+          weekday: 'long',
+          day: 'numeric',
+          month: 'long',
+          year: 'numeric'
+        }).format(new Date());
+        el.textContent = '📅 ' + hijri;
+      } catch (e) {
+        // متصفحات قديمة: عرض التاريخ الميلادي كبديل
+        el.textContent = '📅 ' + new Date().toLocaleDateString('ar-EG', {
+          weekday: 'long', day: 'numeric', month: 'long', year: 'numeric'
+        });
+      }
+    }
+
+    function updateDailyContent() {
+      updateGreeting();
+      updateHijriDate();
+
+      const day = getDayOfYear();
+      const ayah = DAILY_AYAHS[day % DAILY_AYAHS.length];
+      const hadith = DAILY_HADITHS[day % DAILY_HADITHS.length];
+
+      const ayahEl = document.getElementById('ayahDisplay');
+      const hadithEl = document.getElementById('hadithDisplay');
+      if (ayahEl) ayahEl.textContent = `"${ayah.text}" (${ayah.ref})`;
+      if (hadithEl) hadithEl.textContent = `"${hadith.text}" (${hadith.ref})`;
     }
 
     document.addEventListener('DOMContentLoaded', init);
