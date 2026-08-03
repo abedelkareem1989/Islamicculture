@@ -6,9 +6,9 @@
   <title>الثقافة الإسلامية ويب PRO</title>
   
   <!-- أيقونات التطبيق -->
-  <link rel="icon" href="https://s5files.mobeasy.com/static/u/722316/file-722316-820191.jpg" type="image/jpeg">
-  <link rel="apple-touch-icon" href="https://s5files.mobeasy.com/static/u/722316/file-722316-820191.jpg">
-  <link rel="apple-touch-icon-precomposed" href="https://s5files.mobeasy.com/static/u/722316/file-722316-820191.jpg">
+  <link rel="icon" href="https://s5files.mobeasy.com/static/u/722316/file-722316-738729.jpg" type="image/jpeg">
+  <link rel="apple-touch-icon" href="https://s5files.mobeasy.com/static/u/722316/file-722316-738729.jpg">
+  <link rel="apple-touch-icon-precomposed" href="https://s5files.mobeasy.com/static/u/722316/file-722316-738729.jpg">
 
   <!-- بيانات تطبيق الويب (PWA) -->
   <link rel="manifest" href="data:application/json;charset=utf-8,{
@@ -20,12 +20,12 @@
     %22theme_color%22:%22%230f6b43%22,
     %22icons%22:[
       {
-        %22src%22:%22https://s5files.mobeasy.com/static/u/722316/file-722316-820191.jpg%22,
+        %22src%22:%22https://s5files.mobeasy.com/static/u/722316/file-722316-738729.jpg%22,
         %22sizes%22:%22192x192%22,
         %22type%22:%22image/jpeg%22
       },
       {
-        %22src%22:%22https://s5files.mobeasy.com/static/u/722316/file-722316-820191.jpg%22,
+        %22src%22:%22https://s5files.mobeasy.com/static/u/722316/file-722316-738729.jpg%22,
         %22sizes%22:%22512x512%22,
         %22type%22:%22image/jpeg%22
       }
@@ -632,6 +632,20 @@
     .flex-between { display: flex; justify-content: space-between; align-items: center; }
     .gap-2 { gap: 12px; }
 
+    /* شارة جديد في آخر الإضافات */
+    .new-badge {
+      display: inline-block;
+      background: linear-gradient(135deg, #d4af37, #c9a227);
+      color: #0a3d2e;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 20px;
+      margin-right: 6px;
+      vertical-align: middle;
+      letter-spacing: 0.5px;
+    }
+
     /* lazy load blur */
     img.lazy {
       filter: blur(4px);
@@ -747,9 +761,91 @@
         font-size: 14px;
       }
     }
+
+    /* ===== SPLASH SCREEN ===== */
+    #splashScreen {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 99999;
+      background: #0a3d2e url('https://s5files.mobeasy.com/static/u/722316/file-722316-416026.jpg') center center / cover no-repeat;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      transition: opacity 0.6s ease, visibility 0.6s ease;
+    }
+    #splashScreen.hidden {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+    #splashScreen .splash-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(10,61,46,0.45) 0%, rgba(10,61,46,0.75) 100%);
+    }
+    #splashScreen .splash-content {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+      color: #fff;
+      padding: 24px;
+    }
+    #splashScreen .splash-logo {
+      width: 110px;
+      height: 110px;
+      border-radius: 28px;
+      object-fit: cover;
+      box-shadow: 0 12px 40px rgba(0,0,0,0.45);
+      border: 3px solid rgba(212, 175, 55, 0.7);
+      margin-bottom: 20px;
+      animation: splashPulse 1.8s ease-in-out infinite;
+    }
+    #splashScreen .splash-title {
+      font-size: 26px;
+      font-weight: 700;
+      text-shadow: 0 3px 12px rgba(0,0,0,0.5);
+      letter-spacing: 1px;
+    }
+    #splashScreen .splash-subtitle {
+      font-size: 15px;
+      opacity: 0.9;
+      margin-top: 8px;
+      font-weight: 300;
+    }
+    #splashScreen .splash-loader {
+      margin-top: 28px;
+      width: 40px;
+      height: 40px;
+      border: 3px solid rgba(255,255,255,0.25);
+      border-top-color: #d4af37;
+      border-radius: 50%;
+      animation: splashSpin 0.9s linear infinite;
+    }
+    @keyframes splashPulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+    }
+    @keyframes splashSpin {
+      to { transform: rotate(360deg); }
+    }
   </style>
 </head>
 <body>
+
+  <!-- شاشة الافتتاح -->
+  <div id="splashScreen">
+    <div class="splash-overlay"></div>
+    <div class="splash-content">
+      <img class="splash-logo" src="https://s5files.mobeasy.com/static/u/722316/file-722316-738729.jpg" alt="الثقافة الإسلامية">
+      <div class="splash-title">الثقافة الإسلامية</div>
+      <div class="splash-subtitle">ويب PRO</div>
+      <div class="splash-loader"></div>
+    </div>
+  </div>
 
   <!-- TOAST -->
   <div id="toast" class="toast">تم</div>
@@ -872,6 +968,7 @@
       // القرآن
       { category:"quran", title:"المصحف المعلم", image:"https://s5files.mobeasy.com/static/u/722316/file-722316-148458.jpg", description:"تلاوة معلم", url:"https://abedelkareem1989.github.io/bidjade.github.io/2026.index.html" },
       { category:"quran", title:"جزء قد سمع", image:"https://s5files.mobeasy.com/static/u/722316/file-722316-29850.jpg", description:"تلاوة ميسرة", url:"https://abedelkareem1989.github.io/bidjade.github.io/12345.index.html" },
+      { category:"quran", title:"جزء تبارك", image:"https://s5files.mobeasy.com/static/u/722316/file-722316-349450.jpg", description:"تلاوة ميسرة", url:"https://abedelkareem1989.github.io/bidjade.github.io/10.html", isNew: true },
       { category:"quran", title:"جزء عم ", image:"https://s5files.mobeasy.com/static/u/722316/file-722316-565791.jpg", description:"تلاوة ميسرة", url:"https://abedelkareem.freehosting.dev/1.html" },
 
       // الدروس الصوتية (تم فصل المدائح)
@@ -911,6 +1008,7 @@
       { category:"library", title:" الميسر في أحكام الدين الاجزاء الثلاثة  ", image:"https://s5files.mobeasy.com/static/u/722316/file-722316-301963.jpg", description:"كتب ومراجع", url:"https://abedelkareem.freehosting.dev/9.index.html" },
       { category:"library", title:" مقصد الطالبين ", image:"https://s5files.mobeasy.com/static/u/722316/file-722316-238828.jpg", description:"كتب ومراجع", url:"https://abedelkareem.freehosting.dev/10.index.html" },
       { category:"library", title:"   الثقافة الإسلامية الأجزاء الخمس  ", image:"https://s5files.mobeasy.com/static/u/722316/file-722316-57550.jpg", description:"كتب ومراجع", url:"https://abedelkareem.freehosting.dev/11.index.html" },
+      { category:"library", title:"الدرة البهية في حل ألفاظ العقيدة الطحاوية", image:"https://s5files.mobeasy.com/static/u/722316/file-722316-422715.jpg", description:"كتب ومراجع", url:"https://abedelkareem1989.github.io/bidjade.github.io/index-9.html", isNew: true },
       // صور
       { category:"gallery", title:"لوحات إسلامية", image:"https://s5files.mobeasy.com/static/u/722316/file-722316-3101.jpg", description:"معرض صور", url:"https://photos.app.goo.gl/Y2DJfjyHqxjC8e4X7" },
       // فيديوهات
@@ -1045,13 +1143,37 @@
 
     function renderLatest() {
       const container = $('latestItems');
-      const latest = DATA.slice(-8).reverse();
-      container.innerHTML = latest.map(item => `
-        <div class="item-card" data-url="${item.url}">
-          <img src="${item.image}" loading="lazy" class="lazy" onload="this.classList.add('loaded')">
-          <div class="info"><h4>${item.title}</h4><p>${item.description}</p></div>
-        </div>
-      `).join('');
+      // 1) العناصر المعلّمة بـ isNew: true تظهر أولاً (من أي قسم: مدائح، قرآن، دروس...)
+      // 2) ثم آخر العناصر المضافة في نهاية مصفوفة DATA
+      const markedNew = DATA.filter(d => d.isNew === true);
+      const rest = DATA.filter(d => d.isNew !== true).slice(-12).reverse();
+      const seen = new Set();
+      const latest = [];
+      [...markedNew, ...rest].forEach(item => {
+        if (!seen.has(item.title) && latest.length < 12) {
+          seen.add(item.title);
+          latest.push(item);
+        }
+      });
+
+      if (latest.length === 0) {
+        container.innerHTML = `<div class="card" style="text-align:center;padding:24px;">لا توجد إضافات بعد</div>`;
+        return;
+      }
+
+      container.innerHTML = latest.map(item => {
+        const badge = item.isNew ? `<span class="new-badge">جديد</span>` : '';
+        return `
+          <div class="item-card" data-url="${item.url}">
+            <img src="${item.image}" loading="lazy" class="lazy" onload="this.classList.add('loaded')" alt="">
+            <div class="info">
+              <h4>${item.title} ${badge}</h4>
+              <p>${item.description}</p>
+            </div>
+          </div>
+        `;
+      }).join('');
+
       container.querySelectorAll('.item-card').forEach(el => {
         el.addEventListener('click', () => {
           const url = el.dataset.url;
@@ -1260,6 +1382,12 @@
       document.getElementById('globalSearch').addEventListener('keyup', (e) => { if (e.key === 'Enter') searchGlobal(); });
 
       updateDailyContent();
+
+      // إخفاء شاشة الافتتاح بعد تحميل المحتوى
+      setTimeout(() => {
+        const splash = document.getElementById('splashScreen');
+        if (splash) splash.classList.add('hidden');
+      }, 1800);
     }
 
     // ========== تحية + آية وحديث اليوم + التاريخ الهجري ==========
@@ -1328,18 +1456,24 @@
       const el = document.getElementById('hijriDate');
       if (!el) return;
       try {
-        const hijri = new Intl.DateTimeFormat('ar-SA-u-ca-islamic', {
-          weekday: 'long',
-          day: 'numeric',
-          month: 'long',
-          year: 'numeric'
-        }).format(new Date());
-        el.textContent = '📅 ' + hijri;
+        const today = new Date();
+        today.setHours(12, 0, 0, 0);
+
+        // أسماء الأيام ثابتة (0 = الأحد ... 6 = السبت)
+        const weekdays = ['الأحد', 'الإثنين', 'الثلاثاء', 'الأربعاء', 'الخميس', 'الجمعة', 'السبت'];
+        const weekday = weekdays[today.getDay()];
+
+        // التاريخ الهجري بعد طرح يوم واحد ليظهر 18 صفر بدل 19
+        const adj = new Date(today);
+        adj.setDate(adj.getDate() - 1);
+        const day = new Intl.DateTimeFormat('ar-SA-u-ca-islamic', { day: 'numeric' }).format(adj);
+        const month = new Intl.DateTimeFormat('ar-SA-u-ca-islamic', { month: 'long' }).format(adj);
+        const year = new Intl.DateTimeFormat('ar-SA-u-ca-islamic', { year: 'numeric' }).format(adj);
+
+        el.textContent = '📅 ' + weekday + '، ' + day + ' ' + month + ' ' + year;
       } catch (e) {
-        // متصفحات قديمة: عرض التاريخ الميلادي كبديل
-        el.textContent = '📅 ' + new Date().toLocaleDateString('ar-EG', {
-          weekday: 'long', day: 'numeric', month: 'long', year: 'numeric'
-        });
+        const weekdays = ['الأحد', 'الإثنين', 'الثلاثاء', 'الأربعاء', 'الخميس', 'الجمعة', 'السبت'];
+        el.textContent = '📅 ' + weekdays[new Date().getDay()];
       }
     }
 
