@@ -353,6 +353,177 @@
       transition: 0.2s;
     }
 
+    /* ===== RADIO PLAYER ===== */
+    .radio-now-playing {
+      background: linear-gradient(145deg, #0a3d2e 0%, #1a6b52 100%);
+      border-radius: 28px;
+      padding: 24px 20px;
+      color: #fff;
+      text-align: center;
+      margin-bottom: 20px;
+      box-shadow: 0 12px 28px rgba(15, 92, 71, 0.35);
+      position: relative;
+      overflow: hidden;
+    }
+    .radio-now-playing::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at 80% 20%, rgba(212,175,55,0.15), transparent 50%);
+      pointer-events: none;
+    }
+    .radio-cover-wrap {
+      width: 140px;
+      height: 140px;
+      margin: 0 auto 16px;
+      border-radius: 24px;
+      overflow: hidden;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.35);
+      border: 3px solid rgba(212,175,55,0.5);
+      position: relative;
+    }
+    .radio-cover-wrap img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .radio-cover-wrap.playing::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border: 2px solid var(--gold);
+      border-radius: 24px;
+      animation: radioPulse 1.5s ease-in-out infinite;
+    }
+    @keyframes radioPulse {
+      0%, 100% { opacity: 0.4; transform: scale(1); }
+      50% { opacity: 1; transform: scale(1.03); }
+    }
+    .radio-now-title {
+      font-size: 18px;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+    .radio-now-sub {
+      font-size: 13px;
+      opacity: 0.8;
+      margin-bottom: 18px;
+    }
+    .radio-controls {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 20px;
+    }
+    .radio-play-btn {
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      border: none;
+      background: linear-gradient(135deg, #d4af37, #c9a227);
+      color: #0a3d2e;
+      font-size: 28px;
+      cursor: pointer;
+      box-shadow: 0 6px 20px rgba(212,175,55,0.4);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform 0.2s;
+    }
+    .radio-play-btn:active { transform: scale(0.92); }
+    .radio-eq {
+      display: flex;
+      align-items: flex-end;
+      gap: 3px;
+      height: 24px;
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+    .radio-eq.active { opacity: 1; }
+    .radio-eq span {
+      width: 4px;
+      background: var(--gold);
+      border-radius: 2px;
+      animation: eqBar 0.8s ease-in-out infinite alternate;
+    }
+    .radio-eq span:nth-child(1) { height: 8px; animation-delay: 0s; }
+    .radio-eq span:nth-child(2) { height: 16px; animation-delay: 0.15s; }
+    .radio-eq span:nth-child(3) { height: 12px; animation-delay: 0.3s; }
+    .radio-eq span:nth-child(4) { height: 20px; animation-delay: 0.1s; }
+    .radio-eq span:nth-child(5) { height: 10px; animation-delay: 0.25s; }
+    @keyframes eqBar {
+      from { transform: scaleY(0.4); }
+      to { transform: scaleY(1); }
+    }
+    .radio-station-list { display: flex; flex-direction: column; gap: 10px; }
+    .radio-station-card {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      background: var(--card-bg);
+      backdrop-filter: blur(4px);
+      border-radius: 18px;
+      padding: 12px 14px;
+      border: 1px solid rgba(212,175,55,0.15);
+      cursor: pointer;
+      transition: 0.2s;
+    }
+    .radio-station-card:active { transform: scale(0.97); }
+    .radio-station-card.active {
+      border-color: var(--gold);
+      box-shadow: 0 0 0 2px rgba(212,175,55,0.25);
+      background: rgba(15,92,71,0.08);
+    }
+    body.dark .radio-station-card.active {
+      background: rgba(212,175,55,0.1);
+    }
+    .radio-station-card img {
+      width: 56px;
+      height: 56px;
+      border-radius: 14px;
+      object-fit: cover;
+      flex-shrink: 0;
+    }
+    .radio-station-card .info { flex: 1; min-width: 0; }
+    .radio-station-card .info h4 {
+      font-size: 15px;
+      font-weight: 600;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .radio-station-card .info p {
+      font-size: 12px;
+      opacity: 0.65;
+      margin-top: 2px;
+    }
+    .radio-station-card .play-icon {
+      font-size: 22px;
+      color: var(--gold);
+      flex-shrink: 0;
+    }
+    .radio-live-badge {
+      display: inline-block;
+      background: #e74c3c;
+      color: #fff;
+      font-size: 10px;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 20px;
+      margin-right: 6px;
+      letter-spacing: 0.5px;
+      animation: liveBlink 1.5s ease-in-out infinite;
+    }
+    @keyframes liveBlink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.6; }
+    }
+    .radio-status {
+      font-size: 12px;
+      opacity: 0.7;
+      margin-top: 8px;
+    }
+
     /* bottom nav */
     .bottom-nav {
       position: fixed;
@@ -941,6 +1112,8 @@
   <div id="page-favorites" class="page"><div class="content-area" id="favoritesContent"></div></div>
   <div id="page-settings" class="page"><div class="content-area" id="settingsContent"></div></div>
   <div id="page-more" class="page"><div class="content-area" id="moreContent"></div></div>
+  <div id="page-radios" class="page"><div class="content-area" id="radiosContent"></div></div>
+  <audio id="radioAudio" preload="none"></audio>
 
   <!-- عداد الزوار الحقيقي - أسفل الموقع -->
   <div class="visitor-footer" id="visitorFooter">
@@ -972,7 +1145,7 @@
 
       // الدروس الصوتية (تم فصل المدائح)
       { category:"audio", title:"التحصين صوتي", image:"https://s5files.mobeasy.com/static/u/722316/file-722316-665630.jpg", description:"تحصين ورقية", url:"https://abedelkareem1989.github.io/Islamicculture/44.index.html" },
-      { category:"audio", title:"إذاعات أهل السنة", image:"https://s5files.mobeasy.com/static/u/722316/file-722316-19625.jpg", description:"إذاعات مباشرة", url:"https://luxury-parfait-79d9ba.netlify.app" },
+      { category:"audio", title:"إذاعات أهل السنة", image:"https://s5files.mobeasy.com/static/u/722316/file-722316-19625.jpg", description:"إذاعات مباشرة • مشغل احترافي", url:"internal:radios" },
       { category:"audio", title:"دروس الشيخ نزار الحلبي", image:"https://s5files.mobeasy.com/static/u/722316/file-722316-259061.jpg", description:"دروس صوتية", url:"https://abedelkareem1989.github.io/bidjade.github.io/nizar.index.html" },
       { category:"audio", title:"   برنامج دليل الشيخ الدكتور جميل حليم   ", image:"https://s5files.mobeasy.com/static/u/722316/file-722316-83997.jpg", description:"دروس ", url:"https://abedelkareem.freehosting.dev/17.index.html" },
       { category:"audio", title:"خطب الجمعة", image:"https://s5files.mobeasy.com/static/u/722316/file-722316-652036.jpg", description:"خطب منبرية", url:"https://abedelkareem1989.github.io/Islamicculture/7.index.html" },
@@ -1042,7 +1215,8 @@
       apps: $('page-apps'),
       favorites: $('page-favorites'),
       settings: $('page-settings'),
-      more: $('page-more')
+      more: $('page-more'),
+      radios: $('page-radios')
     };
 
     // ========== TOAST ==========
@@ -1095,7 +1269,11 @@
         el.addEventListener('click', (e) => {
           if (e.target.closest('.fav-btn')) return;
           const url = el.dataset.url;
-          if (url) window.open(url, '_blank');
+          if (url === 'internal:radios') {
+            navigate('radios');
+          } else if (url) {
+            window.open(url, '_blank');
+          }
         });
       });
       container.querySelectorAll('.fav-btn').forEach(btn => {
@@ -1134,7 +1312,8 @@
         el.addEventListener('click', (e) => {
           if (e.target.closest('.fav-btn')) return;
           const url = el.dataset.url;
-          if (url) window.open(url, '_blank');
+          if (url === 'internal:radios') navigate('radios');
+          else if (url) window.open(url, '_blank');
         });
       });
       container.querySelectorAll('.fav-btn').forEach(btn => {
@@ -1183,7 +1362,8 @@
       container.querySelectorAll('.item-card').forEach(el => {
         el.addEventListener('click', () => {
           const url = el.dataset.url;
-          if (url) window.open(url, '_blank');
+          if (url === 'internal:radios') navigate('radios');
+          else if (url) window.open(url, '_blank');
         });
       });
     }
@@ -1228,6 +1408,201 @@
       });
     }
 
+    // ========== RADIO PLAYER ==========
+    const RADIO_STATIONS = [
+      {
+        id: 'quran-live',
+        title: 'القرآن الكريم بث مباشر',
+        subtitle: 'تلاوة مباشرة للقرآن الكريم',
+        cover: 'https://www.appcreator24.com/srv/imgs/plugins/nhhiaonx_c21427.png?t=1784371418',
+        stream: 'https://nidaa.fm:8443/quran.mp3'
+      },
+      {
+        id: 'nidaa-maarifa',
+        title: 'نداء المعرفة',
+        subtitle: 'إذاعة نداء المعرفة',
+        cover: 'https://www.appcreator24.com/srv/imgs/plugins/nhhiaonx_1174.png?t=1784371418',
+        stream: 'https://nidaa.fm:8443/stream.mp3'
+      },
+      {
+        id: 'australia',
+        title: 'صوت الجالية المسلمة في أستراليا',
+        subtitle: '2MFM Australia',
+        cover: 'https://www.appcreator24.com/srv/imgs/plugins/nhhiaonx_c21433.png?t=1784371418',
+        stream: 'https://live.2mfm.org.au'
+      },
+      {
+        id: 'nm-denmark',
+        title: 'ندى المعرفة — الدنمارك',
+        subtitle: 'إذاعة NM',
+        cover: 'https://e.top4top.io/p_38512ahm61.jpg',
+        stream: 'http://5.56.158.246:8000/stream'
+      }
+    ];
+
+    let currentRadioIndex = 0;
+    let isRadioPlaying = false;
+
+    function getRadioAudio() {
+      return document.getElementById('radioAudio');
+    }
+
+    function updateRadioUI() {
+      const station = RADIO_STATIONS[currentRadioIndex];
+      if (!station) return;
+
+      const coverEl = document.getElementById('radioCover');
+      const titleEl = document.getElementById('radioNowTitle');
+      const subEl = document.getElementById('radioNowSub');
+      const playBtn = document.getElementById('radioPlayBtn');
+      const coverWrap = document.getElementById('radioCoverWrap');
+      const eq = document.getElementById('radioEq');
+      const statusEl = document.getElementById('radioStatus');
+
+      if (coverEl) coverEl.src = station.cover;
+      if (titleEl) titleEl.textContent = station.title;
+      if (subEl) subEl.textContent = station.subtitle;
+      if (playBtn) playBtn.textContent = isRadioPlaying ? '⏸' : '▶';
+      if (coverWrap) coverWrap.classList.toggle('playing', isRadioPlaying);
+      if (eq) eq.classList.toggle('active', isRadioPlaying);
+      if (statusEl) {
+        statusEl.innerHTML = isRadioPlaying
+          ? '<span class="radio-live-badge">مباشر</span> جاري التشغيل...'
+          : 'اضغط تشغيل للاستماع';
+      }
+
+      document.querySelectorAll('.radio-station-card').forEach((card, i) => {
+        card.classList.toggle('active', i === currentRadioIndex);
+        const icon = card.querySelector('.play-icon');
+        if (icon) icon.textContent = (i === currentRadioIndex && isRadioPlaying) ? '⏸' : '▶';
+      });
+    }
+
+    function playRadio(index) {
+      const audio = getRadioAudio();
+      if (!audio) return;
+      const station = RADIO_STATIONS[index];
+      if (!station) return;
+
+      // نفس المحطة: تبديل تشغيل/إيقاف
+      if (index === currentRadioIndex && audio.src) {
+        if (isRadioPlaying) {
+          audio.pause();
+          isRadioPlaying = false;
+          updateRadioUI();
+          return;
+        }
+      }
+
+      currentRadioIndex = index;
+      isRadioPlaying = false;
+      updateRadioUI();
+
+      const statusEl = document.getElementById('radioStatus');
+      if (statusEl) statusEl.innerHTML = '⏳ جاري الاتصال...';
+
+      audio.pause();
+      audio.src = station.stream;
+      audio.load();
+
+      const playPromise = audio.play();
+      if (playPromise && typeof playPromise.then === 'function') {
+        playPromise.then(() => {
+          isRadioPlaying = true;
+          updateRadioUI();
+          showToast('📻 ' + station.title);
+        }).catch((err) => {
+          isRadioPlaying = false;
+          updateRadioUI();
+          if (statusEl) statusEl.textContent = 'تعذّر التشغيل — حاول مرة أخرى';
+          showToast('⚠️ تعذّر تشغيل الإذاعة');
+          console.warn('Radio play error:', err);
+        });
+      }
+    }
+
+    function toggleRadioPlay() {
+      const audio = getRadioAudio();
+      if (!audio) return;
+      if (isRadioPlaying) {
+        audio.pause();
+        isRadioPlaying = false;
+        updateRadioUI();
+      } else {
+        playRadio(currentRadioIndex);
+      }
+    }
+
+    function renderRadios() {
+      const container = $('radiosContent');
+      if (!container) return;
+      const station = RADIO_STATIONS[currentRadioIndex];
+
+      container.innerHTML = `
+        <h3><span></span> إذاعات أهل السنة</h3>
+
+        <div class="radio-now-playing">
+          <div class="radio-cover-wrap ${isRadioPlaying ? 'playing' : ''}" id="radioCoverWrap">
+            <img id="radioCover" src="${station.cover}" alt="">
+          </div>
+          <div class="radio-now-title" id="radioNowTitle">${station.title}</div>
+          <div class="radio-now-sub" id="radioNowSub">${station.subtitle}</div>
+          <div class="radio-controls">
+            <div class="radio-eq ${isRadioPlaying ? 'active' : ''}" id="radioEq">
+              <span></span><span></span><span></span><span></span><span></span>
+            </div>
+            <button class="radio-play-btn" id="radioPlayBtn" aria-label="تشغيل">${isRadioPlaying ? '⏸' : '▶'}</button>
+            <div class="radio-eq ${isRadioPlaying ? 'active' : ''}" id="radioEq2">
+              <span></span><span></span><span></span><span></span><span></span>
+            </div>
+          </div>
+          <div class="radio-status" id="radioStatus">
+            ${isRadioPlaying ? '<span class="radio-live-badge">مباشر</span> جاري التشغيل...' : 'اضغط تشغيل للاستماع'}
+          </div>
+        </div>
+
+        <h3 style="margin-top:8px;"><span></span> المحطات</h3>
+        <div class="radio-station-list">
+          ${RADIO_STATIONS.map((s, i) => `
+            <div class="radio-station-card ${i === currentRadioIndex ? 'active' : ''}" data-index="${i}">
+              <img src="${s.cover}" alt="${s.title}" loading="lazy">
+              <div class="info">
+                <h4>${s.title}</h4>
+                <p>${s.subtitle}</p>
+              </div>
+              <span class="play-icon">${(i === currentRadioIndex && isRadioPlaying) ? '⏸' : '▶'}</span>
+            </div>
+          `).join('')}
+        </div>
+      `;
+
+      document.getElementById('radioPlayBtn')?.addEventListener('click', toggleRadioPlay);
+      container.querySelectorAll('.radio-station-card').forEach(card => {
+        card.addEventListener('click', () => {
+          const idx = parseInt(card.dataset.index, 10);
+          playRadio(idx);
+        });
+      });
+
+      // ربط أحداث الصوت مرة واحدة
+      const audio = getRadioAudio();
+      if (audio && !audio._radioBound) {
+        audio._radioBound = true;
+        audio.addEventListener('playing', () => { isRadioPlaying = true; updateRadioUI(); });
+        audio.addEventListener('pause', () => { isRadioPlaying = false; updateRadioUI(); });
+        audio.addEventListener('error', () => {
+          isRadioPlaying = false;
+          updateRadioUI();
+          const statusEl = document.getElementById('radioStatus');
+          if (statusEl) statusEl.textContent = 'خطأ في البث — جرّب محطة أخرى';
+        });
+        audio.addEventListener('waiting', () => {
+          const statusEl = document.getElementById('radioStatus');
+          if (statusEl) statusEl.innerHTML = '⏳ جاري التحميل...';
+        });
+      }
+    }
+
     // ========== NAVIGATION ==========
     function navigate(page) {
       Object.keys(pages).forEach(key => pages[key].classList.remove('active'));
@@ -1236,8 +1611,11 @@
       document.querySelectorAll('.bottom-nav button').forEach(b => b.classList.remove('active'));
 
       // الأقسام الفرعية تحت «المزيد» تُبقي زر المزيد نشطاً
+      // صفحة الإذاعات تُبقي زر الدروس نشطاً
       const morePages = ['library', 'gallery', 'video', 'apps', 'favorites', 'settings', 'more'];
-      const navPage = morePages.includes(page) ? 'more' : page;
+      let navPage = page;
+      if (morePages.includes(page)) navPage = 'more';
+      else if (page === 'radios') navPage = 'audio';
       document.querySelector(`.bottom-nav button[data-page="${navPage}"]`)?.classList.add('active');
 
       if (page === 'quran') renderItems('quran', 'quranContent');
@@ -1250,6 +1628,7 @@
       else if (page === 'favorites') renderFavorites();
       else if (page === 'settings') renderSettings();
       else if (page === 'more') renderMore();
+      else if (page === 'radios') renderRadios();
       else if (page === 'home') { renderLatest(); }
       window.scrollTo(0, 0);
     }
@@ -1278,7 +1657,11 @@
         </div>
       `).join('');
       container.querySelectorAll('.item-card').forEach(el => {
-        el.addEventListener('click', () => { if (el.dataset.url) window.open(el.dataset.url, '_blank'); });
+        el.addEventListener('click', () => {
+          const url = el.dataset.url;
+          if (url === 'internal:radios') navigate('radios');
+          else if (url) window.open(url, '_blank');
+        });
       });
       showToast(`🔍 ${results.length} نتيجة`);
     }
