@@ -940,6 +940,7 @@
   <div id="page-apps" class="page"><div class="content-area" id="appsContent"></div></div>
   <div id="page-favorites" class="page"><div class="content-area" id="favoritesContent"></div></div>
   <div id="page-settings" class="page"><div class="content-area" id="settingsContent"></div></div>
+  <div id="page-more" class="page"><div class="content-area" id="moreContent"></div></div>
 
   <!-- عداد الزوار الحقيقي - أسفل الموقع -->
   <div class="visitor-footer" id="visitorFooter">
@@ -950,16 +951,13 @@
     </div>
   </div>
 
-  <!-- BOTTOM NAV -->
+  <!-- BOTTOM NAV - 4 أقسام + المزيد -->
   <nav class="bottom-nav" id="bottomNav">
     <button class="active" data-page="home"><span class="nav-icon">🏠</span>الرئيسية</button>
     <button data-page="quran"><span class="nav-icon">📖</span>القرآن</button>
     <button data-page="audio"><span class="nav-icon">🎧</span>الدروس</button>
     <button data-page="madaih"><span class="nav-icon">🎵</span>المدائح</button>
-    <button data-page="library"><span class="nav-icon">📚</span>المكتبة</button>
-    <button data-page="video"><span class="nav-icon">🎬</span>فيديوهات</button>
-    <button data-page="favorites"><span class="nav-icon">⭐</span>المفضلة</button>
-    <button data-page="settings"><span class="nav-icon">⚙️</span>الإعدادات</button>
+    <button data-page="more"><span class="nav-icon">⋯</span>المزيد</button>
   </nav>
 
   <script>
@@ -994,7 +992,7 @@
       { category:"audio", title:"   ساعة سكون   ", image:"https://s5files.mobeasy.com/static/u/722316/file-722316-811547.jpg", description:"دروس ", url:"https://abedelkareem1989.github.io/bidjade.github.io/18.index.html" },
 
       // المدائح (قسم جديد)
-      { category:"madaih", title:"المداح أحمد الرفاعي", image:"https://s5files.mobeasy.com/static/u/722316/file-722316-51719.jpg", description:"مدائح نبوية", url:"https://resonant-piroshki-be0974.netlify.app" },
+      { category:"madaih", title:"المداح أحمد الرفاعي", image:"https://s5files.mobeasy.com/static/u/722316/file-722316-51719.jpg", description:"مدائح نبوية", url:"https://abedelkareem1989.github.io/bidjade.github.io/21.index.html" },
       { category:"madaih", title:"المنشد الحاج محمد الخير", image:"https://s5files.mobeasy.com/static/u/722316/file-722316-55268.jpg", description:"أناشيد إسلامية", url:"https://abedelkareem1989.github.io/bidjade.github.io" },
       { category:"madaih", title:"المداح محمد معروف", image:"https://s5files.mobeasy.com/static/u/722316/file-722316-47117.jpg", description:"مدائح نبوية", url:"https://abedelkareem1989.github.io/bidjade.github.io/13.index.html" },
       { category:"madaih", title:" فريق الإنشاد في السويد", image:"https://s5files.mobeasy.com/static/u/722316/file-722316-653930.jpg", description:"مدائح نبوية", url:"https://abedelkareem.freehosting.dev/16.index.html" },
@@ -1043,7 +1041,8 @@
       video: $('page-video'),
       apps: $('page-apps'),
       favorites: $('page-favorites'),
-      settings: $('page-settings')
+      settings: $('page-settings'),
+      more: $('page-more')
     };
 
     // ========== TOAST ==========
@@ -1200,13 +1199,33 @@
             <span class="vc-big" id="settingsVisitorCount">${countText}</span>
           </div>
           <div class="setting-item"><span>🌙 الوضع الليلي</span><div class="toggle ${darkMode?'active':''}" id="darkToggleSetting"></div></div>
-          <div class="setting-item"><span>📢 الإشعارات</span><div class="toggle active" id="notifToggle"></div></div>
           <div class="setting-item"><span>📱 عن التطبيق</span><button id="aboutAppBtn" style="background:var(--gold);border:none;padding:8px 20px;border-radius:40px;cursor:pointer;font-weight:600;">عرض</button></div>
-          <div class="setting-item"><span>🔒 سياسة الخصوصية</span><button style="background:var(--gold);border:none;padding:8px 20px;border-radius:40px;cursor:pointer;font-weight:600;">عرض</button></div>
         </div>
       `;
       document.getElementById('darkToggleSetting').addEventListener('click', toggleDark);
       document.getElementById('aboutAppBtn').addEventListener('click', showAboutModal);
+    }
+
+    function renderMore() {
+      const container = $('moreContent');
+      if (!container) return;
+      container.innerHTML = `
+        <h3><span></span> المزيد</h3>
+        <div class="section-grid" style="grid-template-columns: 1fr 1fr; padding: 0; margin-top: 8px;">
+          <div class="section-card" data-more="library"><div class="icon">📚</div><h4>المكتبة</h4></div>
+          <div class="section-card" data-more="gallery"><div class="icon">🖼️</div><h4>الصور</h4></div>
+          <div class="section-card" data-more="video"><div class="icon">🎬</div><h4>الفيديوهات</h4></div>
+          <div class="section-card" data-more="apps"><div class="icon">📱</div><h4>التطبيقات</h4></div>
+          <div class="section-card" data-more="favorites"><div class="icon">⭐</div><h4>المفضلة</h4></div>
+          <div class="section-card" data-more="settings"><div class="icon">⚙️</div><h4>الإعدادات</h4></div>
+        </div>
+      `;
+      container.querySelectorAll('.section-card').forEach(card => {
+        card.addEventListener('click', () => {
+          const section = card.dataset.more;
+          if (section) navigate(section);
+        });
+      });
     }
 
     // ========== NAVIGATION ==========
@@ -1215,7 +1234,11 @@
       if (pages[page]) pages[page].classList.add('active');
       currentPage = page;
       document.querySelectorAll('.bottom-nav button').forEach(b => b.classList.remove('active'));
-      document.querySelector(`.bottom-nav button[data-page="${page}"]`)?.classList.add('active');
+
+      // الأقسام الفرعية تحت «المزيد» تُبقي زر المزيد نشطاً
+      const morePages = ['library', 'gallery', 'video', 'apps', 'favorites', 'settings', 'more'];
+      const navPage = morePages.includes(page) ? 'more' : page;
+      document.querySelector(`.bottom-nav button[data-page="${navPage}"]`)?.classList.add('active');
 
       if (page === 'quran') renderItems('quran', 'quranContent');
       else if (page === 'audio') renderItems('audio', 'audioContent');
@@ -1226,6 +1249,7 @@
       else if (page === 'apps') renderItems('apps', 'appsContent');
       else if (page === 'favorites') renderFavorites();
       else if (page === 'settings') renderSettings();
+      else if (page === 'more') renderMore();
       else if (page === 'home') { renderLatest(); }
       window.scrollTo(0, 0);
     }
@@ -1413,7 +1437,22 @@
       { text: 'يَا أَيُّهَا الَّذِينَ آمَنُوا اتَّقُوا اللَّهَ وَقُولُوا قَوْلًا سَدِيدًا', ref: 'الأحزاب: 70' },
       { text: 'وَاسْتَعِينُوا بِالصَّبْرِ وَالصَّلَاةِ', ref: 'البقرة: 45' },
       { text: 'فَإِنَّ مَعَ الْعُسْرِ يُسْرًا', ref: 'الشرح: 5' },
-      { text: 'وَمَن يَتَوَكَّلْ عَلَى اللَّهِ فَهُوَ حَسْبُهُ', ref: 'الطلاق: 3' }
+      { text: 'وَمَن يَتَوَكَّلْ عَلَى اللَّهِ فَهُوَ حَسْبُهُ', ref: 'الطلاق: 3' },
+      { text: 'وَاللَّهُ غَالِبٌ عَلَىٰ أَمْرِهِ وَلَٰكِنَّ أَكْثَرَ النَّاسِ لَا يَعْلَمُونَ', ref: 'يوسف: 21' },
+      { text: 'إِنَّ اللَّهَ لَا يُضِيعُ أَجْرَ الْمُحْسِنِينَ', ref: 'التوبة: 120' },
+      { text: 'وَمَا كَانَ اللَّهُ لِيُضِيعَ إِيمَانَكُمْ', ref: 'البقرة: 143' },
+      { text: 'قُلْ هُوَ اللَّهُ أَحَدٌ', ref: 'الإخلاص: 1' },
+      { text: 'اللَّهُ نُورُ السَّمَاوَاتِ وَالْأَرْضِ', ref: 'النور: 35' },
+      { text: 'وَنَحْنُ أَقْرَبُ إِلَيْهِ مِنْ حَبْلِ الْوَرِيدِ', ref: 'ق: 16' },
+      { text: 'فَمَن يَعْمَلْ مِثْقَالَ ذَرَّةٍ خَيْرًا يَرَهُ', ref: 'الزلزلة: 7' },
+      { text: 'وَلَا تَيْأَسُوا مِن رَّوْحِ اللَّهِ', ref: 'يوسف: 87' },
+      { text: 'إِنَّ اللَّهَ مَعَ الَّذِينَ اتَّقَوا وَّالَّذِينَ هُم مُّحْسِنُونَ', ref: 'النحل: 128' },
+      { text: 'وَقُل رَّبِّ أَدْخِلْنِي مُدْخَلَ صِدْقٍ وَأَخْرِجْنِي مُخْرَجَ صِدْقٍ', ref: 'الإسراء: 80' },
+      { text: 'رَبِّ اشْرَحْ لِي صَدْرِي وَيَسِّرْ لِي أَمْرِي', ref: 'طه: 25-26' },
+      { text: 'وَمَن يَعْمَلْ سُوءًا أَوْ يَظْلِمْ نَفْسَهُ ثُمَّ يَسْتَغْفِرِ اللَّهَ يَجِدِ اللَّهَ غَفُورًا رَّحِيمًا', ref: 'النساء: 110' },
+      { text: 'فَإِن تَوَلَّوْا فَقُلْ حَسْبِيَ اللَّهُ لَا إِلَٰهَ إِلَّا هُوَ', ref: 'التوبة: 129' },
+      { text: 'وَالَّذِينَ جَاهَدُوا فِينَا لَنَهْدِيَنَّهُمْ سُبُلَنَا', ref: 'العنكبوت: 69' },
+      { text: 'فَاذْكُرُونِي أَذْكُرْكُمْ', ref: 'البقرة: 152' }
     ];
 
     const DAILY_HADITHS = [
@@ -1431,7 +1470,22 @@
       { text: 'طلب العلم فريضة على كل مسلم', ref: 'ابن ماجه' },
       { text: 'يسروا ولا تعسروا وبشروا ولا تنفروا', ref: 'البخاري' },
       { text: 'أحب الأعمال إلى الله أدومها وإن قل', ref: 'البخاري ومسلم' },
-      { text: 'من سلك طريقا يلتمس فيه علما سهل الله له طريقا إلى الجنة', ref: 'مسلم' }
+      { text: 'من سلك طريقا يلتمس فيه علما سهل الله له طريقا إلى الجنة', ref: 'مسلم' },
+      { text: 'الراحمون يرحمهم الرحمن', ref: 'الترمذي' },
+      { text: 'من لا يرحم الناس لا يرحمه الله', ref: 'البخاري ومسلم' },
+      { text: 'ليس الشديد بالصرعة إنما الشديد الذي يملك نفسه عند الغضب', ref: 'البخاري ومسلم' },
+      { text: 'من كان في حاجة أخيه كان الله في حاجته', ref: 'البخاري ومسلم' },
+      { text: 'المؤمن للمؤمن كالبنيان يشد بعضه بعضا', ref: 'البخاري ومسلم' },
+      { text: 'لا يدخل الجنة من كان في قلبه مثقال ذرة من كبر', ref: 'مسلم' },
+      { text: 'الطهور شطر الإيمان', ref: 'مسلم' },
+      { text: 'من أحدث في أمرنا هذا ما ليس منه فهو رد', ref: 'البخاري ومسلم' },
+      { text: 'كل معروف صدقة', ref: 'البخاري ومسلم' },
+      { text: 'من غشنا فليس منا', ref: 'مسلم' },
+      { text: 'ازهد في الدنيا يحبك الله وازهد فيما عند الناس يحبك الناس', ref: 'ابن ماجه' },
+      { text: 'ما نقصت صدقة من مال', ref: 'مسلم' },
+      { text: 'من ستر مسلما ستره الله في الدنيا والآخرة', ref: 'مسلم' },
+      { text: 'إن الله يحب إذا عمل أحدكم عملا أن يتقنه', ref: 'الطبراني' },
+      { text: 'الدعاء هو العبادة', ref: 'الترمذي' }
     ];
 
     function getDayOfYear() {
@@ -1442,10 +1496,18 @@
     }
 
     function updateGreeting() {
-      const hour = new Date().getHours();
+      const now = new Date();
+      const hour = now.getHours();
+      const isFriday = now.getDay() === 5; // الجمعة
       const greetingEl = document.getElementById('greetingText');
       const subEl = document.getElementById('welcomeSub');
       if (!greetingEl) return;
+
+      if (isFriday) {
+        greetingEl.textContent = 'جمعة مباركة ✨';
+        if (subEl) subEl.textContent = 'تقبل الله منا ومنكم صالح الأعمال';
+        return;
+      }
 
       if (hour >= 5 && hour < 12) {
         greetingEl.textContent = 'صباح الخير ☀️';
