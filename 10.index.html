@@ -1,0 +1,2149 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>أذكاري - أذكار الصباح والمساء</title>
+    
+    <!-- Google Fonts - خطوط متعددة -->
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Tajawal:wght@300;400;500;700&family=Reem+Kufi:wght@400;700&family=Almarai:wght@300;400;700&family=Cairo:wght@300;400;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        /* ========================================
+           ROOT VARIABLES & RESET
+           ======================================== */
+        :root {
+            --primary-dark: #1a3a2a;
+            --primary: #2d5a3d;
+            --primary-light: #3d7a52;
+            --gold: #c9a84c;
+            --gold-light: #e8d5a3;
+            --gold-dark: #a8893a;
+            --white: #ffffff;
+            --cream: #faf6ef;
+            --text-dark: #1a1a1a;
+            --text-light: #f5f0e8;
+            --shadow: 0 8px 32px rgba(0,0,0,0.15);
+            --shadow-light: 0 4px 16px rgba(0,0,0,0.08);
+            --radius: 20px;
+            --radius-sm: 12px;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            
+            /* متغيرات الخط - سيتم تحديثها عبر JS */
+            --font-arabic: 'Amiri', 'Tajawal', serif;
+            --font-ui: 'Tajawal', sans-serif;
+            --font-size-base: 18px;
+            --font-size-large: 22px;
+            --font-size-xlarge: 26px;
+        }
+
+        /* ========================================
+           فئات الخطوط المختلفة
+           ======================================== */
+        .font-amiri {
+            --font-arabic: 'Amiri', 'Tajawal', serif;
+            --font-ui: 'Tajawal', sans-serif;
+        }
+        
+        .font-reem {
+            --font-arabic: 'Reem Kufi', 'Tajawal', sans-serif;
+            --font-ui: 'Tajawal', sans-serif;
+        }
+        
+        .font-cairo {
+            --font-arabic: 'Cairo', 'Tajawal', sans-serif;
+            --font-ui: 'Tajawal', sans-serif;
+        }
+        
+        .font-almarai {
+            --font-arabic: 'Almarai', 'Tajawal', sans-serif;
+            --font-ui: 'Tajawal', sans-serif;
+        }
+
+        /* ========================================
+           فئات أحجام الخط
+           ======================================== */
+        .font-size-small {
+            --font-size-base: 15px;
+            --font-size-large: 18px;
+            --font-size-xlarge: 22px;
+        }
+        
+        .font-size-medium {
+            --font-size-base: 18px;
+            --font-size-large: 22px;
+            --font-size-xlarge: 26px;
+        }
+        
+        .font-size-large {
+            --font-size-base: 22px;
+            --font-size-large: 26px;
+            --font-size-xlarge: 32px;
+        }
+        
+        .font-size-xlarge {
+            --font-size-base: 26px;
+            --font-size-large: 32px;
+            --font-size-xlarge: 38px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: var(--font-ui);
+            font-size: var(--font-size-base);
+            background: var(--cream);
+            color: var(--text-dark);
+            min-height: 100vh;
+            padding-bottom: 80px;
+            overflow-x: hidden;
+            transition: font-size 0.3s ease, background 0.3s ease;
+        }
+
+        /* تطبيق الخط على جميع النصوص العربية */
+        .dhikr-text,
+        .logo-text,
+        .header-title h1,
+        .counter-header h3,
+        .card,
+        .azkar-card,
+        .category-tab,
+        .nav-item span {
+            font-family: var(--font-arabic);
+        }
+
+        /* ========================================
+           SCROLLBAR
+           ======================================== */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: var(--cream);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--gold);
+            border-radius: 10px;
+        }
+
+        /* ========================================
+           DARK MODE
+           ======================================== */
+        body.dark-mode {
+            --cream: #0f1a14;
+            --white: #1a2a1f;
+            --text-dark: #e8e0d8;
+            --text-light: #c8c0b8;
+            --shadow: 0 8px 32px rgba(0,0,0,0.4);
+            --shadow-light: 0 4px 16px rgba(0,0,0,0.3);
+            background: #0a120e;
+        }
+
+        body.dark-mode .card,
+        body.dark-mode .azkar-card,
+        body.dark-mode .category-card,
+        body.dark-mode .counter-box,
+        body.dark-mode .settings-panel {
+            background: #1a2a1f;
+            border-color: #2a3a2f;
+        }
+
+        body.dark-mode .header {
+            background: linear-gradient(135deg, #0f1a14, #1a2a1f);
+        }
+
+        body.dark-mode .search-input {
+            background: #1a2a1f;
+            color: #e8e0d8;
+            border-color: #2a3a2f;
+        }
+
+        body.dark-mode .search-input::placeholder {
+            color: #6a7a6f;
+        }
+
+        body.dark-mode .settings-panel {
+            background: #1a2a1f;
+            border-color: #2a3a2f;
+        }
+
+        body.dark-mode .settings-panel .setting-item {
+            border-bottom-color: #2a3a2f;
+        }
+
+        body.dark-mode .font-option {
+            background: #0f1a14;
+            border-color: #2a3a2f;
+        }
+
+        body.dark-mode .font-option:hover,
+        body.dark-mode .font-option.active {
+            background: #2a3a2f;
+            border-color: var(--gold);
+        }
+
+        /* ========================================
+           HEADER
+           ======================================== */
+        .header {
+            background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+            padding: 20px 20px 60px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -20%;
+            width: 80%;
+            height: 200%;
+            background: radial-gradient(ellipse at center, rgba(201, 168, 76, 0.08) 0%, transparent 70%);
+            transform: rotate(-15deg);
+        }
+
+        .header::after {
+            content: '﷽';
+            position: absolute;
+            bottom: 10px;
+            left: 20px;
+            font-size: 60px;
+            color: rgba(255,255,255,0.04);
+            font-family: var(--font-arabic);
+        }
+
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+            z-index: 2;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo-icon {
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            color: var(--white);
+            box-shadow: 0 4px 16px rgba(201, 168, 76, 0.3);
+            flex-shrink: 0;
+        }
+
+        .logo-text {
+            color: var(--white);
+            font-size: calc(var(--font-size-base) + 6px);
+            font-weight: 700;
+            font-family: var(--font-arabic);
+        }
+
+        .logo-text span {
+            color: var(--gold-light);
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .header-btn {
+            background: rgba(255,255,255,0.12);
+            border: none;
+            color: var(--white);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            font-size: 18px;
+            cursor: pointer;
+            transition: var(--transition);
+            backdrop-filter: blur(10px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .header-btn:hover {
+            background: rgba(255,255,255,0.25);
+            transform: scale(1.05);
+        }
+
+        .header-btn .badge {
+            position: absolute;
+            top: -4px;
+            right: -4px;
+            background: var(--gold);
+            color: white;
+            border-radius: 50%;
+            width: 18px;
+            height: 18px;
+            font-size: 10px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .header-title {
+            position: relative;
+            z-index: 2;
+            margin-top: 16px;
+        }
+
+        .header-title h1 {
+            color: var(--white);
+            font-size: calc(var(--font-size-base) + 10px);
+            font-family: var(--font-arabic);
+            font-weight: 700;
+        }
+
+        .header-title p {
+            color: rgba(255,255,255,0.7);
+            font-size: calc(var(--font-size-base) - 4px);
+            margin-top: 4px;
+        }
+
+        /* ========================================
+           SEARCH BAR
+           ======================================== */
+        .search-bar {
+            position: relative;
+            z-index: 2;
+            margin-top: 16px;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 14px 20px 14px 50px;
+            border: none;
+            border-radius: var(--radius);
+            background: rgba(255,255,255,0.15);
+            backdrop-filter: blur(10px);
+            color: var(--white);
+            font-size: var(--font-size-base);
+            font-family: var(--font-ui);
+            transition: var(--transition);
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .search-input:focus {
+            outline: none;
+            background: rgba(255,255,255,0.25);
+            border-color: var(--gold);
+        }
+
+        .search-input::placeholder {
+            color: rgba(255,255,255,0.5);
+        }
+
+        .search-icon {
+            position: absolute;
+            right: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: rgba(255,255,255,0.4);
+            font-size: calc(var(--font-size-base) + 2px);
+        }
+
+        /* ========================================
+           MAIN CONTENT
+           ======================================== */
+        .main-content {
+            padding: 0 16px 20px;
+            margin-top: -30px;
+            position: relative;
+            z-index: 3;
+        }
+
+        /* ========================================
+           CATEGORY TABS
+           ======================================== */
+        .category-tabs {
+            display: flex;
+            gap: 8px;
+            overflow-x: auto;
+            padding: 4px 0 16px;
+            scrollbar-width: none;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .category-tabs::-webkit-scrollbar {
+            display: none;
+        }
+
+        .category-tab {
+            flex-shrink: 0;
+            padding: 10px 20px;
+            border-radius: var(--radius-sm);
+            border: none;
+            background: var(--white);
+            color: var(--text-dark);
+            font-family: var(--font-ui);
+            font-size: calc(var(--font-size-base) - 4px);
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+            box-shadow: var(--shadow-light);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .category-tab i {
+            font-size: calc(var(--font-size-base) - 4px);
+        }
+
+        .category-tab.active {
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            color: var(--white);
+            box-shadow: 0 4px 20px rgba(45, 90, 61, 0.3);
+        }
+
+        .category-tab:hover:not(.active) {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow);
+        }
+
+        /* ========================================
+           CARDS
+           ======================================== */
+        .card {
+            background: var(--white);
+            border-radius: var(--radius);
+            padding: 20px;
+            box-shadow: var(--shadow-light);
+            transition: var(--transition);
+            border: 1px solid rgba(201, 168, 76, 0.1);
+            margin-bottom: 16px;
+        }
+
+        .card:hover {
+            box-shadow: var(--shadow);
+            transform: translateY(-2px);
+        }
+
+        /* ========================================
+           AZKAR CARDS
+           ======================================== */
+        .azkar-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .azkar-card {
+            background: var(--white);
+            border-radius: var(--radius-sm);
+            padding: 18px;
+            box-shadow: var(--shadow-light);
+            border-right: 4px solid var(--gold);
+            transition: var(--transition);
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .azkar-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(201, 168, 76, 0.03), transparent);
+            pointer-events: none;
+        }
+
+        .azkar-card:hover {
+            transform: translateX(-4px);
+            box-shadow: var(--shadow);
+        }
+
+        .azkar-card .dhikr-text {
+            font-family: var(--font-arabic);
+            font-size: var(--font-size-base);
+            line-height: 2;
+            color: var(--text-dark);
+            margin-bottom: 10px;
+        }
+
+        .azkar-card .dhikr-text .highlight {
+            color: var(--gold-dark);
+            font-weight: 700;
+        }
+
+        .azkar-card .dhikr-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .azkar-card .dhikr-count {
+            background: var(--cream);
+            padding: 4px 14px;
+            border-radius: 20px;
+            font-size: calc(var(--font-size-base) - 5px);
+            color: var(--primary);
+            font-weight: 500;
+        }
+
+        .azkar-card .dhikr-count i {
+            margin-left: 6px;
+        }
+
+        .azkar-card .dhikr-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .azkar-card .dhikr-actions button {
+            background: none;
+            border: none;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: var(--transition);
+            color: var(--text-dark);
+            opacity: 0.5;
+            font-size: calc(var(--font-size-base) - 4px);
+        }
+
+        .azkar-card .dhikr-actions button:hover {
+            background: var(--cream);
+            opacity: 1;
+        }
+
+        .azkar-card .dhikr-actions button.favorited {
+            color: var(--gold);
+            opacity: 1;
+        }
+
+        .azkar-card .dhikr-ref {
+            font-size: calc(var(--font-size-base) - 6px);
+            color: var(--text-dark);
+            opacity: 0.5;
+        }
+
+        /* ========================================
+           COUNTER
+           ======================================== */
+        .counter-container {
+            display: none;
+            position: fixed;
+            bottom: 90px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 90%;
+            max-width: 400px;
+            z-index: 1000;
+            background: var(--white);
+            border-radius: var(--radius);
+            padding: 24px;
+            box-shadow: var(--shadow);
+            border: 2px solid var(--gold);
+            animation: slideUp 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .counter-container.active {
+            display: block;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateX(-50%) translateY(40px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(-50%) translateY(0);
+            }
+        }
+
+        .counter-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        .counter-header h3 {
+            font-family: var(--font-arabic);
+            font-size: var(--font-size-large);
+            color: var(--primary);
+        }
+
+        .counter-close {
+            background: none;
+            border: none;
+            font-size: calc(var(--font-size-base) + 6px);
+            cursor: pointer;
+            color: var(--text-dark);
+            opacity: 0.5;
+            transition: var(--transition);
+        }
+
+        .counter-close:hover {
+            opacity: 1;
+        }
+
+        .counter-display {
+            text-align: center;
+            padding: 20px 0;
+        }
+
+        .counter-number {
+            font-size: calc(var(--font-size-xlarge) + 20px);
+            font-weight: 700;
+            color: var(--primary);
+            font-family: var(--font-arabic);
+        }
+
+        .counter-target {
+            font-size: calc(var(--font-size-base) - 4px);
+            color: var(--text-dark);
+            opacity: 0.6;
+            margin-top: 4px;
+        }
+
+        .counter-buttons {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            margin-top: 16px;
+            flex-wrap: wrap;
+        }
+
+        .counter-btn {
+            padding: 12px 28px;
+            border: none;
+            border-radius: var(--radius-sm);
+            font-size: var(--font-size-base);
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            font-family: var(--font-ui);
+            min-width: 80px;
+        }
+
+        .counter-btn-primary {
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            color: var(--white);
+            box-shadow: 0 4px 16px rgba(45, 90, 61, 0.3);
+        }
+
+        .counter-btn-primary:hover {
+            transform: scale(1.05);
+        }
+
+        .counter-btn-secondary {
+            background: var(--cream);
+            color: var(--text-dark);
+        }
+
+        .counter-btn-secondary:hover {
+            background: #e8e0d8;
+        }
+
+        .counter-btn-danger {
+            background: #dc3545;
+            color: var(--white);
+        }
+
+        .counter-btn-danger:hover {
+            background: #c82333;
+        }
+
+        .counter-progress {
+            width: 100%;
+            height: 6px;
+            background: var(--cream);
+            border-radius: 10px;
+            margin-top: 16px;
+            overflow: hidden;
+        }
+
+        .counter-progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, var(--gold), var(--gold-dark));
+            border-radius: 10px;
+            transition: width 0.3s ease;
+            width: 0%;
+        }
+
+        /* ========================================
+           SETTINGS PANEL
+           ======================================== */
+        .settings-panel {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 92%;
+            max-width: 420px;
+            max-height: 80vh;
+            overflow-y: auto;
+            background: var(--white);
+            border-radius: var(--radius);
+            padding: 24px;
+            box-shadow: var(--shadow);
+            border: 2px solid var(--gold);
+            z-index: 1000;
+            animation: slideUp 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .settings-panel.active {
+            display: block;
+        }
+
+        .settings-panel .panel-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .settings-panel .panel-header h2 {
+            font-family: var(--font-arabic);
+            color: var(--primary);
+            font-size: var(--font-size-large);
+        }
+
+        .settings-panel .panel-close {
+            background: none;
+            border: none;
+            font-size: calc(var(--font-size-base) + 6px);
+            cursor: pointer;
+            color: var(--text-dark);
+            opacity: 0.5;
+            transition: var(--transition);
+        }
+
+        .settings-panel .panel-close:hover {
+            opacity: 1;
+        }
+
+        .settings-panel .setting-group {
+            margin-bottom: 20px;
+        }
+
+        .settings-panel .setting-group-title {
+            font-family: var(--font-arabic);
+            font-size: var(--font-size-base);
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .settings-panel .setting-group-title i {
+            color: var(--gold);
+        }
+
+        .settings-panel .setting-item {
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(0,0,0,0.06);
+        }
+
+        .settings-panel .setting-item:last-child {
+            border-bottom: none;
+        }
+
+        .settings-panel .setting-label {
+            font-family: var(--font-ui);
+            font-size: calc(var(--font-size-base) - 2px);
+            color: var(--text-dark);
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        /* خيارات الخطوط */
+        .font-options {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .font-option {
+            padding: 8px 16px;
+            border-radius: var(--radius-sm);
+            border: 2px solid var(--cream);
+            background: var(--cream);
+            cursor: pointer;
+            transition: var(--transition);
+            font-family: var(--font-arabic);
+            font-size: calc(var(--font-size-base) - 2px);
+            color: var(--text-dark);
+        }
+
+        .font-option:hover {
+            border-color: var(--gold-light);
+            transform: translateY(-2px);
+        }
+
+        .font-option.active {
+            border-color: var(--gold);
+            background: rgba(201, 168, 76, 0.1);
+            box-shadow: 0 0 0 3px rgba(201, 168, 76, 0.2);
+        }
+
+        .font-option .font-preview {
+            font-size: calc(var(--font-size-base) + 4px);
+            display: block;
+            margin-top: 4px;
+        }
+
+        /* خيارات حجم الخط */
+        .size-options {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .size-option {
+            padding: 8px 20px;
+            border-radius: var(--radius-sm);
+            border: 2px solid var(--cream);
+            background: var(--cream);
+            cursor: pointer;
+            transition: var(--transition);
+            font-family: var(--font-ui);
+            font-size: calc(var(--font-size-base) - 2px);
+            color: var(--text-dark);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .size-option:hover {
+            border-color: var(--gold-light);
+            transform: translateY(-2px);
+        }
+
+        .size-option.active {
+            border-color: var(--gold);
+            background: rgba(201, 168, 76, 0.1);
+            box-shadow: 0 0 0 3px rgba(201, 168, 76, 0.2);
+        }
+
+        .size-option i {
+            font-size: calc(var(--font-size-base) + 4px);
+        }
+
+        /* ========================================
+           FLOATING ACTION BUTTON
+           ======================================== */
+        .fab {
+            position: fixed;
+            bottom: 80px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+            color: var(--white);
+            border: none;
+            padding: 14px 28px;
+            border-radius: 50px;
+            font-size: var(--font-size-base);
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 4px 24px rgba(201, 168, 76, 0.4);
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-family: var(--font-ui);
+            z-index: 100;
+        }
+
+        .fab:hover {
+            transform: translateX(-50%) scale(1.05);
+            box-shadow: 0 6px 32px rgba(201, 168, 76, 0.5);
+        }
+
+        .fab i {
+            font-size: calc(var(--font-size-base) + 2px);
+        }
+
+        /* ========================================
+           EMPTY STATE
+           ======================================== */
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+        }
+
+        .empty-state i {
+            font-size: calc(var(--font-size-xlarge) + 20px);
+            color: var(--gold);
+            opacity: 0.3;
+            margin-bottom: 16px;
+        }
+
+        .empty-state h3 {
+            font-family: var(--font-arabic);
+            color: var(--text-dark);
+            opacity: 0.6;
+            font-size: var(--font-size-base);
+        }
+
+        /* ========================================
+           TOAST
+           ======================================== */
+        .toast {
+            position: fixed;
+            bottom: 140px;
+            left: 50%;
+            transform: translateX(-50%) translateY(20px);
+            background: var(--primary-dark);
+            color: var(--white);
+            padding: 12px 24px;
+            border-radius: var(--radius-sm);
+            font-size: var(--font-size-base);
+            opacity: 0;
+            transition: all 0.4s ease;
+            z-index: 2000;
+            font-family: var(--font-ui);
+            box-shadow: var(--shadow);
+            pointer-events: none;
+            text-align: center;
+            max-width: 90%;
+        }
+
+        .toast.show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        /* ========================================
+           OVERLAY
+           ======================================== */
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.5);
+            backdrop-filter: blur(4px);
+            z-index: 999;
+            display: none;
+        }
+
+        .overlay.active {
+            display: block;
+        }
+
+        /* ========================================
+           BOTTOM NAV
+           ======================================== */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: var(--white);
+            display: flex;
+            justify-content: space-around;
+            padding: 8px 0 16px;
+            box-shadow: 0 -4px 20px rgba(0,0,0,0.08);
+            z-index: 100;
+            border-top: 1px solid rgba(201, 168, 76, 0.1);
+        }
+
+        body.dark-mode .bottom-nav {
+            background: #1a2a1f;
+            border-top-color: #2a3a2f;
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 2px;
+            background: none;
+            border: none;
+            color: var(--text-dark);
+            opacity: 0.5;
+            cursor: pointer;
+            transition: var(--transition);
+            font-family: var(--font-ui);
+            font-size: calc(var(--font-size-base) - 7px);
+            padding: 4px 12px;
+        }
+
+        .nav-item i {
+            font-size: calc(var(--font-size-base) + 4px);
+        }
+
+        .nav-item.active {
+            opacity: 1;
+            color: var(--primary);
+        }
+
+        .nav-item.active i {
+            color: var(--gold);
+        }
+
+        body.dark-mode .nav-item {
+            color: var(--text-light);
+        }
+
+        /* ========================================
+           RESPONSIVE
+           ======================================== */
+        @media (max-width: 480px) {
+            .header {
+                padding: 16px 16px 50px;
+            }
+            
+            .logo-text {
+                font-size: calc(var(--font-size-base) + 2px);
+            }
+            
+            .header-title h1 {
+                font-size: calc(var(--font-size-base) + 6px);
+            }
+            
+            .azkar-card .dhikr-text {
+                font-size: var(--font-size-base);
+            }
+            
+            .counter-number {
+                font-size: calc(var(--font-size-xlarge) + 10px);
+            }
+            
+            .category-tab {
+                padding: 8px 14px;
+                font-size: calc(var(--font-size-base) - 6px);
+            }
+
+            .settings-panel {
+                padding: 16px;
+                width: 95%;
+            }
+
+            .font-option {
+                padding: 6px 12px;
+                font-size: calc(var(--font-size-base) - 4px);
+            }
+
+            .size-option {
+                padding: 6px 14px;
+                font-size: calc(var(--font-size-base) - 4px);
+            }
+        }
+
+        @media (min-width: 768px) {
+            .main-content {
+                max-width: 700px;
+                margin: -30px auto 0;
+            }
+            
+            .counter-container {
+                max-width: 500px;
+            }
+
+            .settings-panel {
+                max-width: 480px;
+            }
+        }
+
+        /* ========================================
+           UTILITY
+           ======================================== */
+        .hidden {
+            display: none !important;
+        }
+
+        .text-gold {
+            color: var(--gold);
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        .mt-8 {
+            margin-top: 8px;
+        }
+        .mt-16 {
+            margin-top: 16px;
+        }
+        .mb-16 {
+            margin-bottom: 16px;
+        }
+
+        /* ========================================
+           ISLAMIC PATTERN OVERLAY
+           ======================================== */
+        .pattern-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            pointer-events: none;
+            z-index: -1;
+            opacity: 0.02;
+            background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23c9a84c' fill-opacity='1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ====== PATTERN OVERLAY ====== -->
+    <div class="pattern-overlay"></div>
+
+    <!-- ====== TOAST ====== -->
+    <div class="toast" id="toast"></div>
+
+    <!-- ====== OVERLAY ====== -->
+    <div class="overlay" id="overlay"></div>
+
+    <!-- ====== HEADER ====== -->
+    <header class="header">
+        <div class="header-top">
+            <div class="logo">
+                <div class="logo-icon">
+                    <i class="fas fa-mosque"></i>
+                </div>
+                <div class="logo-text">أذ<span>كاري</span></div>
+            </div>
+            <div class="header-actions">
+                <button class="header-btn" onclick="toggleSettings()" title="الإعدادات">
+                    <i class="fas fa-sliders-h"></i>
+                </button>
+                <button class="header-btn" onclick="toggleDarkMode()" title="الوضع الليلي">
+                    <i class="fas fa-moon"></i>
+                </button>
+                <button class="header-btn" onclick="showFavorites()" title="المفضلة">
+                    <i class="fas fa-heart"></i>
+                    <span class="badge" id="favCount">0</span>
+                </button>
+            </div>
+        </div>
+        <div class="header-title">
+            <h1>أذكار الصباح والمساء</h1>
+            <p>بِسْمِ اللَّهِ الرَّحْمٰنِ الرَّحِيمِ</p>
+        </div>
+        <div class="search-bar">
+            <i class="fas fa-search search-icon"></i>
+            <input type="text" class="search-input" id="searchInput" placeholder="ابحث عن ذكر..." oninput="filterAzkar(this.value)">
+        </div>
+    </header>
+
+    <!-- ====== MAIN CONTENT ====== -->
+    <main class="main-content">
+
+        <!-- Categories -->
+        <div class="category-tabs" id="categoryTabs">
+            <button class="category-tab active" data-category="all" onclick="filterCategory('all')">
+                <i class="fas fa-th-list"></i> الكل
+            </button>
+            <button class="category-tab" data-category="morning" onclick="filterCategory('morning')">
+                <i class="fas fa-sun"></i> الصباح
+            </button>
+            <button class="category-tab" data-category="evening" onclick="filterCategory('evening')">
+                <i class="fas fa-moon"></i> المساء
+            </button>
+            <button class="category-tab" data-category="protection" onclick="filterCategory('protection')">
+                <i class="fas fa-shield-alt"></i> الحفظ
+            </button>
+            <button class="category-tab" data-category="supplication" onclick="filterCategory('supplication')">
+                <i class="fas fa-hands"></i> الدعاء
+            </button>
+        </div>
+
+        <!-- Azkar List -->
+        <div class="azkar-list" id="azkarList"></div>
+
+    </main>
+
+    <!-- ====== COUNTER ====== -->
+    <div class="counter-container" id="counterContainer">
+        <div class="counter-header">
+            <h3 id="counterTitle">الذكر</h3>
+            <button class="counter-close" onclick="closeCounter()">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="counter-display">
+            <div class="counter-number" id="counterNumber">0</div>
+            <div class="counter-target" id="counterTarget">الهدف: 0</div>
+        </div>
+        <div class="counter-progress">
+            <div class="counter-progress-bar" id="counterProgress"></div>
+        </div>
+        <div class="counter-buttons">
+            <button class="counter-btn counter-btn-secondary" onclick="decrementCounter()">
+                <i class="fas fa-minus"></i>
+            </button>
+            <button class="counter-btn counter-btn-primary" onclick="incrementCounter()">
+                <i class="fas fa-plus"></i> عد
+            </button>
+            <button class="counter-btn counter-btn-danger" onclick="resetCounter()">
+                <i class="fas fa-undo"></i>
+            </button>
+        </div>
+    </div>
+
+    <!-- ====== SETTINGS PANEL ====== -->
+    <div class="settings-panel" id="settingsPanel">
+        <div class="panel-header">
+            <h2><i class="fas fa-cog text-gold"></i> الإعدادات</h2>
+            <button class="panel-close" onclick="closeSettings()">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+
+        <!-- اختيار الخط -->
+        <div class="setting-group">
+            <div class="setting-group-title">
+                <i class="fas fa-font"></i> نوع الخط
+            </div>
+            <div class="setting-item">
+                <span class="setting-label">اختر الخط المفضل لديك</span>
+                <div class="font-options" id="fontOptions">
+                    <button class="font-option active" data-font="amiri" onclick="changeFont('amiri')">
+                        أميري
+                        <span class="font-preview">بسم الله الرحمن الرحيم</span>
+                    </button>
+                    <button class="font-option" data-font="reem" onclick="changeFont('reem')">
+                        رقعة
+                        <span class="font-preview" style="font-family:'Reem Kufi',sans-serif;">بسم الله الرحمن الرحيم</span>
+                    </button>
+                    <button class="font-option" data-font="cairo" onclick="changeFont('cairo')">
+                        قاهرة
+                        <span class="font-preview" style="font-family:'Cairo',sans-serif;">بسم الله الرحمن الرحيم</span>
+                    </button>
+                    <button class="font-option" data-font="almarai" onclick="changeFont('almarai')">
+                        المراي
+                        <span class="font-preview" style="font-family:'Almarai',sans-serif;">بسم الله الرحمن الرحيم</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- حجم الخط -->
+        <div class="setting-group">
+            <div class="setting-group-title">
+                <i class="fas fa-text-height"></i> حجم الخط
+            </div>
+            <div class="setting-item">
+                <span class="setting-label">اختر حجم الخط المناسب</span>
+                <div class="size-options" id="sizeOptions">
+                    <button class="size-option" data-size="small" onclick="changeFontSize('small')">
+                        <i class="fas fa-font" style="font-size:14px;"></i> صغير
+                    </button>
+                    <button class="size-option active" data-size="medium" onclick="changeFontSize('medium')">
+                        <i class="fas fa-font" style="font-size:18px;"></i> متوسط
+                    </button>
+                    <button class="size-option" data-size="large" onclick="changeFontSize('large')">
+                        <i class="fas fa-font" style="font-size:24px;"></i> كبير
+                    </button>
+                    <button class="size-option" data-size="xlarge" onclick="changeFontSize('xlarge')">
+                        <i class="fas fa-font" style="font-size:30px;"></i> كبير جداً
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- معلومات -->
+        <div class="setting-group">
+            <div class="setting-group-title">
+                <i class="fas fa-info-circle"></i> عن التطبيق
+            </div>
+            <div class="setting-item" style="border-bottom: none;">
+                <p style="font-family:var(--font-arabic); font-size:calc(var(--font-size-base) - 2px); opacity:0.7; line-height:1.8;">
+                    <strong>أذكاري</strong> - تطبيق الأذكار اليومية<br>
+                    يحتوي على أكثر من 40 ذكرًا من أذكار الصباح والمساء<br>
+                    مع عداد تسبيح ومفضلة وإعدادات مخصصة
+                </p>
+                <p style="font-family:var(--font-arabic); font-size:calc(var(--font-size-base) - 4px); opacity:0.5; margin-top:8px;">
+                    نسخة 2.0 - جميع الأذكار من السنة النبوية
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- ====== FAB ====== -->
+    <button class="fab" onclick="openRandomDhikr()">
+        <i class="fas fa-random"></i>
+        ذكر عشوائي
+    </button>
+
+    <!-- ====== BOTTOM NAV ====== -->
+    <nav class="bottom-nav">
+        <button class="nav-item active" onclick="navigateTo('all')">
+            <i class="fas fa-home"></i>
+            <span>الرئيسية</span>
+        </button>
+        <button class="nav-item" onclick="navigateTo('favorites')">
+            <i class="fas fa-heart"></i>
+            <span>المفضلة</span>
+        </button>
+        <button class="nav-item" onclick="navigateTo('counter')">
+            <i class="fas fa-stopwatch"></i>
+            <span>المسبحة</span>
+        </button>
+        <button class="nav-item" onclick="navigateTo('settings')">
+            <i class="fas fa-cog"></i>
+            <span>الإعدادات</span>
+        </button>
+    </nav>
+
+    <!-- ====== JAVASCRIPT ====== -->
+    <script>
+        // ============================================
+        // DATA - جميع الأذكار من القائمة المقدمة
+        // ============================================
+        const azkarData = [
+            // ====== الصباح ======
+            {
+                id: 1,
+                category: 'morning',
+                title: 'دعاء الاستيقاظ',
+                text: 'بِسْمِ اللَّهِ الرَّحْمٰنِ الرَّحِيمِ ﴿ وَبِالْحَقِّ أَنزَلْنَاهُ وَبِالْحَقِّ نَزَل﴾ سورة الإسراء: 105',
+                count: 4,
+                reference: 'عند الاستيقاظ'
+            },
+            {
+                id: 2,
+                category: 'morning',
+                title: 'نية الرباط',
+                text: 'نويت الرباط والجهاد في سبيل الله',
+                count: 1,
+                reference: 'صباحًا'
+            },
+            {
+                id: 3,
+                category: 'morning',
+                title: 'التوكل على الله',
+                text: 'حولي وقوتي بكَ يا الله',
+                count: 3,
+                reference: 'صباحًا'
+            },
+            {
+                id: 4,
+                category: 'protection',
+                title: 'الحجاب الإلهي',
+                text: 'اللهم احجُبني من شر الأشرار وكيد الفُجار من كل متكبرٍ وظالمٍ وحاسدٍ وساحرٍ وسارقٍ ومارقٍ وشيطانٍ مارد',
+                count: 1,
+                reference: 'للحفظ'
+            },
+            {
+                id: 5,
+                category: 'protection',
+                title: 'آية الكفاية',
+                text: 'فَسَيَكْفِيكَهُمُ اللَّهُ ۚ وَهُوَ السَّمِيعُ الْعَلِيمُ',
+                count: 3,
+                reference: 'صباحًا ومساءً'
+            },
+            {
+                id: 6,
+                category: 'protection',
+                title: 'دعاء الكفاية',
+                text: 'يا كبير يا عظيم يا سلام اكفني شر ما أخاف شره فإنك قلت وقولك الحق أَلَيْسَ اللَّهُ بِكَافٍ عَبْدَهُ بلى',
+                count: 1,
+                reference: 'للحفظ'
+            },
+            {
+                id: 7,
+                category: 'morning',
+                title: 'شهادة الإيمان',
+                text: 'أشهدُ أنْ لا إله إلا اللهُ وحدَه لا شريكَ له وأنَّ محمّدًا عبدُه ورسولُه وأنَّ عيسى عبدُ اللهِ ورسولُه وكَلِمَتُه ألقَاها إلى مريم ورُوحٌ مِنه والجنّةَ حقٌّ والنّارَ حقٌّ',
+                count: 1,
+                reference: 'صباحًا ومساءً'
+            },
+            {
+                id: 8,
+                category: 'morning',
+                title: 'الحفظ بالبسملة',
+                text: 'بسم الله على نفسي وأهلي ومالي',
+                count: 3,
+                reference: 'صباحًا'
+            },
+            {
+                id: 9,
+                category: 'supplication',
+                title: 'دعاء الغنى',
+                text: 'اللهم اكفني بحلالك عن حرامك وأغنني بفضلك عمن سواك',
+                count: 1,
+                reference: 'صباحًا ومساءً'
+            },
+            {
+                id: 10,
+                category: 'supplication',
+                title: 'دعاء اللطف',
+                text: 'يا لطيفًا بِخَلقِه يا عَليمًا بِخلقِه يا خَبيرًا بِخَلْقِه اُلطُف بي يا لَطيف يا عَليمُ يا خَبير',
+                count: 3,
+                reference: 'عند الضيق'
+            },
+            {
+                id: 11,
+                category: 'supplication',
+                title: 'دعاء المغفرة',
+                text: 'اللهم اغفر لي ولوالدي وللمؤمنين والمؤمنات',
+                count: 1,
+                reference: 'صباحًا ومساءً'
+            },
+            {
+                id: 12,
+                category: 'protection',
+                title: 'الحفظ الشامل',
+                text: 'بسم الله، ربّي الله، حسبي الله، توكّلت على الله، اعتصمت بالله، فوّضت إلى الله، ما شاء الله، لا قوّة إلَّا بالله',
+                count: 1,
+                reference: 'لتيسير الأمور والحفظ'
+            },
+            {
+                id: 13,
+                category: 'supplication',
+                title: 'دعاء الكفاية من العدو',
+                text: 'اللَّهُمَّ اِكْفِنِيْهِمْ بِمَا شِئْت إنَّكَ عليهم قادِر',
+                count: 1,
+                reference: 'صباحًا ومساءً'
+            },
+            {
+                id: 14,
+                category: 'supplication',
+                title: 'استوداع الله',
+                text: 'اللهم إني أستودعك نفسي وأهلي وأولادي يا من لا تضيع ودائعه',
+                count: 1,
+                reference: 'صباحًا ومساءً'
+            },
+            {
+                id: 15,
+                category: 'supplication',
+                title: 'دعاء الفرج',
+                text: 'اللّهُمَّ يا ذا المَعْروفِ الَّذي ﻻ يَنْقَطِعُ أبَدًا وﻻ يُحْصِيْهِ غَيْرُكَ فَرِّجْ عَنّا ما أهَمَّنا',
+                count: 1,
+                reference: 'عند الهم'
+            },
+            {
+                id: 16,
+                category: 'supplication',
+                title: 'دعاء لأهل غزة',
+                text: 'اللهُمَّ إني أستودِعُكَ أهلنا في غزة، وأستودعك يا ربي منزلي ومنزل جيراني وإخواني',
+                count: 1,
+                reference: 'صباحًا ومساءً'
+            },
+            {
+                id: 17,
+                category: 'morning',
+                title: 'النجاة من النار',
+                text: 'اللهم أجرني من النار',
+                count: 7,
+                reference: 'صباحًا ومساءً'
+            },
+            {
+                id: 18,
+                category: 'morning',
+                title: 'دعاء العافية',
+                text: 'اللَّهُمَّ عَافِنِي فِي بَدَنِي، اللَّهُمَّ عَافِنِي فِي سَمْعِي، اللَّهُمَّ عَافِنِي فِي بَصَرِي، اللَّهُمَّ إِنِّي أَعُوذُ بِكَ مِنَ الْكُفْرِ وَالْفَقْرِ، اللَّهُمَّ أَعُوذُ بِكَ مِنَ عَذَابِ الْقَبْرِ، لا إِلهَ إِلا أَنْتَ',
+                count: 3,
+                reference: 'صباحًا ومساءً'
+            },
+            {
+                id: 19,
+                category: 'protection',
+                title: 'دعاء الحفظ الكامل',
+                text: 'اللَّهُمَّ أَنْتَ رَبِّي لَا إِلَهَ إِلَّا أَنْتَ، عَلَيْكَ تَوَكَّلْتُ، وَأَنْتَ رَبُّ الْعَرْشِ الْعَظِيمِ، مَا شَاءَ الله كَانَ وَمَا لَمْ يَشَأْ لَمْ يَكُنْ، لَا حَوْلَ وَلَا قُوَّةَ إِلَّا بِاللَّهِ الْعَلِيِّ الْعَظِيمِ، أَعْلَمُ أَنَّ اللَّهَ عَلَى كُلِّ شَيْءٍ قَدِيرٌ، وَأَنَّ اللَّهَ قَدْ أَحَاطَ بِكُلِّ شَيْءٍ عِلْمًا، اللَّهُمَّ إِنِّي أَعُوذُ بِكَ مِنْ شَرِّ نَفْسِي، وَمِنْ شَرِّ كُلِّ دَابَّةٍ أَنْتَ آخِذٌ بِنَاصِيَتِهَا، إِنَّ رَبِّي عَلَى صِرَاطٍ مُسْتَقِيمٍ',
+                count: 1,
+                reference: 'للحفظ'
+            },
+            {
+                id: 20,
+                category: 'morning',
+                title: 'بسم الله الذي لا يضر',
+                text: 'بسمِ اللهِ الذي لا يَضُرُّ معَ اسمهِ شيءٌ في الأرضِ ولا في السماءِ وهوَ السميع العليم',
+                count: 3,
+                reference: 'صباحًا ومساءً'
+            },
+            {
+                id: 21,
+                category: 'morning',
+                title: 'رضيت بالله ربًا',
+                text: 'رضيتُ باللهِ ربًّا وبالإسلامِ دينًا وبمحمدٍ صلى الله عليه وسلم نبيًّا',
+                count: 3,
+                reference: 'صباحًا ومساءً'
+            },
+            {
+                id: 22,
+                category: 'supplication',
+                title: 'دعاء الهم والحزن',
+                text: 'اللهم إني أعوذ بك من الهمِّ والحَزَن، وأعوذُ بك من العجزِ والكسل، وأعوذُ بكَ من الجُبن والبخل وأعوذ بك من غلَبَةِ الدَّين وقهر الرّجال',
+                count: 1,
+                reference: 'عند الهم'
+            },
+            {
+                id: 23,
+                category: 'protection',
+                title: 'حسبي الله',
+                text: 'حسبيَ اللهُ لا إله إلا هُو، عليهِ توكَّلتُ وهوَ ربُّ العرشِ العظيمِ',
+                count: 7,
+                reference: 'صباحًا ومساءً'
+            },
+            {
+                id: 24,
+                category: 'protection',
+                title: 'أعوذ بكلمات الله التامات',
+                text: 'أَعـوذُ بِكَلِمـاتِ اللهِ التّـامّـاتِ مِنْ شَـرِّ ما خَلَـق',
+                count: 3,
+                reference: 'صباحًا ومساءً'
+            },
+            {
+                id: 25,
+                category: 'morning',
+                title: 'الاستغفار',
+                text: 'أستغفرُ اللهَ الذي لا إله الا هو الحيّ القيّوم وأتوبُ إليه',
+                count: 3,
+                reference: 'صباحًا ومساءً'
+            },
+            {
+                id: 26,
+                category: 'morning',
+                title: 'سبحان الله وبحمده',
+                text: 'سبحان الله وبحمده، لا قُوَّةَ إلّا بالله، ما شاء اللهُ كان وما لم يشأ لم يكن، أعلمُ أنَّ اللهَ على كلِّ شىْءٍ قديرٌ وأنَّ اللهَ قد أحاط بكلِّ شيءٍ علمًا',
+                count: 1,
+                reference: 'صباحًا ومساءً'
+            },
+            {
+                id: 27,
+                category: 'protection',
+                title: 'دعاء سيدنا الخضر',
+                text: 'بسم الله ما شاء الله، ﻻ يسوق الخير إﻻ الله، بسم الله ما شاء الله، ﻻ يصرف السوء إﻻ الله، بسم الله ما شاء الله، ما كان من نعمة فمن الله، بسم الله ما شاء الله، ﻻ حول وﻻ قوة إﻻ بالله',
+                count: 3,
+                reference: 'للحفظ والرزق'
+            },
+            {
+                id: 28,
+                category: 'protection',
+                title: 'آية الكرسي',
+                text: 'اللَّهُ لا إِلهَ إِلّا هُوَ الحَيُّ القَيّومُ لا تَأخُذُهُ سِنَةٌ وَلا نَومٌ لَهُ ما فِي السَّماواتِ وَما فِي الأَرضِ مَن ذَا الَّذي يَشفَعُ عِندَهُ إِلّا بِإِذنِهِ يَعلَمُ ما بَينَ أَيديهِم وَما خَلفَهُم وَلا يُحيطونَ بِشَيءٍ مِن عِلمِهِ إِلّا بِما شاءَ وَسِعَ كُرسِيُّهُ السَّماواتِ وَالأَرضَ وَلا يَئودُهُ حِفظُهُما وَهُوَ العَلِيُّ العَظيمُ',
+                count: 1,
+                reference: 'عقب الصلاة'
+            },
+            {
+                id: 29,
+                category: 'supplication',
+                title: 'ربنا آتنا في الدنيا حسنة',
+                text: 'رَبَّنا آتِنا فِي الدُّنيا حَسَنَةً وَفِي الآخِرَةِ حَسَنَةً وَقِنا عَذابَ النّارِ. رَبَّنا لا تُزِغ قُلوبَنا بَعدَ إِذ هَدَيتَنا وَهَب لَنا مِن لَدُنكَ رَحمَةً إِنَّكَ أَنتَ الوَهّابُ',
+                count: 1,
+                reference: 'صباحًا ومساءً'
+            },
+            {
+                id: 30,
+                category: 'evening',
+                title: 'آخر آيتين من سورة البقرة',
+                text: 'آمَنَ الرَّسُولُ بِما أُنْزِلَ إِلَيْهِ مِنْ رَبِّهِ وَالْمُؤْمِنُونَ كُلٌّ آمَنَ بِاللَّـهِ وَمَلائِكَتِهِ وَكُتُبِهِ وَرُسُلِهِ لا نُفَرِّقُ بَيْنَ أَحَدٍ مِنْ رُسُلِهِ وَقالُوا سَمِعْنا وَأَطَعْنا غُفْرانَكَ رَبَّنا وَإِلَيْكَ الْمَصِيرُ * لا يُكَلِّفُ اللَّهُ نَفْسًا إِلَّا وُسْعَها لَها ما كَسَبَتْ وَعَلَيْها مَا اكْتَسَبَتْ رَبَّنا لا تُؤاخِذْنا إِنْ نَسِينا أَوْ أَخْطَأْنا رَبَّنا وَلا تَحْمِلْ عَلَيْنا إِصْرًا كَما حَمَلْتَهُ عَلَى الَّذِينَ مِنْ قَبْلِنا رَبَّنا وَلا تُحَمِّلْنا ما لا طاقَةَ لَنا بِهِ وَاعْفُ عَنَّا وَاغْفِرْ لَنا وَارْحَمْنا أَنْتَ مَوْلانا فَانْصُرْنا عَلَى الْقَوْمِ الْكافِرِينَ',
+                count: 1,
+                reference: 'مساءً'
+            },
+            {
+                id: 31,
+                category: 'evening',
+                title: 'آخر سورة الحشر',
+                text: 'هُوَ اللَّهُ الَّذِي لا إِلهَ إِلَّا هُوَ عالِمُ الْغَيْبِ وَالشَّهادَةِ هُوَ الرَّحْمنُ الرَّحِيمُ * هُوَ اللَّهُ الَّذِي لا إِلهَ إِلَّا هُوَ الْمَلِكُ الْقُدُّوسُ السَّلامُ الْمُؤْمِنُ الْمُهَيْمِنُ الْعَزِيزُ الْجَبَّارُ الْمُتَكَبِّرُ سُبْحانَ اللَّـهِ عَمَّا يُشْرِكُونَ * هُوَ اللَّهُ الْخالِقُ الْبارِئُ الْمُصَوِّرُ لَهُ الْأَسْماءُ الْحُسْنى يُسَبِّحُ لَهُ ما فِي السَّماواتِ وَالْأَرْضِ وَ هُوَ الْعَزِيزُ الْحَكِيمُ',
+                count: 1,
+                reference: 'صباحًا ومساءً'
+            },
+            {
+                id: 32,
+                category: 'protection',
+                title: 'المعوذات (الإخلاص، الفلق، الناس)',
+                text: 'قُلْ هُوَ الله أَحَدٌ * الله الصَّمَدُ * لَمْ يَلِدْ وَلَمْ يُولَدْ * وَلَمْ يَكُن لَّهُ كُفُوًا أحد * قُلْ أَعُوذُ بِرَبِّ الْفَلَقِ * مِن شَرِّ مَا خَلَقَ * وَمِن شَرِّ غَاسِقٍ إِذَا وَقَبَ * وَمِن شَرِّ النَّفَّاثَاتِ فِي الْعُقَدِ * وَمِن شَرِّ حَاسِدٍ إِذَا حَسَدَ * قُلْ أَعُوذُ بِرَبِّ النَّاسِ * مَلِكِ النَّاسِ * إِلَهِ النَّاسِ * مِن شَرِّ الْوَسْوَاسِ الْخَنَّاسِ * الَّذِي يُوَسْوِسُ فِي صُدُورِ النَّاسِ * مِنَ الْجِنَّةِ وَ النَّاسِ',
+                count: 3,
+                reference: 'صباحًا ومساءً'
+            },
+            {
+                id: 33,
+                category: 'supplication',
+                title: 'الصلاة على النبي',
+                text: 'اللهم صلِّ صلاةً كاملةً، وسلّم سلامًا تامًّا على سيدنا محمّد، الذي تنحلُّ به العقد وتنفرجُ به الكرب، وتُقضى به الحوائجُ، وتُنالُ به الرغائب وحسن الخواتيم، ويُستسقى الغمام بوجهه الكريم، وعلى ءاله وصحبه وسلم',
+                count: 1,
+                reference: 'صباحًا ومساءً'
+            },
+            {
+                id: 34,
+                category: 'morning',
+                title: 'دعاء استفتاح اليوم',
+                text: 'بِسْمِ اللهِ عَلَى نَفْسِي وَأَهْلِي وَمَالِي، بِسْمِ اللهِ الّذِي لاَ يَضُرُّ مَعَ اسْمِهِ أَذَىً، بِسْمِ اللهِ الكَافِي، بِسْمِ اللهِ الشَافِي، بِسْمِ اللهِ الْمُعَافي، بِسْمِ اللهِ الّذِي لاَ يَضُرُّ مَعَ اسْمِهِ شَيْءٌ فِي الأَرْضِ وَلاَ فِي السَّمَاءِ وَهُوَ السَّمِيعُ العَلِيمُ. حَصَّنْتُ نَفْسِي وَأَهْلِي وَمَالِي بِاللهِ الْحَيِّ القَيُّومِ الّذِي لاَ يَمُوتُ، اللّهُمَ امين',
+                count: 1,
+                reference: 'صباحًا'
+            },
+            {
+                id: 35,
+                category: 'supplication',
+                title: 'استوداع الله',
+                text: 'أستودعُ الله الذي لا تضيع ودائعه، ديني، ونفسي، وأمانتي، وخواتيم عملي، وأبنائي، وأهلي، وأحبتي، وبيتي، ومالي، وجميع ما أنعم الله به عليّ، اللهم جمّلني بقلب رحيم، وعقل حكيم، ونفس صبورة، يا رب اجعل بسمتي عادة، وحديثي عبادة، وحياتي سعادة، وخاتمتي شهادة',
+                count: 1,
+                reference: 'صباحًا ومساءً'
+            },
+            {
+                id: 36,
+                category: 'morning',
+                title: 'دعاء سيدنا موسى',
+                text: 'اللَّهُمَّ أَنْتَ خَلَقْتَنِي، وَأَنْتَ تَهْدِينِي، وَأَنْتَ تُطْعِمُنِي، وَأَنْتَ تَسْقِينِي، وَأَنْتَ تُمِيتُنِي، وَأَنْتَ تُحْيِينِي، وانت على كل شىء قدير',
+                count: 7,
+                reference: 'صباحًا ومساءً'
+            },
+            {
+                id: 37,
+                category: 'supplication',
+                title: 'دعاء الكرب',
+                text: 'لا إله إلا الله العظيم الحليم، لا إله إلا الله رب العرش العظيم، لا إله إلا الله رب السماوات، ورب الأرض ورب العرش الكريم اللهم رحمتك أرجو فلا تكلني إلى نفسي طرفة عين وأصلح لي شأني كله، لا إله إلا أنت لا إله إلا أنت سبحانك إني كنت من الظالمين الله الله رب لا أشرك به شيئا',
+                count: 1,
+                reference: 'عند الكرب'
+            },
+            {
+                id: 38,
+                category: 'supplication',
+                title: 'دعاء الهم والدين',
+                text: 'اللهم إني عبدك ابن عبدك ابن أمتك ناصيتي بيدك ماض في حكمك، عدل في قضاؤك أسألك بكل اسم هو لك سميت به نفسك أو أنزلته في كتابك، أو علمته أحداً من خلقك أو استأثرت به في علم الغيب عندك أن تجعل القرآن ربيع قلبي، ونور صدري وجلاء حزني وذهاب همي اللهم إني أعوذ بك من الهم والحزن والعجز والكسل والبخل والجبن، وضلع الدين وغلبة الرجال',
+                count: 1,
+                reference: 'عند الهم'
+            },
+            {
+                id: 39,
+                category: 'supplication',
+                title: 'دعاء الغنى بعد الجمعة',
+                text: 'اللهم يا غني يا حميد، يا مبدئ يا معيد، يا رحيم يا ودود، أغنني بحلالك عن حرامك وبطاعتك عن معصيتك وبفضلك عمن سواك',
+                count: 1,
+                reference: 'بعد صلاة الجمعة'
+            },
+            {
+                id: 40,
+                category: 'supplication',
+                title: 'دعاء عرفة',
+                text: 'اللَّهُمَّ أَعْتِقْ رقَبَتِي مِنَ النَّارَ ووَسِّعْ لي مِنَ الرِّزْقِ الْحَلَالِ واصْرِفْ عنِّي فَسَقَةَ الجِنِّ والإِنْسِ',
+                count: 1,
+                reference: 'يوم عرفة'
+            }
+        ];
+
+        // ============================================
+        // STATE
+        // ============================================
+        let currentCategory = 'all';
+        let currentFilter = '';
+        let favorites = JSON.parse(localStorage.getItem('azkari_favorites') || '[]');
+        let counter = {
+            current: 0,
+            target: 0,
+            dhikrId: null,
+            dhikrText: ''
+        };
+        let counters = JSON.parse(localStorage.getItem('azkari_counters') || '{}');
+
+        // إعدادات الخط
+        let currentFont = localStorage.getItem('azkari_font') || 'amiri';
+        let currentSize = localStorage.getItem('azkari_size') || 'medium';
+
+        // ============================================
+        // DOM ELEMENTS
+        // ============================================
+        const azkarList = document.getElementById('azkarList');
+        const searchInput = document.getElementById('searchInput');
+        const toast = document.getElementById('toast');
+        const overlay = document.getElementById('overlay');
+        const counterContainer = document.getElementById('counterContainer');
+        const counterNumber = document.getElementById('counterNumber');
+        const counterTarget = document.getElementById('counterTarget');
+        const counterProgress = document.getElementById('counterProgress');
+        const counterTitle = document.getElementById('counterTitle');
+        const favCount = document.getElementById('favCount');
+        const settingsPanel = document.getElementById('settingsPanel');
+
+        // ============================================
+        // FONT & SIZE FUNCTIONS
+        // ============================================
+        function changeFont(font) {
+            currentFont = font;
+            localStorage.setItem('azkari_font', font);
+            
+            // إزالة جميع فئات الخطوط
+            document.body.classList.remove('font-amiri', 'font-reem', 'font-cairo', 'font-almarai');
+            document.body.classList.add(`font-${font}`);
+            
+            // تحديث الواجهة النشطة
+            document.querySelectorAll('.font-option').forEach(btn => {
+                btn.classList.toggle('active', btn.dataset.font === font);
+            });
+            
+            showToast(`تم تغيير الخط إلى ${getFontName(font)} 🖋️`);
+        }
+
+        function getFontName(font) {
+            const names = {
+                'amiri': 'أميري',
+                'reem': 'رقعة',
+                'cairo': 'قاهرة',
+                'almarai': 'المراي'
+            };
+            return names[font] || font;
+        }
+
+        function changeFontSize(size) {
+            currentSize = size;
+            localStorage.setItem('azkari_size', size);
+            
+            // إزالة جميع فئات الحجم
+            document.body.classList.remove('font-size-small', 'font-size-medium', 'font-size-large', 'font-size-xlarge');
+            document.body.classList.add(`font-size-${size}`);
+            
+            // تحديث الواجهة النشطة
+            document.querySelectorAll('.size-option').forEach(btn => {
+                btn.classList.toggle('active', btn.dataset.size === size);
+            });
+            
+            const sizeNames = {
+                'small': 'صغير',
+                'medium': 'متوسط',
+                'large': 'كبير',
+                'xlarge': 'كبير جداً'
+            };
+            showToast(`تم تغيير حجم الخط إلى ${sizeNames[size]} 📏`);
+        }
+
+        function applySavedSettings() {
+            // تطبيق الخط المحفوظ
+            if (currentFont) {
+                document.body.classList.add(`font-${currentFont}`);
+                document.querySelectorAll('.font-option').forEach(btn => {
+                    btn.classList.toggle('active', btn.dataset.font === currentFont);
+                });
+            }
+            
+            // تطبيق الحجم المحفوظ
+            if (currentSize) {
+                document.body.classList.add(`font-size-${currentSize}`);
+                document.querySelectorAll('.size-option').forEach(btn => {
+                    btn.classList.toggle('active', btn.dataset.size === currentSize);
+                });
+            }
+        }
+
+        // ============================================
+        // SETTINGS PANEL
+        // ============================================
+        function toggleSettings() {
+            settingsPanel.classList.toggle('active');
+            overlay.classList.toggle('active');
+            document.body.style.overflow = settingsPanel.classList.contains('active') ? 'hidden' : '';
+        }
+
+        function closeSettings() {
+            settingsPanel.classList.remove('active');
+            overlay.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        // ============================================
+        // RENDER FUNCTIONS
+        // ============================================
+        function getFilteredAzkar() {
+            let result = azkarData;
+
+            if (currentCategory !== 'all') {
+                result = result.filter(a => a.category === currentCategory);
+            }
+
+            if (currentFilter) {
+                const filter = currentFilter.toLowerCase();
+                result = result.filter(a => 
+                    a.text.includes(filter) || 
+                    a.title.includes(filter) ||
+                    a.reference.includes(filter)
+                );
+            }
+
+            return result;
+        }
+
+        function renderAzkar() {
+            const azkar = getFilteredAzkar();
+            
+            if (azkar.length === 0) {
+                azkarList.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-search"></i>
+                        <h3>لا توجد أذكار تطابق البحث</h3>
+                    </div>
+                `;
+                return;
+            }
+
+            azkarList.innerHTML = azkar.map(dhikr => {
+                const isFav = favorites.includes(dhikr.id);
+                const savedCount = counters[dhikr.id] || 0;
+                const progress = dhikr.count > 0 ? Math.min((savedCount / dhikr.count) * 100, 100) : 0;
+
+                return `
+                    <div class="azkar-card" onclick="openCounter(${dhikr.id})">
+                        <div class="dhikr-text">${dhikr.text}</div>
+                        <div class="dhikr-meta">
+                            <span class="dhikr-count">
+                                <i class="fas fa-repeat"></i>
+                                ${dhikr.count} مرات
+                                ${savedCount > 0 ? `| تم: ${savedCount}` : ''}
+                            </span>
+                            <span class="dhikr-ref">${dhikr.reference}</span>
+                            <div class="dhikr-actions">
+                                <button onclick="event.stopPropagation();toggleFavorite(${dhikr.id})" 
+                                        class="${isFav ? 'favorited' : ''}"
+                                        title="${isFav ? 'إزالة من المفضلة' : 'إضافة إلى المفضلة'}">
+                                    <i class="fas fa-heart"></i>
+                                </button>
+                                <button onclick="event.stopPropagation();shareDhikr(${dhikr.id})" title="مشاركة">
+                                    <i class="fas fa-share-alt"></i>
+                                </button>
+                                <button onclick="event.stopPropagation();copyDhikr(${dhikr.id})" title="نسخ">
+                                    <i class="fas fa-copy"></i>
+                                </button>
+                            </div>
+                        </div>
+                        ${progress > 0 ? `
+                            <div class="counter-progress" style="margin-top:8px;">
+                                <div class="counter-progress-bar" style="width:${progress}%;"></div>
+                            </div>
+                        ` : ''}
+                    </div>
+                `;
+            }).join('');
+
+            updateFavCount();
+        }
+
+        function updateFavCount() {
+            favCount.textContent = favorites.length;
+        }
+
+        // ============================================
+        // FILTER FUNCTIONS
+        // ============================================
+        function filterCategory(category) {
+            currentCategory = category;
+            document.querySelectorAll('.category-tab').forEach(tab => {
+                tab.classList.toggle('active', tab.dataset.category === category);
+            });
+            renderAzkar();
+        }
+
+        function filterAzkar(value) {
+            currentFilter = value;
+            renderAzkar();
+        }
+
+        // ============================================
+        // FAVORITES
+        // ============================================
+        function toggleFavorite(id) {
+            const index = favorites.indexOf(id);
+            if (index > -1) {
+                favorites.splice(index, 1);
+                showToast('تمت إزالة الذكر من المفضلة');
+            } else {
+                favorites.push(id);
+                showToast('تمت إضافة الذكر إلى المفضلة ❤️');
+            }
+            localStorage.setItem('azkari_favorites', JSON.stringify(favorites));
+            renderAzkar();
+        }
+
+        function showFavorites() {
+            const favAzkar = azkarData.filter(a => favorites.includes(a.id));
+            if (favAzkar.length === 0) {
+                showToast('لا توجد أذكار في المفضلة');
+                return;
+            }
+            currentCategory = 'all';
+            currentFilter = '';
+            document.querySelectorAll('.category-tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            azkarList.innerHTML = favAzkar.map(dhikr => {
+                const savedCount = counters[dhikr.id] || 0;
+                return `
+                    <div class="azkar-card" onclick="openCounter(${dhikr.id})">
+                        <div class="dhikr-text">${dhikr.text}</div>
+                        <div class="dhikr-meta">
+                            <span class="dhikr-count">
+                                <i class="fas fa-repeat"></i>
+                                ${dhikr.count} مرات
+                            </span>
+                            <span class="dhikr-ref">${dhikr.reference}</span>
+                            <div class="dhikr-actions">
+                                <button onclick="event.stopPropagation();toggleFavorite(${dhikr.id})" class="favorited">
+                                    <i class="fas fa-heart"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+            
+            // إظهار زر العودة
+            azkarList.innerHTML += `
+                <div style="text-align:center;margin-top:16px;">
+                    <button onclick="filterCategory('all')" style="padding:10px 24px;border:none;border-radius:var(--radius-sm);background:var(--primary);color:white;font-family:var(--font-ui);font-size:var(--font-size-base);cursor:pointer;">
+                        <i class="fas fa-arrow-right"></i> العودة للكل
+                    </button>
+                </div>
+            `;
+        }
+
+        // ============================================
+        // COUNTER
+        // ============================================
+        function openCounter(id) {
+            const dhikr = azkarData.find(a => a.id === id);
+            if (!dhikr) return;
+
+            counter.dhikrId = id;
+            counter.target = dhikr.count;
+            counter.dhikrText = dhikr.text;
+            counter.current = counters[id] || 0;
+
+            counterNumber.textContent = counter.current;
+            counterTarget.textContent = `الهدف: ${counter.target}`;
+            counterTitle.textContent = dhikr.title || 'الذكر';
+            counterProgress.style.width = `${Math.min((counter.current / counter.target) * 100, 100)}%`;
+
+            counterContainer.classList.add('active');
+            overlay.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeCounter() {
+            counterContainer.classList.remove('active');
+            overlay.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        function incrementCounter() {
+            if (counter.current < counter.target) {
+                counter.current++;
+                counters[counter.dhikrId] = counter.current;
+                localStorage.setItem('azkari_counters', JSON.stringify(counters));
+                
+                counterNumber.textContent = counter.current;
+                counterProgress.style.width = `${(counter.current / counter.target) * 100}%`;
+                
+                if (counter.current === counter.target) {
+                    showToast('🎉 تم إكمال الذكر!');
+                    setTimeout(closeCounter, 1500);
+                }
+                renderAzkar();
+            } else {
+                showToast('✅ لقد أكملت هذا الذكر بالفعل');
+            }
+        }
+
+        function decrementCounter() {
+            if (counter.current > 0) {
+                counter.current--;
+                counters[counter.dhikrId] = counter.current;
+                localStorage.setItem('azkari_counters', JSON.stringify(counters));
+                
+                counterNumber.textContent = counter.current;
+                counterProgress.style.width = `${(counter.current / counter.target) * 100}%`;
+                renderAzkar();
+            }
+        }
+
+        function resetCounter() {
+            counter.current = 0;
+            counters[counter.dhikrId] = 0;
+            localStorage.setItem('azkari_counters', JSON.stringify(counters));
+            
+            counterNumber.textContent = '0';
+            counterProgress.style.width = '0%';
+            renderAzkar();
+            showToast('تم إعادة تعيين العداد');
+        }
+
+        // ============================================
+        // SHARE & COPY
+        // ============================================
+        function shareDhikr(id) {
+            const dhikr = azkarData.find(a => a.id === id);
+            if (!dhikr) return;
+            
+            const text = `${dhikr.text}\n\n📿 ${dhikr.title} - ${dhikr.count} مرات\n${dhikr.reference}\n\n#أذكاري`;
+            
+            if (navigator.share) {
+                navigator.share({
+                    title: 'ذكر من أذكاري',
+                    text: text
+                }).catch(() => {});
+            } else {
+                copyToClipboard(text);
+                showToast('تم نسخ الذكر للمشاركة 📋');
+            }
+        }
+
+        function copyDhikr(id) {
+            const dhikr = azkarData.find(a => a.id === id);
+            if (!dhikr) return;
+            copyToClipboard(dhikr.text);
+            showToast('تم نسخ الذكر 📋');
+        }
+
+        function copyToClipboard(text) {
+            if (navigator.clipboard) {
+                navigator.clipboard.writeText(text).catch(() => {});
+            } else {
+                const textarea = document.createElement('textarea');
+                textarea.value = text;
+                document.body.appendChild(textarea);
+                textarea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textarea);
+            }
+        }
+
+        // ============================================
+        // RANDOM DHIKR
+        // ============================================
+        function openRandomDhikr() {
+            const random = azkarData[Math.floor(Math.random() * azkarData.length)];
+            if (random) {
+                openCounter(random.id);
+            }
+        }
+
+        // ============================================
+        // NAVIGATION
+        // ============================================
+        function navigateTo(section) {
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.classList.toggle('active', item.textContent.includes(
+                    section === 'all' ? 'الرئيسية' :
+                    section === 'favorites' ? 'المفضلة' :
+                    section === 'counter' ? 'المسبحة' : 'الإعدادات'
+                ));
+            });
+
+            if (section === 'favorites') {
+                showFavorites();
+            } else if (section === 'counter') {
+                const random = azkarData[Math.floor(Math.random() * azkarData.length)];
+                if (random) openCounter(random.id);
+            } else if (section === 'settings') {
+                toggleSettings();
+            } else {
+                currentCategory = 'all';
+                currentFilter = '';
+                searchInput.value = '';
+                document.querySelectorAll('.category-tab').forEach(tab => {
+                    tab.classList.toggle('active', tab.dataset.category === 'all');
+                });
+                renderAzkar();
+            }
+        }
+
+        // ============================================
+        // DARK MODE
+        // ============================================
+        function toggleDarkMode() {
+            document.body.classList.toggle('dark-mode');
+            const icon = document.querySelector('.header-actions .header-btn:nth-child(2) i');
+            if (document.body.classList.contains('dark-mode')) {
+                icon.className = 'fas fa-sun';
+                localStorage.setItem('azkari_darkmode', 'true');
+            } else {
+                icon.className = 'fas fa-moon';
+                localStorage.setItem('azkari_darkmode', 'false');
+            }
+        }
+
+        // ============================================
+        // TOAST
+        // ============================================
+        let toastTimeout;
+
+        function showToast(message) {
+            toast.textContent = message;
+            toast.classList.add('show');
+            clearTimeout(toastTimeout);
+            toastTimeout = setTimeout(() => {
+                toast.classList.remove('show');
+            }, 2500);
+        }
+
+        // ============================================
+        // INIT
+        // ============================================
+        function init() {
+            // Dark mode
+            if (localStorage.getItem('azkari_darkmode') === 'true') {
+                document.body.classList.add('dark-mode');
+                const icon = document.querySelector('.header-actions .header-btn:nth-child(2) i');
+                if (icon) icon.className = 'fas fa-sun';
+            }
+
+            // Load favorites
+            favorites = JSON.parse(localStorage.getItem('azkari_favorites') || '[]');
+            counters = JSON.parse(localStorage.getItem('azkari_counters') || '{}');
+
+            // تطبيق إعدادات الخط
+            applySavedSettings();
+
+            renderAzkar();
+            updateFavCount();
+
+            // Close counter on overlay click
+            overlay.addEventListener('click', () => {
+                closeCounter();
+                closeSettings();
+            });
+
+            // Keyboard shortcut: Escape to close
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape') {
+                    closeCounter();
+                    closeSettings();
+                }
+            });
+
+            console.log('🕌 أذكاري - تطبيق الأذكار اليومية');
+            console.log(`📿 ${azkarData.length} ذكر متاح`);
+            console.log(`❤️ ${favorites.length} في المفضلة`);
+            console.log(`🖋️ الخط: ${currentFont}, الحجم: ${currentSize}`);
+        }
+
+        // Start the app
+        document.addEventListener('DOMContentLoaded', init);
+    </script>
+
+</body>
+</html>
