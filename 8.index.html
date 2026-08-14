@@ -1,0 +1,2521 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>مشغل المدائح النبوية</title>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        :root {
+            --primary: #1a7a3a;
+            --primary-dark: #0f5f2e;
+            --primary-light: #2ecc71;
+            --gold: #d4af37;
+            --gold-dark: #b8860b;
+            --gold-glow: rgba(212, 175, 55, 0.4);
+            --bg-dark: #0b0e12;
+            --bg-card: #14181e;
+            --bg-card-hover: #1c222a;
+            --bg-input: #1e2630;
+            --text-primary: #ecf0f3;
+            --text-secondary: #8f9ba8;
+            --border: #2a323d;
+            --shadow: 0 12px 48px rgba(0, 0, 0, 0.6);
+            --glass: rgba(20, 24, 30, 0.88);
+            --radius: 18px;
+            --radius-sm: 12px;
+            --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --accent: #1a7a3a;
+        }
+
+        [data-collection="rifai"] {
+            --accent: #1a7a3a;
+            --accent-dark: #0f5f2e;
+            --gold: #d4af37;
+            --gold-dark: #b8860b;
+            --gold-glow: rgba(212, 175, 55, 0.4);
+        }
+
+        [data-collection="khair"] {
+            --accent: #6C3CE1;
+            --accent-dark: #4A1FA6;
+            --gold: #FFD700;
+            --gold-dark: #C8A000;
+            --gold-glow: rgba(255, 215, 0, 0.4);
+        }
+
+        [data-collection="maher"] {
+            --accent: #c9a227;
+            --accent-dark: #a8841a;
+            --gold: #c9a227;
+            --gold-dark: #a8841a;
+            --gold-glow: rgba(201, 162, 39, 0.4);
+        }
+
+        [data-collection="qaranuh"] {
+            --accent: #0a7a7a;
+            --accent-dark: #065858;
+            --gold: #2a9d9d;
+            --gold-dark: #0a7a7a;
+            --gold-glow: rgba(42, 157, 157, 0.4);
+        }
+
+        [data-theme="light"] {
+            --bg-dark: #f2f5f9;
+            --bg-card: #ffffff;
+            --bg-card-hover: #f0f2f6;
+            --bg-input: #e8ecf2;
+            --text-primary: #1e2328;
+            --text-secondary: #5a6878;
+            --border: #d0d7e0;
+            --shadow: 0 12px 48px rgba(0, 0, 0, 0.08);
+            --glass: rgba(255, 255, 255, 0.92);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+        body {
+            font-family: 'Tajawal', sans-serif;
+            background: var(--bg-dark);
+            color: var(--text-primary);
+            min-height: 100vh;
+            overflow-x: hidden;
+            transition: background var(--transition), color var(--transition);
+        }
+
+        .bg-layer {
+            position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden;
+        }
+        .bg-layer::before {
+            content: '';
+            position: absolute; width: 200%; height: 200%; top: -50%; left: -50%;
+            background:
+                radial-gradient(circle at 30% 40%, rgba(26, 122, 58, 0.1) 0%, transparent 60%),
+                radial-gradient(circle at 80% 70%, rgba(212, 175, 55, 0.07) 0%, transparent 50%);
+            animation: bgFloat 28s ease-in-out infinite alternate;
+        }
+        [data-collection="khair"] .bg-layer::before {
+            background:
+                radial-gradient(circle at 30% 40%, rgba(108, 60, 225, 0.12) 0%, transparent 60%),
+                radial-gradient(circle at 80% 70%, rgba(255, 215, 0, 0.08) 0%, transparent 50%);
+        }
+        [data-collection="maher"] .bg-layer::before {
+            background:
+                radial-gradient(circle at 30% 40%, rgba(201, 162, 39, 0.12) 0%, transparent 60%),
+                radial-gradient(circle at 80% 70%, rgba(201, 162, 39, 0.07) 0%, transparent 50%);
+        }
+        [data-collection="qaranuh"] .bg-layer::before {
+            background:
+                radial-gradient(circle at 30% 40%, rgba(10, 122, 122, 0.14) 0%, transparent 60%),
+                radial-gradient(circle at 80% 70%, rgba(42, 157, 157, 0.08) 0%, transparent 50%);
+        }
+        @keyframes bgFloat {
+            0% { transform: translate(0, 0) scale(1); }
+            50% { transform: translate(2%, -2%) scale(1.05); }
+            100% { transform: translate(-2%, 2%) scale(0.95); }
+        }
+
+        .app {
+            position: relative; z-index: 1;
+            max-width: 1240px; margin: 0 auto;
+            padding: 16px 20px 110px; min-height: 100vh;
+        }
+
+        /* ===== شاشة اختيار المجموعة ===== */
+        .collection-selector {
+            position: fixed; inset: 0; z-index: 3000;
+            background: var(--bg-dark);
+            display: flex; flex-direction: column;
+            align-items: center;
+            padding: 0;
+            transition: opacity 0.5s, visibility 0.5s;
+            overflow: hidden;
+        }
+        .collection-selector.hidden {
+            opacity: 0; visibility: hidden; pointer-events: none;
+        }
+        .selector-title {
+            text-align: center; padding: 28px 20px 16px;
+            flex-shrink: 0; width: 100%;
+            background: var(--glass); backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
+        }
+        .selector-title h1 {
+            font-size: 1.7rem; font-weight: 900; margin-bottom: 6px;
+            background: linear-gradient(135deg, var(--gold), #fff);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        }
+        .selector-title p {
+            color: var(--text-secondary); font-size: 0.95rem;
+        }
+        .selector-title .total-badge {
+            display: inline-block; margin-top: 10px;
+            background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+            color: #0b0e12; padding: 4px 18px; border-radius: 30px;
+            font-weight: 800; font-size: 0.85rem;
+        }
+        .collection-cards {
+            display: flex; flex-direction: column; gap: 10px;
+            width: 100%; max-width: 640px;
+            padding: 16px 16px 40px;
+            overflow-y: auto; flex: 1;
+            -webkit-overflow-scrolling: touch;
+        }
+        .collection-cards::-webkit-scrollbar { width: 5px; }
+        .collection-cards::-webkit-scrollbar-thumb { background: var(--border); border-radius: 10px; }
+        .collection-card {
+            display: flex; align-items: center; gap: 16px;
+            background: var(--glass);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 14px 18px;
+            cursor: pointer;
+            transition: var(--transition);
+            box-shadow: var(--shadow);
+            text-align: right;
+            width: 100%;
+        }
+        .collection-card:hover {
+            transform: translateX(-4px);
+            border-color: var(--gold);
+            box-shadow: 0 8px 32px rgba(212, 175, 55, 0.2);
+            background: var(--bg-card-hover);
+        }
+        .collection-card:active {
+            transform: scale(0.98);
+        }
+        .collection-card .card-img {
+            width: 64px; height: 64px;
+            border-radius: 14px;
+            object-fit: cover;
+            border: 2px solid var(--gold);
+            flex-shrink: 0;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.3);
+        }
+        .collection-card .card-body {
+            flex: 1; min-width: 0;
+        }
+        .collection-card h2 {
+            font-size: 1.05rem; font-weight: 800; margin-bottom: 3px;
+            white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+        }
+        .collection-card .card-desc {
+            font-size: 0.8rem; color: var(--text-secondary);
+            white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+        }
+        .collection-card .card-count {
+            flex-shrink: 0;
+            background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+            color: #0b0e12;
+            padding: 6px 14px;
+            border-radius: 30px;
+            font-weight: 800; font-size: 0.8rem;
+        }
+        .collection-card .card-arrow {
+            color: var(--text-secondary); font-size: 1.1rem; flex-shrink: 0;
+        }
+
+        /* ===== الهيدر ===== */
+        .header {
+            display: flex; flex-wrap: wrap; align-items: center;
+            justify-content: space-between; gap: 12px;
+            padding: 14px 20px;
+            background: var(--glass); backdrop-filter: blur(20px);
+            border-radius: var(--radius); border: 1px solid var(--border);
+            box-shadow: var(--shadow); margin-bottom: 20px;
+        }
+        .header-brand {
+            display: flex; align-items: center; gap: 12px; cursor: pointer;
+        }
+        .header-brand .logo {
+            width: 44px; height: 44px; border-radius: var(--radius-sm);
+            background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+            display: flex; align-items: center; justify-content: center;
+            font-size: 20px; color: #fff;
+            box-shadow: 0 4px 16px rgba(212, 175, 55, 0.35);
+            overflow: hidden;
+        }
+        .header-brand .logo img {
+            width: 100%; height: 100%; object-fit: cover;
+        }
+        .header-brand .name {
+            font-size: 1.15rem; font-weight: 800; line-height: 1.2;
+        }
+        .header-brand .sub {
+            font-size: 0.7rem; color: var(--text-secondary); font-weight: 500;
+        }
+        .header-stats {
+            display: flex; align-items: center; gap: 12px;
+            font-size: 0.85rem; color: var(--text-secondary); font-weight: 600;
+        }
+        .header-stats span {
+            background: var(--bg-card); padding: 4px 14px;
+            border-radius: 30px; border: 1px solid var(--border);
+            display: flex; align-items: center; gap: 6px;
+        }
+        .header-stats i { color: var(--gold); }
+        .header-actions { display: flex; gap: 8px; }
+        .header-actions button {
+            width: 40px; height: 40px; border-radius: var(--radius-sm);
+            border: 1px solid var(--border); background: var(--bg-card);
+            color: var(--text-secondary); cursor: pointer;
+            display: flex; align-items: center; justify-content: center;
+            transition: var(--transition); font-size: 16px;
+        }
+        .header-actions button:hover {
+            background: var(--gold); color: #fff; border-color: var(--gold);
+            transform: translateY(-2px);
+        }
+
+        /* ===== أزرار التبديل ===== */
+        .collection-tabs {
+            display: flex; gap: 8px; margin-bottom: 20px;
+            background: var(--glass); backdrop-filter: blur(20px);
+            border-radius: var(--radius); border: 1px solid var(--border);
+            padding: 8px; box-shadow: var(--shadow);
+            overflow-x: auto; flex-wrap: nowrap;
+        }
+        .collection-tabs::-webkit-scrollbar { height: 0; }
+        .collection-tab {
+            flex: 1; min-width: 120px; padding: 12px 12px;
+            border: none; border-radius: var(--radius-sm);
+            background: transparent; color: var(--text-secondary);
+            font-family: 'Tajawal', sans-serif; font-weight: 700;
+            font-size: 0.85rem; cursor: pointer;
+            transition: var(--transition); white-space: nowrap;
+            display: flex; align-items: center; justify-content: center; gap: 8px;
+        }
+        .collection-tab.active {
+            background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+            color: #0b0e12;
+            box-shadow: 0 4px 16px rgba(212, 175, 55, 0.3);
+        }
+        .collection-tab:hover:not(.active) {
+            background: var(--bg-card-hover); color: var(--text-primary);
+        }
+        .collection-tab img {
+            width: 28px; height: 28px; border-radius: 50%; object-fit: cover;
+        }
+
+        /* ===== البحث ===== */
+        .search-bar { margin-bottom: 20px; }
+        .search-wrap { position: relative; }
+        .search-bar input {
+            width: 100%; padding: 14px 20px 14px 50px;
+            border-radius: 50px; border: 1px solid var(--border);
+            background: var(--bg-input); color: var(--text-primary);
+            font-family: 'Tajawal', sans-serif; font-size: 1rem;
+            outline: none; transition: var(--transition);
+        }
+        .search-bar input:focus {
+            border-color: var(--gold);
+            box-shadow: 0 0 0 3px var(--gold-glow);
+        }
+        .search-bar input::placeholder { color: var(--text-secondary); }
+        .search-wrap i {
+            position: absolute; left: 18px; top: 50%;
+            transform: translateY(-50%); color: var(--text-secondary); font-size: 1.1rem;
+        }
+
+        /* ===== الشبكة ===== */
+        .main-grid {
+            display: grid; grid-template-columns: 1fr 360px; gap: 24px;
+        }
+        @media (max-width: 920px) {
+            .main-grid { grid-template-columns: 1fr; }
+        }
+
+        /* ===== المشغل ===== */
+        .player-card {
+            background: var(--glass); backdrop-filter: blur(20px);
+            border-radius: var(--radius); border: 1px solid var(--border);
+            padding: 28px 24px 24px; box-shadow: var(--shadow);
+            display: flex; flex-direction: column; align-items: center;
+            position: relative; overflow: hidden;
+        }
+        .player-card::after {
+            content: ''; position: absolute; inset: 0;
+            background: radial-gradient(circle at 50% 0%, rgba(212, 175, 55, 0.06) 0%, transparent 60%);
+            pointer-events: none;
+        }
+        .album-wrap {
+            position: relative; width: 200px; height: 200px;
+            margin-bottom: 18px; z-index: 2;
+        }
+        @media (max-width: 500px) {
+            .album-wrap { width: 160px; height: 160px; }
+        }
+        .album-wrap img {
+            width: 100%; height: 100%; border-radius: 50%; object-fit: cover;
+            box-shadow: 0 16px 56px rgba(0,0,0,0.5), 0 0 0 4px rgba(212,175,55,0.15);
+            transition: var(--transition);
+        }
+        .album-wrap img.spinning { animation: spinAlbum 24s linear infinite; }
+        @keyframes spinAlbum { to { transform: rotate(360deg); } }
+        .album-glow {
+            position: absolute; inset: -20%;
+            background: radial-gradient(circle, var(--gold-glow) 0%, transparent 70%);
+            filter: blur(50px); opacity: 0; transition: opacity 0.6s;
+            pointer-events: none; z-index: 0;
+        }
+        .album-glow.active { opacity: 1; }
+
+        .track-info { text-align: center; z-index: 2; width: 100%; }
+        .track-info .title {
+            font-size: 1.4rem; font-weight: 800; line-height: 1.3; margin-bottom: 2px;
+        }
+        .track-info .artist {
+            font-size: 0.9rem; color: var(--text-secondary); font-weight: 500;
+        }
+        .track-info .badge {
+            display: inline-block; margin-top: 8px;
+            background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+            color: #0b0e12; padding: 2px 16px; border-radius: 30px;
+            font-weight: 700; font-size: 0.8rem;
+        }
+
+        .progress-section { width: 100%; margin-top: 16px; z-index: 2; }
+        .progress-track {
+            position: relative; height: 6px; background: var(--border);
+            border-radius: 10px; cursor: pointer; touch-action: none; margin-bottom: 8px;
+        }
+        .progress-track .buffer {
+            position: absolute; top: 0; right: 0; height: 100%;
+            background: rgba(212,175,55,0.2); border-radius: 10px; width: 0%;
+            pointer-events: none;
+        }
+        .progress-track .bar {
+            position: absolute; top: 0; right: 0; height: 100%;
+            background: linear-gradient(90deg, var(--gold), var(--gold-dark));
+            border-radius: 10px; width: 0%; pointer-events: none;
+            transition: width 0.05s linear;
+        }
+        .progress-track .thumb {
+            position: absolute; top: 50%; transform: translate(50%, -50%);
+            width: 18px; height: 18px;
+            background: radial-gradient(circle at 35% 35%, #fff, var(--gold));
+            border-radius: 50%;
+            box-shadow: 0 0 0 4px rgba(212,175,55,0.2), 0 4px 20px rgba(212,175,55,0.4);
+            right: 0%; pointer-events: none;
+            transition: transform 0.15s;
+        }
+        .progress-track .thumb.dragging,
+        .progress-track .thumb:hover {
+            transform: translate(50%, -50%) scale(1.3);
+        }
+        .time-row {
+            display: flex; justify-content: space-between;
+            font-size: 0.8rem; color: var(--text-secondary); font-weight: 600;
+        }
+
+        .controls {
+            display: flex; align-items: center; justify-content: center;
+            gap: 16px; margin: 14px 0 10px; z-index: 2;
+        }
+        .controls button {
+            background: none; border: none; color: var(--text-secondary);
+            cursor: pointer; display: flex; align-items: center; justify-content: center;
+            border-radius: 50%; transition: var(--transition);
+        }
+        .controls button:hover { color: var(--gold); transform: scale(1.08); }
+        .controls .secondary {
+            width: 42px; height: 42px; font-size: 16px;
+            background: var(--bg-card); border: 1px solid var(--border); border-radius: 50%;
+        }
+        .controls .secondary:hover {
+            background: var(--gold); color: #fff; border-color: var(--gold);
+        }
+        .controls .primary {
+            width: 66px; height: 66px; font-size: 28px;
+            background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+            color: #0b0e12; box-shadow: 0 8px 32px rgba(212,175,55,0.4);
+        }
+        .controls .primary:hover { transform: scale(1.06); }
+        .controls .active { color: var(--gold); }
+
+        .extras {
+            display: flex; flex-wrap: wrap; justify-content: center;
+            gap: 8px; z-index: 2; width: 100%; margin-top: 4px;
+        }
+        .extras button {
+            display: flex; align-items: center; gap: 5px;
+            padding: 5px 14px; border-radius: 30px;
+            border: 1px solid var(--border); background: var(--bg-card);
+            color: var(--text-secondary); font-family: 'Tajawal', sans-serif;
+            font-weight: 600; font-size: 0.78rem; cursor: pointer;
+            transition: var(--transition);
+        }
+        .extras button:hover {
+            background: var(--gold); color: #fff; border-color: var(--gold);
+        }
+        .extras .liked {
+            background: rgba(218,54,51,0.15); border-color: #da3633; color: #da3633;
+        }
+
+        .volume-row {
+            display: flex; align-items: center; gap: 10px;
+            width: 100%; max-width: 240px; margin-top: 10px; z-index: 2;
+        }
+        .volume-row button {
+            width: 32px; height: 32px; border-radius: 50%;
+            border: 1px solid var(--border); background: var(--bg-card);
+            color: var(--text-secondary); cursor: pointer;
+            display: flex; align-items: center; justify-content: center;
+            transition: var(--transition); font-size: 13px; flex-shrink: 0;
+        }
+        .volume-row button:hover { background: var(--gold); color: #fff; border-color: var(--gold); }
+        .volume-row input[type="range"] {
+            flex: 1; height: 4px; -webkit-appearance: none; appearance: none;
+            background: var(--border); border-radius: 10px; outline: none; cursor: pointer;
+        }
+        .volume-row input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none; width: 14px; height: 14px;
+            background: var(--gold); border-radius: 50%; cursor: pointer;
+        }
+        .volume-row .vol-label {
+            font-size: 0.75rem; font-weight: 700; color: var(--text-secondary);
+            min-width: 36px; text-align: center;
+        }
+
+        /* ===== قائمة التشغيل ===== */
+        .playlist-card {
+            background: var(--glass); backdrop-filter: blur(20px);
+            border-radius: var(--radius); border: 1px solid var(--border);
+            box-shadow: var(--shadow); display: flex; flex-direction: column;
+            max-height: 600px; overflow: hidden;
+        }
+        .playlist-card .head {
+            padding: 14px 18px; border-bottom: 1px solid var(--border);
+            display: flex; justify-content: space-between; align-items: center; flex-shrink: 0;
+        }
+        .playlist-card .head h3 {
+            font-size: 1rem; font-weight: 700;
+        }
+        .playlist-card .head .count {
+            background: var(--gold); color: #0b0e12;
+            padding: 2px 12px; border-radius: 30px;
+            font-weight: 700; font-size: 0.8rem;
+        }
+        .playlist-scroll {
+            overflow-y: auto; padding: 8px 10px; flex: 1;
+        }
+        .playlist-scroll::-webkit-scrollbar { width: 5px; }
+        .playlist-scroll::-webkit-scrollbar-thumb { background: var(--border); border-radius: 10px; }
+
+        .playlist-item {
+            display: flex; align-items: center; gap: 10px;
+            padding: 9px 10px; border-radius: var(--radius-sm);
+            cursor: pointer; transition: var(--transition);
+            margin-bottom: 3px; border: 1px solid transparent;
+        }
+        .playlist-item:hover { background: var(--bg-card-hover); border-color: var(--border); }
+        .playlist-item.active {
+            background: rgba(212,175,55,0.08); border-color: var(--gold);
+        }
+        .playlist-item.active .pl-title { color: var(--gold); font-weight: 700; }
+        .playlist-item .pl-num {
+            font-weight: 700; color: var(--text-secondary);
+            font-size: 0.8rem; min-width: 26px; text-align: center;
+        }
+        .playlist-item .pl-img {
+            width: 40px; height: 40px; border-radius: 8px; object-fit: cover; flex-shrink: 0;
+        }
+        .playlist-item .pl-info { flex: 1; min-width: 0; }
+        .playlist-item .pl-title {
+            font-size: 0.88rem; font-weight: 600;
+            white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+        }
+        .playlist-item .pl-artist {
+            font-size: 0.72rem; color: var(--text-secondary);
+            white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+        }
+        .playlist-item .pl-dur {
+            font-size: 0.72rem; color: var(--text-secondary); font-weight: 600; flex-shrink: 0;
+        }
+        .playlist-item .pl-play-icon {
+            color: var(--gold); font-size: 13px; display: none;
+            animation: pulseIcon 1.4s ease-in-out infinite;
+        }
+        .playlist-item.active .pl-play-icon { display: block; }
+        @keyframes pulseIcon {
+            0%, 100% { opacity: 1; } 50% { opacity: 0.3; }
+        }
+
+        /* ===== المشغل المصغر ===== */
+        .mini-player {
+            position: fixed; bottom: 14px; left: 14px; right: 14px;
+            background: var(--glass); backdrop-filter: blur(24px);
+            border-radius: var(--radius); border: 1px solid var(--border);
+            box-shadow: var(--shadow); padding: 10px 14px;
+            display: none; align-items: center; gap: 12px; z-index: 900;
+            animation: slideUp 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        .mini-player.visible { display: flex; }
+        @keyframes slideUp {
+            from { transform: translateY(80px) scale(0.95); opacity: 0; }
+            to { transform: translateY(0) scale(1); opacity: 1; }
+        }
+        .mini-player .mini-img {
+            width: 44px; height: 44px; border-radius: 8px; object-fit: cover; flex-shrink: 0;
+        }
+        .mini-player .mini-info { flex: 1; min-width: 0; }
+        .mini-player .mini-title {
+            font-size: 0.85rem; font-weight: 700;
+            white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+        }
+        .mini-player .mini-artist { font-size: 0.7rem; color: var(--text-secondary); }
+        .mini-player .mini-controls { display: flex; align-items: center; gap: 5px; }
+        .mini-player .mini-controls button {
+            width: 34px; height: 34px; border-radius: 50%; border: 1px solid var(--border);
+            background: var(--bg-card); color: var(--text-primary); cursor: pointer;
+            display: flex; align-items: center; justify-content: center;
+            transition: var(--transition); font-size: 13px;
+        }
+        .mini-player .mini-controls button:hover {
+            background: var(--gold); color: #fff; border-color: var(--gold);
+        }
+        .mini-player .mini-controls .play {
+            background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+            color: #0b0e12; width: 38px; height: 38px; font-size: 15px; border-color: transparent;
+        }
+        .mini-player .mini-progress {
+            position: absolute; top: 0; left: 0; right: 0; height: 3px;
+            background: var(--border); border-radius: 0 0 4px 4px; overflow: hidden;
+        }
+        .mini-player .mini-progress .bar {
+            height: 100%; background: linear-gradient(90deg, var(--gold), var(--gold-dark));
+            width: 0%;
+        }
+
+        /* ===== ملء الشاشة ===== */
+        .fullscreen-overlay {
+            position: fixed; inset: 0; background: var(--bg-dark); z-index: 2000;
+            display: none; flex-direction: column; align-items: center; justify-content: center;
+            padding: 30px 24px 40px; animation: fadeIn 0.35s ease;
+        }
+        .fullscreen-overlay.active { display: flex; }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.96); }
+            to { opacity: 1; transform: scale(1); }
+        }
+        .fullscreen-overlay .close-fs {
+            position: absolute; top: 20px; left: 20px;
+            width: 44px; height: 44px; border-radius: 50%;
+            border: 1px solid var(--border); background: var(--bg-card);
+            color: var(--text-primary); cursor: pointer; font-size: 18px;
+            display: flex; align-items: center; justify-content: center;
+            transition: var(--transition);
+        }
+        .fullscreen-overlay .close-fs:hover {
+            background: #da3633; color: #fff; border-color: #da3633;
+        }
+        .fullscreen-overlay .fs-album {
+            width: 280px; height: 280px; border-radius: 50%; object-fit: cover;
+            box-shadow: 0 30px 80px rgba(0,0,0,0.5), 0 0 0 5px rgba(212,175,55,0.15);
+            margin-bottom: 24px;
+        }
+        @media (max-width: 500px) {
+            .fullscreen-overlay .fs-album { width: 200px; height: 200px; }
+        }
+        .fullscreen-overlay .fs-album.spinning { animation: spinAlbum 24s linear infinite; }
+        .fullscreen-overlay .fs-info { text-align: center; margin-bottom: 18px; }
+        .fullscreen-overlay .fs-info h2 { font-size: 1.5rem; font-weight: 800; }
+        .fullscreen-overlay .fs-info p { font-size: 0.95rem; color: var(--text-secondary); }
+        .fullscreen-overlay .fs-controls {
+            display: flex; align-items: center; gap: 20px; margin: 8px 0 18px;
+        }
+        .fullscreen-overlay .fs-controls button {
+            background: none; border: none; color: var(--text-secondary);
+            cursor: pointer; border-radius: 50%; transition: var(--transition);
+            display: flex; align-items: center; justify-content: center;
+        }
+        .fullscreen-overlay .fs-controls .secondary {
+            width: 46px; height: 46px; font-size: 18px;
+            background: var(--bg-card); border: 1px solid var(--border);
+        }
+        .fullscreen-overlay .fs-controls .secondary:hover {
+            background: var(--gold); color: #fff; border-color: var(--gold);
+        }
+        .fullscreen-overlay .fs-controls .primary {
+            width: 72px; height: 72px; font-size: 30px;
+            background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+            color: #0b0e12; box-shadow: 0 8px 40px rgba(212,175,55,0.4);
+        }
+        .fullscreen-overlay .fs-progress {
+            width: 100%; max-width: 480px; margin-top: 4px;
+        }
+        .fullscreen-overlay .fs-progress .track {
+            position: relative; height: 6px; background: var(--border);
+            border-radius: 10px; cursor: pointer; touch-action: none;
+        }
+        .fullscreen-overlay .fs-progress .track .bar {
+            position: absolute; top: 0; right: 0; height: 100%;
+            background: linear-gradient(90deg, var(--gold), var(--gold-dark));
+            border-radius: 10px; width: 0%; pointer-events: none;
+        }
+        .fullscreen-overlay .fs-progress .track .thumb {
+            position: absolute; top: 50%; transform: translate(50%, -50%);
+            width: 20px; height: 20px;
+            background: radial-gradient(circle at 35% 35%, #fff, var(--gold));
+            border-radius: 50%; box-shadow: 0 0 0 5px rgba(212,175,55,0.2);
+            right: 0%; pointer-events: none;
+        }
+        .fullscreen-overlay .fs-time {
+            display: flex; justify-content: space-between;
+            font-size: 0.8rem; color: var(--text-secondary); font-weight: 600; margin-top: 6px;
+        }
+
+        /* ===== توست ===== */
+        .toast-container {
+            position: fixed; top: 20px; left: 50%;
+            transform: translateX(-50%); z-index: 5000; pointer-events: none;
+        }
+        .toast {
+            background: var(--bg-card); border: 1px solid var(--border);
+            padding: 12px 22px; border-radius: var(--radius-sm);
+            box-shadow: var(--shadow); display: flex; align-items: center; gap: 10px;
+            opacity: 0; transform: translateY(-20px) scale(0.95);
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            pointer-events: auto; font-weight: 600; font-size: 0.9rem;
+        }
+        .toast.show { opacity: 1; transform: translateY(0) scale(1); }
+
+        /* ===== شاشة التحميل ===== */
+        .loader-screen {
+            position: fixed; inset: 0; background: var(--bg-dark); z-index: 9999;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            transition: opacity 0.6s, visibility 0.6s;
+        }
+        .loader-screen.hidden { opacity: 0; visibility: hidden; }
+        .loader-screen .spinner {
+            width: 52px; height: 52px; border: 4px solid var(--border);
+            border-top-color: var(--gold); border-radius: 50%;
+            animation: spin 1s linear infinite; margin-bottom: 18px;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        .loader-screen h3 { font-size: 1.15rem; font-weight: 800; }
+        .loader-screen p { color: var(--text-secondary); font-size: 0.9rem; margin-top: 4px; }
+
+        @media (max-width: 600px) {
+            .app { padding: 10px 12px 100px; }
+            .header { padding: 12px 14px; }
+            .header-brand .name { font-size: 1rem; }
+            .collection-tab { font-size: 0.75rem; padding: 10px 6px; }
+            .collection-tab img { width: 22px; height: 22px; }
+            .player-card { padding: 18px 14px; }
+            .controls .primary { width: 56px; height: 56px; font-size: 22px; }
+            .controls .secondary { width: 36px; height: 36px; font-size: 14px; }
+            .collection-cards { flex-direction: column; align-items: center; }
+        }
+    </style>
+</head>
+<body data-collection="rifai">
+
+    <!-- شاشة التحميل -->
+    <div class="loader-screen" id="loaderScreen">
+        <div class="spinner"></div>
+        <h3>...صَلِّ عَلَى مُحَمَّدٍ</h3>
+        <p>جاري تحميل المشغل</p>
+    </div>
+
+    <!-- شاشة اختيار المجموعة -->
+    <div class="collection-selector" id="collectionSelector">
+        <div class="selector-title">
+            <h1>🎵 مشغل المدائح النبوية</h1>
+            <p>اختر المجموعة التي تريد الاستماع إليها</p>
+            <div class="total-badge">20 مجموعة · أكثر من 500 مقطع</div>
+        </div>
+        <div class="collection-cards">
+                        <div class="collection-card" data-col="rifai" onclick="selectCollection('rifai')">
+                <img class="card-img" src="https://s5files.mobeasy.com/static/u/722316/file-722316-772927.jpg" alt="أحمد الرفاعي">
+                <div class="card-body">
+                    <h2>المداح أحمد الرفاعي</h2>
+                    <div class="card-desc">مجموعة من أجمل المدائح النبوية والأناشيد الدينية بأداء مميز</div>
+                </div>
+                <span class="card-count">37 مقطعاً</span>
+                <i class="fas fa-chevron-left card-arrow"></i>
+            </div>
+                        <div class="collection-card" data-col="khair" onclick="selectCollection('khair')">
+                <img class="card-img" src="https://s5files.mobeasy.com/static/u/722316/file-722316-239841.jpg" alt="محمد الخير">
+                <div class="card-body">
+                    <h2>الحاج محمد الخير</h2>
+                    <div class="card-desc">أكثر من 90 نشيد ومدحة نبوية بصوت الحاج محمد الخير</div>
+                </div>
+                <span class="card-count">90 مقطعاً</span>
+                <i class="fas fa-chevron-left card-arrow"></i>
+            </div>
+                        <div class="collection-card" data-col="maher" onclick="selectCollection('maher')">
+                <img class="card-img" src="https://telegra.ph/file/b90c60200ad1592023c6b.jpg" alt="ماهر حمودة">
+                <div class="card-body">
+                    <h2>ماهر حمودة</h2>
+                    <div class="card-desc">مدائح وأناشيد دينية بصوت المنشد ماهر حمودة</div>
+                </div>
+                <span class="card-count">18 مقطعاً</span>
+                <i class="fas fa-chevron-left card-arrow"></i>
+            </div>
+                        <div class="collection-card" data-col="qaranuh" onclick="selectCollection('qaranuh')">
+                <img class="card-img" src="https://s5files.mobeasy.com/static/u/722316/file-722316-627212.jpg" alt="محمد معروف قرانوح">
+                <div class="card-body">
+                    <h2>محمد معروف قرانوح</h2>
+                    <div class="card-desc">مدائح الحاج محمد معروف قرانوح رحمه الله</div>
+                </div>
+                <span class="card-count">26 مقطعاً</span>
+                <i class="fas fa-chevron-left card-arrow"></i>
+            </div>
+        
+                        <div class="collection-card" data-col="sayeh" onclick="selectCollection('sayeh')">
+                <img class="card-img" src="https://www.aicpmadih.de/wp-content/uploads/2020/06/Sayeh-fi-hubil-Lah-1.jpg" alt="سايح في حب الله">
+                <div class="card-body">
+                    <h2>سايح في حب الله</h2>
+                    <div class="card-desc">ألبوم سايح في حب الله</div>
+                </div>
+                <span class="card-count">8 مقطعاً</span>
+                <i class="fas fa-chevron-left card-arrow"></i>
+            </div>
+                        <div class="collection-card" data-col="tazakar" onclick="selectCollection('tazakar')">
+                <img class="card-img" src="https://www.aicpmadih.de/wp-content/uploads/2023/11/Tazkar-AnimateFront1.jpg" alt="تذكر فأنت ضعيف">
+                <div class="card-body">
+                    <h2>تذكر فأنت ضعيف</h2>
+                    <div class="card-desc">ألبوم تذكر فأنت ضعيف</div>
+                </div>
+                <span class="card-count">6 مقطعاً</span>
+                <i class="fas fa-chevron-left card-arrow"></i>
+            </div>
+                        <div class="collection-card" data-col="mawlay" onclick="selectCollection('mawlay')">
+                <img class="card-img" src="https://lebaneseinshad.com/wp-content/uploads/2021/04/Mawlay-Cover1-1024x876.jpg" alt="مولاي إني ببابك">
+                <div class="card-body">
+                    <h2>مولاي إني ببابك</h2>
+                    <div class="card-desc">ألبوم مولاي إني ببابك</div>
+                </div>
+                <span class="card-count">9 مقطعاً</span>
+                <i class="fas fa-chevron-left card-arrow"></i>
+            </div>
+                        <div class="collection-card" data-col="shams" onclick="selectCollection('shams')">
+                <img class="card-img" src="https://www.aicpmadih.de/wp-content/uploads/2019/11/na43-1.jpg" alt="أمسية ميلاد شمس الحق">
+                <div class="card-body">
+                    <h2>أمسية ميلاد شمس الحق</h2>
+                    <div class="card-desc">أمسية ميلاد شمس الحق</div>
+                </div>
+                <span class="card-count">10 مقطعاً</span>
+                <i class="fas fa-chevron-left card-arrow"></i>
+            </div>
+                        <div class="collection-card" data-col="hanin" onclick="selectCollection('hanin')">
+                <img class="card-img" src="https://www.aicpmadih.de/wp-content/uploads/2019/11/Hanin_Al-Muslimeen-1.jpg" alt="حنين المسلمين">
+                <div class="card-body">
+                    <h2>حنين المسلمين</h2>
+                    <div class="card-desc">حنين المسلمين لزيارة سيد المرسلين</div>
+                </div>
+                <span class="card-count">7 مقطعاً</span>
+                <i class="fas fa-chevron-left card-arrow"></i>
+            </div>
+                        <div class="collection-card" data-col="jadeeda" onclick="selectCollection('jadeeda')">
+                <img class="card-img" src="https://telegra.ph/file/bd87e6efb886f9a6a347c.jpg" alt="مدائح جديدة">
+                <div class="card-body">
+                    <h2>مدائح جديدة</h2>
+                    <div class="card-desc">واشوقاه رسول الله</div>
+                </div>
+                <span class="card-count">4 مقطعاً</span>
+                <i class="fas fa-chevron-left card-arrow"></i>
+            </div>
+                        <div class="collection-card" data-col="hujra" onclick="selectCollection('hujra')">
+                <img class="card-img" src="https://s5files.mobeasy.com/static/u/722316/file-722316-657113.jpg" alt="نور الحجرة">
+                <div class="card-body">
+                    <h2>نور الحجرة</h2>
+                    <div class="card-desc">ألبوم نور الحجرة</div>
+                </div>
+                <span class="card-count">6 مقطعاً</span>
+                <i class="fas fa-chevron-left card-arrow"></i>
+            </div>
+                        <div class="collection-card" data-col="jadeeda2024" onclick="selectCollection('jadeeda2024')">
+                <img class="card-img" src="https://telegra.ph/file/bd87e6efb886f9a6a347c.jpg" alt="مدائح 2024">
+                <div class="card-body">
+                    <h2>مدائح 2024</h2>
+                    <div class="card-desc">مدائح جديدة 2024</div>
+                </div>
+                <span class="card-count">8 مقطعاً</span>
+                <i class="fas fa-chevron-left card-arrow"></i>
+            </div>
+                        <div class="collection-card" data-col="harmony" onclick="selectCollection('harmony')">
+                <img class="card-img" src="https://telegra.ph/file/41ec954242dfd1a9fa6ab.jpg" alt="فرقة هارموني">
+                <div class="card-body">
+                    <h2>فرقة هارموني</h2>
+                    <div class="card-desc">Harmony Band</div>
+                </div>
+                <span class="card-count">16 مقطعاً</span>
+                <i class="fas fa-chevron-left card-arrow"></i>
+            </div>
+                        <div class="collection-card" data-col="sweden" onclick="selectCollection('sweden')">
+                <img class="card-img" src="https://telegra.ph/file/d8dc8f971a900f08bd185.jpg" alt="فريق الإنشاد السويد">
+                <div class="card-body">
+                    <h2>فريق الإنشاد السويد</h2>
+                    <div class="card-desc">فريق الإنشاد في السويد</div>
+                </div>
+                <span class="card-count">66 مقطعاً</span>
+                <i class="fas fa-chevron-left card-arrow"></i>
+            </div>
+                        <div class="collection-card" data-col="palestine" onclick="selectCollection('palestine')">
+                <img class="card-img" src="https://telegra.ph/file/e51c8a02aaa2799fa3995.jpg" alt="أناشيد فلسطين">
+                <div class="card-body">
+                    <h2>أناشيد فلسطين</h2>
+                    <div class="card-desc">أناشيد فلسطين الحبيبة</div>
+                </div>
+                <span class="card-count">10 مقطعاً</span>
+                <i class="fas fa-chevron-left card-arrow"></i>
+            </div>
+        
+            <div class="collection-card" data-col="anwar" onclick="selectCollection('anwar')">
+                <img class="card-img" src="https://www.aicpmadih.de/wp-content/uploads/2019/11/anwar-mawaled-sayed-al-abrar-1-1.jpg" alt="أمسية الأنوار">
+                <div class="card-body">
+                    <h2>أمسية الأنوار بمولد سيد الأبرار</h2>
+                    <div class="card-desc">مولد نبوي</div>
+                </div>
+                <span class="card-count">6</span>
+                <i class="fas fa-chevron-left card-arrow"></i>
+            </div>
+            <div class="collection-card" data-col="layali" onclick="selectCollection('layali')">
+                <img class="card-img" src="https://www.aicpmadih.de/wp-content/uploads/2019/11/na33-cd-1.jpg" alt="أنس الليالي">
+                <div class="card-body">
+                    <h2>أنس الليالي</h2>
+                    <div class="card-desc">أناشيد ومدائح</div>
+                </div>
+                <span class="card-count">6</span>
+                <i class="fas fa-chevron-left card-arrow"></i>
+            </div>
+            <div class="collection-card" data-col="atfal" onclick="selectCollection('atfal')">
+                <img class="card-img" src="https://s5files.mobeasy.com/static/u/722316/file-722316-593973.jpg" alt="أناشيد الأطفال">
+                <div class="card-body">
+                    <h2>أناشيد الأطفال</h2>
+                    <div class="card-desc">أناشيد تربوية للأطفال</div>
+                </div>
+                <span class="card-count">58</span>
+                <i class="fas fa-chevron-left card-arrow"></i>
+            </div>
+            <div class="collection-card" data-col="ziyara" onclick="selectCollection('ziyara')">
+                <img class="card-img" src="https://s5files.mobeasy.com/static/u/722316/file-722316-729662.jpg" alt="زيارة القبر النبوي">
+                <div class="card-body">
+                    <h2>زيارة القبر النبوي الشريف</h2>
+                    <div class="card-desc">مدائح نبوية</div>
+                </div>
+                <span class="card-count">87</span>
+                <i class="fas fa-chevron-left card-arrow"></i>
+            </div>
+            <div class="collection-card" data-col="huruf" onclick="selectCollection('huruf')">
+                <img class="card-img" src="https://www.aicpmadih.de/wp-content/uploads/2019/11/9-1-170x159.jpg" alt="حروف ومعاني">
+                <div class="card-body">
+                    <h2>حروف ومعاني</h2>
+                    <div class="card-desc">مدائح أطفال · تعليم الحروف</div>
+                </div>
+                <span class="card-count">63</span>
+                <i class="fas fa-chevron-left card-arrow"></i>
+            </div>
+</div>
+    </div>
+
+    <div class="toast-container" id="toastContainer"></div>
+    <div class="bg-layer"></div>
+
+    <div class="app" id="mainApp" style="display:none;">
+
+        <!-- الهيدر -->
+        <header class="header">
+            <div class="header-brand" onclick="showSelector()" title="تغيير المجموعة">
+                <div class="logo" id="headerLogo">
+                    <img id="headerLogoImg" src="https://s5files.mobeasy.com/static/u/722316/file-722316-772927.jpg" alt="">
+                </div>
+                <div>
+                    <div class="name" id="headerName">المداح أحمد الرفاعي</div>
+                    <div class="sub" id="headerSub">اضغط للتبديل · مدائح نبوية</div>
+                </div>
+            </div>
+            <div class="header-stats">
+                <span><i class="fas fa-list-ul"></i> <span id="totalCount">37</span></span>
+                <span><i class="fas fa-clock"></i> <span id="totalDuration">--:--</span></span>
+            </div>
+            <div class="header-actions">
+                <button id="themeToggle" title="تبديل السمة"><i class="fas fa-moon"></i></button>
+                <button id="fullscreenToggle" title="ملء الشاشة"><i class="fas fa-expand"></i></button>
+            </div>
+        </header>
+
+        <!-- تبويبات التبديل -->
+        <div class="collection-tabs">
+            <button class="collection-tab active" id="tabRifai" onclick="selectCollection('rifai')">
+                <img src="https://s5files.mobeasy.com/static/u/722316/file-722316-772927.jpg" alt="">
+                أحمد الرفاعي
+            </button>
+            <button class="collection-tab" id="tabKhair" onclick="selectCollection('khair')">
+                <img src="https://s5files.mobeasy.com/static/u/722316/file-722316-239841.jpg" alt="">
+                محمد الخير
+            </button>
+            <button class="collection-tab" id="tabMaher" onclick="selectCollection('maher')">
+                <img src="https://telegra.ph/file/b90c60200ad1592023c6b.jpg" alt="">
+                ماهر حمودة
+            </button>
+            <button class="collection-tab" id="tabQaranuh" onclick="selectCollection('qaranuh')">
+                <img src="https://s5files.mobeasy.com/static/u/722316/file-722316-627212.jpg" alt="">
+                قرانوح
+            </button>
+        
+            <button class="collection-tab" id="tab_sayeh" onclick="selectCollection('sayeh')">
+                <img src="https://www.aicpmadih.de/wp-content/uploads/2020/06/Sayeh-fi-hubil-Lah-1.jpg" alt="">
+                سايح في حب ا
+            </button>
+            <button class="collection-tab" id="tab_tazakar" onclick="selectCollection('tazakar')">
+                <img src="https://www.aicpmadih.de/wp-content/uploads/2023/11/Tazkar-AnimateFront1.jpg" alt="">
+                تذكر فأنت ضع
+            </button>
+            <button class="collection-tab" id="tab_mawlay" onclick="selectCollection('mawlay')">
+                <img src="https://lebaneseinshad.com/wp-content/uploads/2021/04/Mawlay-Cover1-1024x876.jpg" alt="">
+                مولاي إني بب
+            </button>
+            <button class="collection-tab" id="tab_shams" onclick="selectCollection('shams')">
+                <img src="https://www.aicpmadih.de/wp-content/uploads/2019/11/na43-1.jpg" alt="">
+                أمسية ميلاد 
+            </button>
+            <button class="collection-tab" id="tab_hanin" onclick="selectCollection('hanin')">
+                <img src="https://www.aicpmadih.de/wp-content/uploads/2019/11/Hanin_Al-Muslimeen-1.jpg" alt="">
+                حنين المسلمي
+            </button>
+            <button class="collection-tab" id="tab_jadeeda" onclick="selectCollection('jadeeda')">
+                <img src="https://telegra.ph/file/bd87e6efb886f9a6a347c.jpg" alt="">
+                مدائح جديدة
+            </button>
+            <button class="collection-tab" id="tab_hujra" onclick="selectCollection('hujra')">
+                <img src="https://s5files.mobeasy.com/static/u/722316/file-722316-657113.jpg" alt="">
+                نور الحجرة
+            </button>
+            <button class="collection-tab" id="tab_jadeeda2024" onclick="selectCollection('jadeeda2024')">
+                <img src="https://telegra.ph/file/bd87e6efb886f9a6a347c.jpg" alt="">
+                مدائح 2024
+            </button>
+            <button class="collection-tab" id="tab_harmony" onclick="selectCollection('harmony')">
+                <img src="https://telegra.ph/file/41ec954242dfd1a9fa6ab.jpg" alt="">
+                فرقة هارموني
+            </button>
+            <button class="collection-tab" id="tab_sweden" onclick="selectCollection('sweden')">
+                <img src="https://telegra.ph/file/d8dc8f971a900f08bd185.jpg" alt="">
+                فريق الإنشاد
+            </button>
+            <button class="collection-tab" id="tab_palestine" onclick="selectCollection('palestine')">
+                <img src="https://telegra.ph/file/e51c8a02aaa2799fa3995.jpg" alt="">
+                أناشيد فلسطي
+            </button>
+            <button class="collection-tab" id="tab_anwar" onclick="selectCollection('anwar')">
+                <img src="https://www.aicpmadih.de/wp-content/uploads/2019/11/anwar-mawaled-sayed-al-abrar-1-1.jpg" alt="">
+                أمسية الأنوار
+            </button>
+            <button class="collection-tab" id="tab_layali" onclick="selectCollection('layali')">
+                <img src="https://www.aicpmadih.de/wp-content/uploads/2019/11/na33-cd-1.jpg" alt="">
+                أنس الليالي
+            </button>
+            <button class="collection-tab" id="tab_atfal" onclick="selectCollection('atfal')">
+                <img src="https://s5files.mobeasy.com/static/u/722316/file-722316-593973.jpg" alt="">
+                أناشيد الأطفال
+            </button>
+            <button class="collection-tab" id="tab_ziyara" onclick="selectCollection('ziyara')">
+                <img src="https://s5files.mobeasy.com/static/u/722316/file-722316-729662.jpg" alt="">
+                زيارة القبر النبوي
+            </button>
+            <button class="collection-tab" id="tab_huruf" onclick="selectCollection('huruf')">
+                <img src="https://www.aicpmadih.de/wp-content/uploads/2019/11/9-1-170x159.jpg" alt="">
+                حروف ومعاني
+            </button>
+
+        </div>
+
+        <!-- البحث -->
+        <div class="search-bar">
+            <div class="search-wrap">
+                <i class="fas fa-search"></i>
+                <input type="text" id="searchInput" placeholder="ابحث عن مقطع ... (رقم أو عنوان)">
+            </div>
+        </div>
+
+        <div class="main-grid">
+            <!-- المشغل -->
+            <div class="player-card">
+                <div class="album-wrap">
+                    <div class="album-glow" id="albumGlow"></div>
+                    <img id="albumArt" src="https://s5files.mobeasy.com/static/u/722316/file-722316-772927.jpg" alt="الغلاف">
+                </div>
+                <div class="track-info">
+                    <div class="title" id="trackTitle">اختر مقطعاً</div>
+                    <div class="artist" id="trackArtist">—</div>
+                    <div class="badge" id="trackBadge">—</div>
+                </div>
+                <div class="progress-section">
+                    <div class="progress-track" id="progressTrack">
+                        <div class="buffer" id="bufferBar"></div>
+                        <div class="bar" id="progressBar"></div>
+                        <div class="thumb" id="progressThumb"></div>
+                    </div>
+                    <div class="time-row">
+                        <span id="currentTime">00:00</span>
+                        <span id="durationLabel">00:00</span>
+                    </div>
+                </div>
+                <div class="controls">
+                    <button class="secondary" id="shuffleBtn" title="عشوائي"><i class="fas fa-shuffle"></i></button>
+                    <button class="secondary" id="prevBtn" title="السابق"><i class="fas fa-backward-step"></i></button>
+                    <button class="primary" id="playBtn" title="تشغيل"><i class="fas fa-play"></i></button>
+                    <button class="secondary" id="nextBtn" title="التالي"><i class="fas fa-forward-step"></i></button>
+                    <button class="secondary" id="repeatBtn" title="تكرار"><i class="fas fa-repeat"></i></button>
+                </div>
+                <div class="extras">
+                    <button id="backwardBtn"><i class="fas fa-rotate-left"></i> 10ث</button>
+                    <button id="forwardBtn"><i class="fas fa-rotate-right"></i> 10ث</button>
+                    <button id="downloadBtn"><i class="fas fa-download"></i> تحميل</button>
+                    <button id="shareBtn"><i class="fas fa-share-nodes"></i> مشاركة</button>
+                    <button id="likeBtn"><i class="far fa-heart"></i> إعجاب</button>
+                </div>
+                <div class="volume-row">
+                    <button id="muteBtn" title="كتم"><i class="fas fa-volume-high"></i></button>
+                    <input type="range" id="volumeSlider" min="0" max="100" value="80">
+                    <span class="vol-label" id="volLabel">80%</span>
+                </div>
+            </div>
+
+            <!-- قائمة التشغيل -->
+            <div class="playlist-card">
+                <div class="head">
+                    <h3><i class="fas fa-list" style="color:var(--gold);margin-left:8px;"></i>المقاطع</h3>
+                    <span class="count" id="playlistCount">0</span>
+                </div>
+                <div class="playlist-scroll" id="playlistBody"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- المشغل المصغر -->
+    <div class="mini-player" id="miniPlayer">
+        <div class="mini-progress"><div class="bar" id="miniProgressBar"></div></div>
+        <img class="mini-img" id="miniImg" src="" alt="">
+        <div class="mini-info">
+            <div class="mini-title" id="miniTitle">—</div>
+            <div class="mini-artist" id="miniArtist">—</div>
+        </div>
+        <div class="mini-controls">
+            <button id="miniPrev"><i class="fas fa-backward-step"></i></button>
+            <button class="play" id="miniPlay"><i class="fas fa-play"></i></button>
+            <button id="miniNext"><i class="fas fa-forward-step"></i></button>
+            <button id="miniClose"><i class="fas fa-times"></i></button>
+        </div>
+    </div>
+
+    <!-- ملء الشاشة -->
+    <div class="fullscreen-overlay" id="fullscreenOverlay">
+        <button class="close-fs" id="fsClose"><i class="fas fa-compress"></i></button>
+        <img class="fs-album" id="fsAlbum" src="" alt="">
+        <div class="fs-info">
+            <h2 id="fsTitle">—</h2>
+            <p id="fsArtist">—</p>
+        </div>
+        <div class="fs-controls">
+            <button class="secondary" id="fsPrev"><i class="fas fa-backward-step"></i></button>
+            <button class="primary" id="fsPlay"><i class="fas fa-play"></i></button>
+            <button class="secondary" id="fsNext"><i class="fas fa-forward-step"></i></button>
+            <button class="secondary" id="fsRepeat"><i class="fas fa-repeat"></i></button>
+        </div>
+        <div class="fs-progress">
+            <div class="track" id="fsProgressTrack">
+                <div class="bar" id="fsProgressBar"></div>
+                <div class="thumb" id="fsProgressThumb"></div>
+            </div>
+            <div class="fs-time">
+                <span id="fsCurrentTime">00:00</span>
+                <span id="fsDuration">00:00</span>
+            </div>
+        </div>
+    </div>
+
+    <audio id="audioPlayer" preload="auto"></audio>
+
+    <script>
+        // ============================================================
+        //  البيانات
+        // ============================================================
+        const COLLECTIONS = {
+            rifai: {
+                id: 'rifai',
+                name: 'المداح أحمد الرفاعي',
+                sub: 'مدائح نبوية',
+                cover: 'https://s5files.mobeasy.com/static/u/722316/file-722316-772927.jpg',
+                songs: [
+                    { name: "الصبح بدا", surl: "https://h.top4top.io/m_3824qs7ts1.mp3" },
+                    { name: "یا رب بالمصطفى", surl: "https://j.top4top.io/m_3824twulm1.mp3" },
+                    { name: "يا سايق الجمال", surl: "https://j.top4top.io/m_3824x21lo1.mp3" },
+                    { name: "يا خير من دفنت", surl: "https://i.top4top.io/m_38247n05p1.mp3" },
+                    { name: "جدي مسيرك الطيبة 1", surl: "https://k.top4top.io/m_3824go5e51.mp3" },
+                    { name: "لي فيك يا ارض الحجاز", surl: "https://b.top4top.io/m_3824puc0r1.mp3" },
+                    { name: "اني يا طه دخيل", surl: "https://g.top4top.io/m_3824nytn41.mp3" },
+                    { name: "يا صبا الاسحار", surl: "https://f.top4top.io/m_3824qhgtx1.mp3" },
+                    { name: "محياك يا خير البرية", surl: "https://c.top4top.io/m_38246u5mb1.mp3" },
+                    { name: "في روضة التجلي", surl: "https://d.top4top.io/m_3824alnzi1.mp3" },
+                    { name: "حب ال النبي", surl: "https://i.top4top.io/m_3824954861.mp3" },
+                    { name: "محياك يا خير البرية 2", surl: "https://l.top4top.io/m_3824pjec71.mp3" },
+                    { name: "جدي مسيرك الطيبة 2", surl: "https://k.top4top.io/m_38248iryp1.mp3" },
+                    { name: "آل النبي", surl: "https://e.top4top.io/m_3824d4baj1.mp3" },
+                    { name: "نبي صفا وصفه", surl: "https://a.top4top.io/m_38249k58j1.mp3" },
+                    { name: "هذا الذي جاء البئر", surl: "https://f.top4top.io/m_38241nqeu1.mp3" },
+                    { name: "هذا العقيق", surl: "https://a.top4top.io/m_3824dwbx21.mp3" },
+                    { name: "هذا العقيق - يا ربي", surl: "https://l.top4top.io/m_3824adcvi1.mp3" },
+                    { name: "ائمة اهل البيت", surl: "https://l.top4top.io/m_382431t3s1.mp3" },
+                    { name: "اقول والدمع 1", surl: "https://h.top4top.io/m_38244q9271.mp3" },
+                    { name: "اقول والدمع 2", surl: "https://d.top4top.io/m_3824rvtwi1.mp3" },
+                    { name: "الال والاصحاب", surl: "https://b.top4top.io/m_3824ya8r11.mp3" },
+                    { name: "رياح الصبا", surl: "https://a.top4top.io/m_3824ql2z51.mp3" },
+                    { name: "سعد ان جئت", surl: "https://a.top4top.io/m_38240vpxu1.mp3" },
+                    { name: "سهوت وغرني", surl: "https://b.top4top.io/m_3824jr71i1.mp3" },
+                    { name: "شموس تبدت", surl: "https://j.top4top.io/m_3824hddl21.mp3" },
+                    { name: "عند الاله مقرب", surl: "https://i.top4top.io/m_3824mdmwb1.mp3" },
+                    { name: "لاهل البيت بالمزايا", surl: "https://k.top4top.io/m_3824vgfll1.mp3" },
+                    { name: "لو قابل البدر 1", surl: "https://g.top4top.io/m_3824qky241.mp3" },
+                    { name: "لو قابل البدر 2", surl: "https://e.top4top.io/m_3824m0tw11.mp3" },
+                    { name: "لو مشيت على الحصباء", surl: "https://h.top4top.io/m_382406d6t1.mp3" },
+                    { name: "يا رب انت الهي", surl: "https://g.top4top.io/m_3824d30ot1.mp3" },
+                    { name: "يا من يرى", surl: "https://f.top4top.io/m_3824dctk51.mp3" },
+                    { name: "الله ليس كمثله شيء", surl: "https://d.top4top.io/m_3824yhobd1.mp3" },
+                    { name: "غذاء نفوس المؤمنين", surl: "https://c.top4top.io/m_3824vzokr1.mp3" },
+                    { name: "هجم المحرم", surl: "https://c.top4top.io/m_38243maqr1.mp3" },
+                    { name: "ابوكم فارس", surl: "https://e.top4top.io/m_3824it9j11.mp3" }
+                ]
+            },
+            khair: {
+                id: 'khair',
+                name: 'الحاج محمد الخير',
+                sub: '90+ نشيد ومدحة',
+                cover: 'https://s5files.mobeasy.com/static/u/722316/file-722316-239841.jpg',
+                songs: [
+                    { name: "يا قلبي اللي داب", surl: "https://s5files.mobeasy.com/static/u/722316/file-722316-248751.mp3" },
+                    { name: "يا سيدي مدد", surl: "https://s5files.mobeasy.com/static/u/722316/file-722316-198726.mp3" },
+                    { name: "زهت وتسامت الأنوار", surl: "https://s5files.mobeasy.com/static/u/722316/file-722316-652696.mp3" },
+                    { name: "واشوقاه .. يا رسول الله", surl: "https://s5files.mobeasy.com/static/u/722316/file-722316-535448.mp3" },
+                    { name: "عطفا يا أسياد - يا أهل الرضا", surl: "https://s5files.mobeasy.com/static/u/722316/file-722316-119665.mp3" },
+                    { name: "سبحان الله - يا رب - دعاء", surl: "https://s5files.mobeasy.com/static/u/722316/file-722316-90400.mp3" },
+                    { name: "هبط الليل والنور بمكة وضّاء", surl: "https://s5files.mobeasy.com/static/u/722316/file-722316-728061.mp3" },
+                    { name: "يا سيد الكونين - أحمد يا حبيبي", surl: "https://s5files.mobeasy.com/static/u/722316/file-722316-992478.mp3" },
+                    { name: "حنيت انا حنيت لاهل المدينة", surl: "https://s5files.mobeasy.com/static/u/722316/file-722316-571939.mp3" },
+                    { name: "هل شموس. حبيبي يا أبا الزهراء", surl: "https://s5files.mobeasy.com/static/u/722316/file-722316-413247.mp3" },
+                    { name: "ايها الركب اليماني", surl: "https://s5files.mobeasy.com/static/u/722316/file-722316-773578.mp3" },
+                    { name: "يا باز - أمسية جوهرة التاج", surl: "https://s5files.mobeasy.com/static/u/722316/file-722316-40149.mp3" },
+                    { name: "يا هناي وسعدي ومناي", surl: "https://s5files.mobeasy.com/static/u/722316/file-722316-860410.mp3" },
+                    { name: "طيري يا حمامة - سر بنا ياحادي", surl: "https://s5files.mobeasy.com/static/u/722316/file-722316-381092.mp3" },
+                    { name: "الله يا الله - إلهي إرحم حالي", surl: "https://s5files.mobeasy.com/static/u/722316/file-722316-287101.mp3" },
+                    { name: "بالذل قد وافيت بابك خاشعا", surl: "https://s5files.mobeasy.com/static/u/722316/file-722316-368350.mp3" },
+                    { name: "دعوني دعوني أناجي حبيبي", surl: "https://s5files.mobeasy.com/static/u/722316/file-722316-134214.mp3" },
+                    { name: "يا إله الكون", surl: "https://s5files.mobeasy.com/static/u/722316/file-722316-128391.mp3" },
+                    { name: "عطفا علي", surl: "https://s5files.mobeasy.com/static/u/722316/file-722316-823983.mp3" },
+                    { name: "يا أيها المختار", surl: "https://s5files.mobeasy.com/static/u/722316/file-722316-545174.mp3" },
+                    { name: "فيك كل ما يرى حسن", surl: "https://s5files.mobeasy.com/static/u/722316/file-722316-895044.mp3" },
+                    { name: "يا اهل المدينة", surl: "https://s5files.mobeasy.com/static/u/722316/file-722316-814875.mp3" },
+                    { name: "يا بارئ الاكوان", surl: "https://s5files.mobeasy.com/static/u/722316/file-722316-32770.mp3" },
+                    { name: "زين العمامة", surl: "https://s5files.mobeasy.com/static/u/722316/file-722316-793472.mp3" },
+                    { name: "قلت لما غاب عني", surl: "https://s5files.mobeasy.com/static/u/722316/file-722316-254328.mp3" },
+                    { name: "مدينة رسول الله", surl: "https://s5files.mobeasy.com/static/u/722316/file-722316-832464.mp3" },
+                    { name: "جيناكم جينا - يا أهل الرضا", surl: "https://s5files.mobeasy.com/static/u/722316/file-722316-950464.mp3" },
+                    { name: "أزكى صلاة مع سلام", surl: "https://s5files.mobeasy.com/static/u/722316/file-722316-431463.mp3" },
+                    { name: "لجأت إليك. طرقت باب الرجا", surl: "https://s5files.mobeasy.com/static/u/722316/file-722316-124637.mp3" },
+                    { name: "يا طيبة فيك محبوبي", surl: "https://s5files.mobeasy.com/static/u/722316/file-722316-573278.mp3" },
+                    { name: "دعاء بصوت الحاج محمد الخير", surl: "https://s5files.mobeasy.com/static/u/722316/file-722316-955138.mp3" },
+                    { name: "يا سيدي غوثاه", surl: "https://s5files.mobeasy.com/static/u/722316/file-722316-299201.mp3" },
+                    { name: "أنوارك يا هادينا", surl: "https://s5files.mobeasy.com/static/u/722316/file-722316-952429.mp3" },
+                    { name: "فما التزمت - صلاة الله - البدوي", surl: "https://s5files.mobeasy.com/static/u/722316/file-722316-28650.mp3" },
+                    { name: "يا مادحا خير الأنام", surl: "https://s5files.mobeasy.com/static/u/722316/file-722316-926958.mp3" },
+                    { name: "أسماء الله الحسنى", surl: "https://s5files.mobeasy.com/static/u/722316/file-722316-411217.mp3" },
+                    { name: "ناديت وقلبي منكسر", surl: "https://s5files.mobeasy.com/static/u/722316/file-722316-854766.mp3" },
+                    { name: "الله يا رب النسم", surl: "https://s5files.mobeasy.com/static/u/722316/file-722316-552952.mp3" },
+                    { name: "دنياي تغريني - صليت في الأسحار", surl: "https://s5files.mobeasy.com/static/u/722316/file-722316-86116.mp3" },
+                    { name: "ربنا الله الإله - الحمد لك والشكر لك", surl: "https://s5files.mobeasy.com/static/u/722316/file-722316-911490.mp3" },
+                    { name: "واني داخل عالاعتاب", surl: "https://s5files.mobeasy.com/static/u/722316/file-722316-380324.mp3" },
+                    { name: "يا هناي وسعدي ومناي", surl: "https://archive.org/download/32_20230914_20230914/42.m4a" },
+                    { name: "روحولوا عطول", surl: "https://s5files.mobeasy.com/static/u/722316/file-722316-494442.mp3" },
+                    { name: "ميلاد الهادي", surl: "https://s5files.mobeasy.com/static/u/722316/file-722316-740477.mp3" },
+                    { name: "أنوار الهادي طه", surl: "https://s5files.mobeasy.com/static/u/722316/file-722316-722088.mp3" },
+                    { name: "على درب حبيبي", surl: "https://s5files.mobeasy.com/static/u/722316/file-722316-625862.mp3" },
+                    { name: "أنوار الإسلام لمعت في الدنيا", surl: "https://s5files.mobeasy.com/static/u/722316/file-722316-282373.mp3" },
+                    { name: "سايح في حب الله", surl: "https://s5files.mobeasy.com/static/u/722316/file-722316-563476.mp3" },
+                    { name: "للهادي لما راحوا", surl: "https://s5files.mobeasy.com/static/u/722316/file-722316-56524.mp3" },
+                    { name: "يا مين ياخدني لطه", surl: "https://s5files.mobeasy.com/static/u/722316/file-722316-533221.mp3" },
+                    { name: "قصة المولد", surl: "https://s5files.mobeasy.com/static/u/722316/file-722316-51125.mp3" },
+                    { name: "يا ليلة ضاءت الآلاء مغناها", surl: "https://s5files.mobeasy.com/static/u/722316/file-722316-830227.mp3" },
+                    { name: "يا نور الحق - ليلة الاثنين", surl: "https://s5files.mobeasy.com/static/u/722316/file-722316-830097.mp3" },
+                    { name: "لي في المدينة أحباب. سلامي على طه", surl: "https://s5files.mobeasy.com/static/u/722316/file-722316-745787.mp3" },
+                    { name: "فما التزمت قوافي الشعر. البدوي", surl: "https://s5files.mobeasy.com/static/u/722316/file-722316-759158.mp3" },
+                    { name: "عم يمضي الزمان", surl: "https://s5files.mobeasy.com/static/u/722316/file-722316-209000.mp3" },
+                    { name: "يا ليل طاب السمر", surl: "https://s5files.mobeasy.com/static/u/722316/file-722316-105452.mp3" },
+                    { name: "أنس الليالي", surl: "https://s5files.mobeasy.com/static/u/722316/file-722316-678593.mp3" },
+                    { name: "يا نور الحق", surl: "https://archive.org/download/32_20230914_20230914/59.m4a" },
+                    { name: "يا ليلة ضاءت الآلاء مغناها", surl: "https://archive.org/download/32_20230914_20230914/60.m4a" },
+                    { name: "يا مين ياخدني لطه", surl: "https://archive.org/download/32_20230914_20230914/61.m4a" },
+                    { name: "بالذل قد وافيت بابك خاشعا", surl: "https://archive.org/download/32_20230914_20230914/62.m4a" },
+                    { name: "للهادي لما راحوا", surl: "https://archive.org/download/32_20230914_20230914/63.m4a" },
+                    { name: "سايح في حب الله", surl: "https://archive.org/download/32_20230914_20230914/64.m4a" },
+                    { name: "أنوار الإسلام لمعت في الدنيا", surl: "https://archive.org/download/32_20230914_20230914/65.m4a" },
+                    { name: "الحمد لله والشكر لله", surl: "https://archive.org/download/32_20230914_20230914/66.m4a" },
+                    { name: "مولاي صل وسلم", surl: "https://archive.org/download/32_20230914_20230914/67.m4a" },
+                    { name: "على درب حبيبي", surl: "https://archive.org/download/32_20230914_20230914/68.m4a" },
+                    { name: "أنوار الهادي طه", surl: "https://archive.org/download/32_20230914_20230914/69.m4a" },
+                    { name: "ميلاد الهادي", surl: "https://archive.org/download/32_20230914_20230914/70.m4a" },
+                    { name: "زهت وتسامت الأنوار", surl: "https://archive.org/download/32_20230914_20230914/71.m4a" },
+                    { name: "أنشودة سيرته نهج حياة", surl: "https://archive.org/download/32_20230914_20230914/72.m4a" },
+                    { name: "يا سيدي مدد", surl: "https://archive.org/download/32_20230914_20230914/73.m4a" },
+                    { name: "قلت لما غاب عني نور", surl: "https://archive.org/download/32_20230914_20230914/74.m4a" },
+                    { name: "مدينة رسول الله", surl: "https://archive.org/download/32_20230914_20230914/75.m4a" },
+                    { name: "جيناكم جينا - يا أهل الرضا", surl: "https://archive.org/download/32_20230914_20230914/76.m4a" },
+                    { name: "أزكى صلاة مع سلام", surl: "https://archive.org/download/32_20230914_20230914/77.m4a" },
+                    { name: "لجأت إليك", surl: "https://archive.org/download/32_20230914_20230914/78.m4a" },
+                    { name: "دعاء", surl: "https://archive.org/download/32_20230914_20230914/79.m4a" },
+                    { name: "يا طيبة فيك محبوبي", surl: "https://archive.org/download/32_20230914_20230914/80.m4a" },
+                    { name: "إلهي يا إلهي", surl: "https://archive.org/download/32_20230914_20230914/81.m4a" },
+                    { name: "يا سيدي غوثاه", surl: "https://archive.org/download/32_20230914_20230914/82.m4a" },
+                    { name: "أنوارك يا هادينا", surl: "https://archive.org/download/32_20230914_20230914/83.m4a" },
+                    { name: "فما التزمت - صلاة الله", surl: "https://archive.org/download/32_20230914_20230914/84.m4a" },
+                    { name: "يا مادحا خير الأنام", surl: "https://archive.org/download/32_20230914_20230914/85.m4a" },
+                    { name: "أسماء الله الحسنى", surl: "https://archive.org/download/32_20230914_20230914/86.m4a" },
+                    { name: "ناديت وقلبي منكسر", surl: "https://archive.org/download/32_20230914_20230914/87.m4a" },
+                    { name: "الله يا رب النسم", surl: "https://archive.org/download/32_20230914_20230914/88.m4a" },
+                    { name: "دنياي تغريني", surl: "https://archive.org/download/32_20230914_20230914/89.m4a" },
+                    { name: "ربنا الله الإله", surl: "https://archive.org/download/32_20230914_20230914/90.m4a" }
+                ]
+            },
+            maher: {
+                id: 'maher',
+                name: 'ماهر حمودة',
+                sub: 'مدائح وأناشيد',
+                cover: 'https://telegra.ph/file/b90c60200ad1592023c6b.jpg',
+                songs: [
+                    { name: "شوف القمر", surl: "https://d.top4top.io/m_3157pzama0.mp3" },
+                    { name: "رمضان الشهر الأعلى", surl: "https://l.top4top.io/m_31577cz5m0.mp3" },
+                    { name: "على طيبة قلبي طاير", surl: "https://f.top4top.io/m_31576rda10.mp3" },
+                    { name: "رسول الله ليا", surl: "https://a.top4top.io/m_3157t2xsg1.mp3" },
+                    { name: "دنيا رح تتركها", surl: "https://i.top4top.io/m_3157g9syq0.mp3" },
+                    { name: "يا حبيبًا تيمّمنا", surl: "https://g.top4top.io/m_3157iiu620.mp3" },
+                    { name: "بموال وغنيه", surl: "https://a.top4top.io/m_31573pfx11.mp3" },
+                    { name: "رمضان الرحمة", surl: "https://g.top4top.io/m_31578hun90.mp3" },
+                    { name: "سهران بهالليالي", surl: "https://b.top4top.io/m_3157dlkzp0.mp3" },
+                    { name: "دبنا بغراما", surl: "https://e.top4top.io/m_3157brfrx0.mp3" },
+                    { name: "فرحة كبيري", surl: "https://k.top4top.io/m_3157pw7x60.mp3" },
+                    { name: "يا ليلة", surl: "https://c.top4top.io/m_3157ff2360.mp3" },
+                    { name: "عاد الصيام", surl: "https://d.top4top.io/m_3157myks20.mp3" },
+                    { name: "بدا شعبان", surl: "https://d.top4top.io/m_3157fm2j40.mp3" },
+                    { name: "هاي الدنيا خاينة", surl: "https://j.top4top.io/m_3157dle8l0.mp3" },
+                    { name: "قلبك كأنو ذهب أمي", surl: "https://c.top4top.io/m_315783cw50.mp3" },
+                    { name: "مشتاق يا رسول الله", surl: "https://c.top4top.io/m_3157ly8ak0.mp3" },
+                    { name: "شعبان يعود يهنينا", surl: "https://d.top4top.io/m_31577ynq80.mp3" }
+                ]
+            },
+            qaranuh: {
+                id: 'qaranuh',
+                name: 'محمد معروف قرانوح',
+                sub: 'رحمه الله · مدائح نبوية',
+                cover: 'https://s5files.mobeasy.com/static/u/722316/file-722316-627212.jpg',
+                songs: [
+                    { name: "ربي انفعنا كل الأحيان", surl: "https://s5files.mobeasy.com/static/u/722316/file-722316-286574.mp3" },
+                    { name: "تحيتي وسلامي", surl: "https://s5files.mobeasy.com/static/u/722316/file-722316-294805.mp3" },
+                    { name: "فؤادي ينادي", surl: "https://s5files.mobeasy.com/static/u/722316/file-722316-595415.mp3" },
+                    { name: "جد يا محمد", surl: "https://s5files.mobeasy.com/static/u/722316/file-722316-436689.mp3" },
+                    { name: "مولد الرسول اشرف الموالد", surl: "https://s5files.mobeasy.com/static/u/722316/file-722316-570041.mp3" },
+                    { name: "حيران قلبي", surl: "https://s5files.mobeasy.com/static/u/722316/file-722316-591973.mp3" },
+                    { name: "طال انتظاري لحبّ قد شغفت به", surl: "https://s5files.mobeasy.com/static/u/722316/file-722316-540730.mp3" },
+                    { name: "هَل أرِيجٌ مِنْ شَــذَاكَ", surl: "https://s5files.mobeasy.com/static/u/722316/file-722316-161989.mp3" },
+                    { name: "مولاي إني ببابك", surl: "https://s5files.mobeasy.com/static/u/722316/file-722316-606992.mp3" },
+                    { name: "عاهدت ربي أنني سأتوب", surl: "https://s5files.mobeasy.com/static/u/722316/file-722316-101033.mp3" },
+                    { name: "هل حقا تشتاق إليه", surl: "https://s5files.mobeasy.com/static/u/722316/file-722316-746083.mp3" },
+                    { name: "رسول الله زرناه", surl: "https://s5files.mobeasy.com/static/u/722316/file-722316-945792.mp3" },
+                    { name: "قلبي بحبك داب وهام", surl: "https://s5files.mobeasy.com/static/u/722316/file-722316-779265.mp3" },
+                    { name: "في روضة التجلي", surl: "https://s5files.mobeasy.com/static/u/722316/file-722316-335474.mp3" },
+                    { name: "يا روحي طيبي", surl: "https://s5files.mobeasy.com/static/u/722316/file-722316-660832.mp3" },
+                    { name: "ألبوم المولد النبوي الشريف", surl: "https://s5files.mobeasy.com/static/u/722316/file-722316-682392.mp3" },
+                    { name: "جُدْ إِلٰهي بالنِّعَم", surl: "https://s5files.mobeasy.com/static/u/722316/file-722316-723188.mp3" },
+                    { name: "وُلِدَ الهُدى فَالكائِناتُ ضِياءُ", surl: "https://s5files.mobeasy.com/static/u/722316/file-722316-208739.mp3" },
+                    { name: "قلبي ينادي يا رب", surl: "https://s5files.mobeasy.com/static/u/722316/file-722316-35803.mp3" },
+                    { name: "أدعوك في جوف الليالي", surl: "https://s5files.mobeasy.com/static/u/722316/file-722316-475080.mp3" },
+                    { name: "أنا ولهان بمحبوبي", surl: "https://s5files.mobeasy.com/static/u/722316/file-722316-240928.mp3" },
+                    { name: "ويح قومٍ جفوا نبيًا", surl: "https://s5files.mobeasy.com/static/u/722316/file-722316-40590.mp3" },
+                    { name: "أنادي الواحد الأحد", surl: "https://www.sunnaonline.org/anasheed/2/unadi-2.mp3" },
+                    { name: "قلبي الك مشتاق", surl: "https://s5files.mobeasy.com/static/u/722316/file-722316-499669.mp3" },
+                    { name: "يا خير من دفنت بالقاع أعظمه", surl: "https://s5files.mobeasy.com/static/u/722316/file-722316-925882.mp3" },
+                    { name: "صلاة الله ما ذرفا", surl: "https://s5files.mobeasy.com/static/u/722316/file-722316-583052.mp3" }
+                ]
+            },
+            sayeh: {
+                id: 'sayeh',
+                name: 'سايح في حب الله',
+                sub: 'ألبوم سايح في حب الله',
+                cover: 'https://www.aicpmadih.de/wp-content/uploads/2020/06/Sayeh-fi-hubil-Lah-1.jpg',
+                songs: [
+                    { name: "سايح في حُبّ الله", surl: "https://www.aicpmadih.de/Multimedia/Anasheed/Anasheed2/na70_Saye7%20fi%20hubil%20Lah/Track1.mp3" },
+                    { name: "رباه يا مولاي", surl: "https://www.aicpmadih.de/Multimedia/Anasheed/Anasheed2/na70_Saye7%20fi%20hubil%20Lah/Track2.mp3" },
+                    { name: "أنشودة الوالدين", surl: "https://www.aicpmadih.de/Multimedia/Anasheed/Anasheed2/na70_Saye7%20fi%20hubil%20Lah/Track3.mp3" },
+                    { name: "وقفة عبوابك تشفي", surl: "https://www.aicpmadih.de/Multimedia/Anasheed/Anasheed2/na70_Saye7%20fi%20hubil%20Lah/Track4.mp3" },
+                    { name: "قلبي بحبك داب وهام", surl: "https://www.aicpmadih.de/Multimedia/Anasheed/Anasheed2/na70_Saye7%20fi%20hubil%20Lah/Track5.mp3" },
+                    { name: "أدم الصلاة على الحبيب", surl: "https://www.aicpmadih.de/Multimedia/Anasheed/Anasheed2/na70_Saye7%20fi%20hubil%20Lah/Track6.mp3" },
+                    { name: "طه نوّر سنيني", surl: "https://www.aicpmadih.de/Multimedia/Anasheed/Anasheed2/na70_Saye7%20fi%20hubil%20Lah/Track7.mp3" },
+                    { name: "سلامي على طه", surl: "https://www.aicpmadih.de/Multimedia/Anasheed/Anasheed2/na70_Saye7%20fi%20hubil%20Lah/Track8.mp3" }
+                ]
+            },
+            tazakar: {
+                id: 'tazakar',
+                name: 'تذكر فأنت ضعيف',
+                sub: 'ألبوم تذكر فأنت ضعيف',
+                cover: 'https://www.aicpmadih.de/wp-content/uploads/2023/11/Tazkar-AnimateFront1.jpg',
+                songs: [
+                    { name: "تذكر فأنت ضعيف", surl: "https://www.aicpmadih.de/Multimedia/Anasheed/Anasheed2/na82_Tathkar_fant_Da3if/%D8%AA%D8%B0%D9%83%D8%B1-%D9%81%D8%A3%D9%86%D8%AA-%D8%B6%D8%B9%D9%8A%D9%81.mp3" },
+                    { name: "جد الهي بالنعم", surl: "https://www.aicpmadih.de/Multimedia/Anasheed/Anasheed2/na82_Tathkar_fant_Da3if/%D8%AC%D8%AF-%D8%A7%D9%84%D9%87%D9%8A-%D8%A8%D8%A7%D9%84%D9%86%D8%B9%D9%85.mp3" },
+                    { name: "هام قلبي عشقا", surl: "https://www.aicpmadih.de/Multimedia/Anasheed/Anasheed2/na82_Tathkar_fant_Da3if/%D9%87%D8%A7%D9%85-%D9%82%D9%84%D8%A8%D9%8A-%D8%B9%D8%B4%D9%82%D8%A7.mp3" },
+                    { name: "يا باز", surl: "https://www.aicpmadih.de/Multimedia/Anasheed/Anasheed2/na82_Tathkar_fant_Da3if/%D9%8A%D8%A7%D8%A8%D8%A7%D8%B2.mp3" },
+                    { name: "ياطير خدلي معك", surl: "https://www.aicpmadih.de/Multimedia/Anasheed/Anasheed2/na82_Tathkar_fant_Da3if/%D9%8A%D8%A7%D8%B7%D9%8A%D8%B1-%D8%AE%D8%AF%D9%84%D9%8A-%D9%85%D8%B9%D9%83.mp3" },
+                    { name: "يمم نحو المدينة", surl: "https://www.aicpmadih.de/Multimedia/Anasheed/Anasheed2/na82_Tathkar_fant_Da3if/%D9%8A%D9%85%D9%85-%D9%86%D8%AD%D9%88-%D8%A7%D9%84%D9%85%D8%AF%D9%8A%D9%86%D8%A9.mp3" }
+                ]
+            },
+            mawlay: {
+                id: 'mawlay',
+                name: 'مولاي إني ببابك',
+                sub: 'ألبوم مولاي إني ببابك',
+                cover: 'https://lebaneseinshad.com/wp-content/uploads/2021/04/Mawlay-Cover1-1024x876.jpg',
+                songs: [
+                    { name: "يا طيبة دار العدناني", surl: "https://lebaneseinshad.com/wp-content/uploads/2021/04/Ya-Tayba-Dar-Adnani.mp3" },
+                    { name: "يا رسول الله", surl: "https://lebaneseinshad.com/wp-content/uploads/2021/04/Ya-Rasul-Allah.mp3" },
+                    { name: "روحوا كرمالو روحوا", surl: "https://lebaneseinshad.com/wp-content/uploads/2021/04/Rouhou-Kermalu-Rouhou.mp3" },
+                    { name: "محمد حبيبي أنا", surl: "https://lebaneseinshad.com/wp-content/uploads/2021/04/Mohamad-Habibi-Ana.mp3" },
+                    { name: "مولاي إني ببابك", surl: "https://lebaneseinshad.com/wp-content/uploads/2021/04/Mawlay-Ine-Be-Babek.mp3" },
+                    { name: "جل الذي سواك", surl: "https://lebaneseinshad.com/wp-content/uploads/2021/04/Jala-Al-Lazi-Sawak.mp3" },
+                    { name: "بالذل قد وافيت بابك خاشعا", surl: "https://lebaneseinshad.com/wp-content/uploads/2021/04/Be-Al-Zuli-Qad-Wafytu.mp3" },
+                    { name: "أتاك الهوى", surl: "https://lebaneseinshad.com/wp-content/uploads/2021/04/Ataka-Al-Hawa.mp3" },
+                    { name: "عاهدت ربي", surl: "https://lebaneseinshad.com/wp-content/uploads/2021/04/Ahdtu-Rabi.mp3" }
+                ]
+            },
+            shams: {
+                id: 'shams',
+                name: 'أمسية ميلاد شمس الحق',
+                sub: 'أمسية ميلاد شمس الحق',
+                cover: 'https://www.aicpmadih.de/wp-content/uploads/2019/11/na43-1.jpg',
+                songs: [
+                    { name: "أنا ضيفك", surl: "https://www.aicpmadih.de/Multimedia/Anasheed/Anasheed/na43_CD%20Milad%20Shamsul-Haq/na43_01.mp3" },
+                    { name: "خلو قلبي", surl: "https://www.aicpmadih.de/Multimedia/Anasheed/Anasheed/na43_CD%20Milad%20Shamsul-Haq/na43_02.mp3" },
+                    { name: "سيري بسرعة", surl: "https://www.aicpmadih.de/Multimedia/Anasheed/Anasheed/na43_CD%20Milad%20Shamsul-Haq/na43_03.mp3" },
+                    { name: "قالو الهوى", surl: "https://www.aicpmadih.de/Multimedia/Anasheed/Anasheed/na43_CD%20Milad%20Shamsul-Haq/na43_04.mp3" },
+                    { name: "كل الجمال", surl: "https://www.aicpmadih.de/Multimedia/Anasheed/Anasheed/na43_CD%20Milad%20Shamsul-Haq/na43_05.mp3" },
+                    { name: "ميلاد طه", surl: "https://www.aicpmadih.de/Multimedia/Anasheed/Anasheed/na43_CD%20Milad%20Shamsul-Haq/na43_06.mp3" },
+                    { name: "ناديت للباز", surl: "https://www.aicpmadih.de/Multimedia/Anasheed/Anasheed/na43_CD%20Milad%20Shamsul-Haq/na43_07.mp3" },
+                    { name: "يا طيبة", surl: "https://www.aicpmadih.de/Multimedia/Anasheed/Anasheed/na43_CD%20Milad%20Shamsul-Haq/na43_08.mp3" },
+                    { name: "يا نجوم", surl: "https://www.aicpmadih.de/Multimedia/Anasheed/Anasheed/na43_CD%20Milad%20Shamsul-Haq/na43_09.mp3" },
+                    { name: "مهما جرى نورك دليلي", surl: "https://www.aicpmadih.de/Multimedia/Anasheed/Anasheed/na43_CD%20Milad%20Shamsul-Haq/na43_10.mp3" }
+                ]
+            },
+            hanin: {
+                id: 'hanin',
+                name: 'حنين المسلمين',
+                sub: 'حنين المسلمين لزيارة سيد المرسلين',
+                cover: 'https://www.aicpmadih.de/wp-content/uploads/2019/11/Hanin_Al-Muslimeen-1.jpg',
+                songs: [
+                    { name: "ما اصعبها لما", surl: "https://www.aicpmadih.de/Multimedia/Anasheed/Germany/de10/Hanin%20Al-Muslimeen1.mp3" },
+                    { name: "امانة يا مسافر", surl: "https://www.aicpmadih.de/Multimedia/Anasheed/Germany/de10/Hanin%20Al-Muslimeen2.mp3" },
+                    { name: "يا اغلا مخلوق", surl: "https://www.aicpmadih.de/Multimedia/Anasheed/Germany/de10/Hanin%20Al-Muslimeen3.mp3" },
+                    { name: "لا تهلك حالك", surl: "https://www.aicpmadih.de/Multimedia/Anasheed/Germany/de10/Hanin%20Al-Muslimeen4.mp3" },
+                    { name: "مو فتخر بالمال", surl: "https://www.aicpmadih.de/Multimedia/Anasheed/Germany/de10/Hanin%20Al-Muslimeen5.mp3" },
+                    { name: "مدينة يا من حوا ترابك", surl: "https://www.aicpmadih.de/Multimedia/Anasheed/Germany/de10/Hanin%20Al-Muslimeen6.mp3" },
+                    { name: "درس", surl: "https://www.aicpmadih.de/Multimedia/Anasheed/Germany/de10/Hanin%20Al-Muslimeen7.mp3" }
+                ]
+            },
+            jadeeda: {
+                id: 'jadeeda',
+                name: 'مدائح جديدة',
+                sub: 'واشوقاه رسول الله',
+                cover: 'https://telegra.ph/file/bd87e6efb886f9a6a347c.jpg',
+                songs: [
+                    { name: "لو ألقاه", surl: "https://archive.org/download/2024_20240818/2024.m4a" },
+                    { name: "قلبي داب", surl: "https://i.top4top.io/m_3163ia3c70.mp3" },
+                    { name: "لك يا حبيبي", surl: "https://h.top4top.io/m_3163ahgqy0.mp3" },
+                    { name: "رقية شرعية", surl: "https://h.top4top.io/m_3163j222o0.mp3" }
+                ]
+            },
+            hujra: {
+                id: 'hujra',
+                name: 'نور الحجرة',
+                sub: 'ألبوم نور الحجرة',
+                cover: 'https://s5files.mobeasy.com/static/u/722316/file-722316-657113.jpg',
+                songs: [
+                    { name: "هادينا مولاي", surl: "https://www.aicpmadih.de/Multimedia/Anasheed/Anasheed2/na59_nourul7ujra_cd/1hadinamawlay.mp3" },
+                    { name: "من أجل فاطمة", surl: "https://www.aicpmadih.de/Multimedia/Anasheed/Anasheed2/na59_nourul7ujra_cd/2minajlifatima.mp3" },
+                    { name: "لطيبة ودوني", surl: "https://www.aicpmadih.de/Multimedia/Anasheed/Anasheed2/na59_nourul7ujra_cd/3litebawaduni.mp3" },
+                    { name: "نور الحجرة", surl: "https://www.aicpmadih.de/Multimedia/Anasheed/Anasheed2/na59_nourul7ujra_cd/4nurul7ujra.mp3" },
+                    { name: "تب فإن الذنب عار", surl: "https://www.aicpmadih.de/Multimedia/Anasheed/Anasheed2/na59_nourul7ujra_cd/5tub.mp3" },
+                    { name: "حياتك دعوة", surl: "https://www.aicpmadih.de/Multimedia/Anasheed/Anasheed2/na59_nourul7ujra_cd/6hayatukada3wa.mp3" }
+                ]
+            },
+            jadeeda2024: {
+                id: 'jadeeda2024',
+                name: 'مدائح 2024',
+                sub: 'مدائح جديدة 2024',
+                cover: 'https://telegra.ph/file/bd87e6efb886f9a6a347c.jpg',
+                songs: [
+                    { name: "لو ألقاه", surl: "https://archive.org/download/2024_20240818/2024.m4a" },
+                    { name: "قلبي داب", surl: "https://i.top4top.io/m_3163ia3c70.mp3" },
+                    { name: "لك يا حبيبي", surl: "https://h.top4top.io/m_3163ahgqy0.mp3" },
+                    { name: "يا أبا الزهرا إليا", surl: "https://h.top4top.io/m_3163j222o0.mp3" },
+                    { name: "جديد إذاعة نداء", surl: "https://a.top4top.io/m_3172y3zhd0.mp3" },
+                    { name: "الحاج خالد الأطير", surl: "https://k.top4top.io/m_3172azjqf0.mp3" },
+                    { name: "الفرقة الهاشمية", surl: "https://api.spreaker.com/v2/episodes/61276124/download.mp3" },
+                    { name: "مولانا", surl: "https://f.top4top.io/m_31738sqd30.mp3" }
+                ]
+            },
+            harmony: {
+                id: 'harmony',
+                name: 'فرقة هارموني',
+                sub: 'Harmony Band',
+                cover: 'https://telegra.ph/file/41ec954242dfd1a9fa6ab.jpg',
+                songs: [
+                    { name: "Dam^atu Tiflin", surl: "https://www.aicpmadih.de/Multimedia/Anasheed/harmony/Singles%20Chapter%201/Singles%20Chapter%201_1.mp3" },
+                    { name: "Fruit Of Insistency", surl: "https://www.aicpmadih.de/Multimedia/Anasheed/harmony/Singles%20Chapter%201/Singles%20Chapter%201_2.mp3" },
+                    { name: "Bitnam ^youn", surl: "https://www.aicpmadih.de/Multimedia/Anasheed/harmony/Singles%20Chapter%201/Singles%20Chapter%201_3.mp3" },
+                    { name: "Ana Jareeh", surl: "https://www.aicpmadih.de/Multimedia/Anasheed/harmony/Singles%20Chapter%201/Singles%20Chapter%201_4.mp3" },
+                    { name: "Salamon Salam", surl: "https://www.aicpmadih.de/Multimedia/Anasheed/harmony/Singles%20Chapter%201/Singles%20Chapter%201_5.mp3" },
+                    { name: "Sayyidul Arab", surl: "https://www.aicpmadih.de/Multimedia/Anasheed/harmony/Singles%20Chapter%201/Singles%20Chapter%201_6.mp3" },
+                    { name: "Rihab Al Nada", surl: "https://www.aicpmadih.de/Multimedia/Anasheed/harmony/Singles%20Chapter%201/Singles%20Chapter%201_7.mp3" },
+                    { name: "Rasol Al Huda", surl: "https://www.aicpmadih.de/Multimedia/Anasheed/harmony/Singles%20Chapter%201/Singles%20Chapter%201_8.mp3" },
+                    { name: "Nidaa Al Raheleen", surl: "https://www.aicpmadih.de/Multimedia/Anasheed/harmony/Singles%20Chapter%201/Singles%20Chapter%201_9.mp3" },
+                    { name: "Ya Shadyal Hob", surl: "https://www.aicpmadih.de/Multimedia/Anasheed/harmony/Singles%20Chapter%201/Singles%20Chapter%201_10.mp3" },
+                    { name: "Nada Al Munadi", surl: "https://www.aicpmadih.de/Multimedia/Anasheed/harmony/Singles%20Chapter%201/Singles%20Chapter%201_11.mp3" },
+                    { name: "Jirhi Zaad", surl: "https://www.aicpmadih.de/Multimedia/Anasheed/harmony/Singles%20Chapter%201/Singles%20Chapter%201_12.mp3" },
+                    { name: "Osset Hanan", surl: "https://www.aicpmadih.de/Multimedia/Anasheed/harmony/Singles%20Chapter%201/Singles%20Chapter%201_13.mp3" },
+                    { name: "Hathihi Tayba", surl: "https://www.aicpmadih.de/Multimedia/Anasheed/harmony/Singles%20Chapter%201/Singles%20Chapter%201_14.mp3" },
+                    { name: "Hikayati", surl: "https://www.aicpmadih.de/Multimedia/Anasheed/harmony/Singles%20Chapter%201/Singles%20Chapter%201_15.mp3" },
+                    { name: "Eashak Rasolak", surl: "https://www.aicpmadih.de/Multimedia/Anasheed/harmony/Singles%20Chapter%201/Singles%20Chapter%201_16.mp3" }
+                ]
+            },
+            sweden: {
+                id: 'sweden',
+                name: 'فريق الإنشاد السويد',
+                sub: 'فريق الإنشاد في السويد',
+                cover: 'https://telegra.ph/file/d8dc8f971a900f08bd185.jpg',
+                songs: [
+                    { name: "بالأنظار جد يا هادينا", surl: "https://archive.org/download/38_20230916/01.mp3" },
+                    { name: "أم البشاير", surl: "https://archive.org/download/38_20230916/02.mp3" },
+                    { name: "هايم قلبي", surl: "https://archive.org/download/38_20230916/03.mp3" },
+                    { name: "هاجت اشواق العشاق", surl: "https://archive.org/download/38_20230916/04.mp3" },
+                    { name: "سلم لي عليه", surl: "https://archive.org/download/38_20230916/05.mp3" },
+                    { name: "صلوا على طه الغالي", surl: "https://archive.org/download/38_20230916/06.mp3" },
+                    { name: "صاح قلبي", surl: "https://archive.org/download/38_20230916/07.mp3" },
+                    { name: "يا هادينا", surl: "https://archive.org/download/38_20230916/08.mp3" },
+                    { name: "كم أحببناك محمدنا", surl: "https://archive.org/download/38_20230916/09.mp3" },
+                    { name: "جاء الربيع مبشراً", surl: "https://archive.org/download/38_20230916/10.mp3" },
+                    { name: "الكعبة محلاها", surl: "https://archive.org/download/38_20230916/11.mp3" },
+                    { name: "قالوا الهوى", surl: "https://archive.org/download/38_20230916/12.mp3" },
+                    { name: "يا خير مولود بمكة", surl: "https://archive.org/download/38_20230916/13.mp3" },
+                    { name: "سير بنا يا حادي", surl: "https://archive.org/download/38_20230916/14.mp3" },
+                    { name: "كأن حمى مكة", surl: "https://archive.org/download/38_20230916/15.mp3" },
+                    { name: "طه حبي ما احلاك", surl: "https://archive.org/download/38_20230916/16.mp3" },
+                    { name: "وحشتينا", surl: "https://archive.org/download/38_20230916/17.mp3" },
+                    { name: "الله يا الله", surl: "https://archive.org/download/38_20230916/18.mp3" },
+                    { name: "ما احلاك", surl: "https://archive.org/download/38_20230916/19.mp3" },
+                    { name: "رفاق العمر", surl: "https://archive.org/download/38_20230916/20.mp3" },
+                    { name: "أحلى من أحلى قمر", surl: "https://archive.org/download/38_20230916/21.mp3" },
+                    { name: "روحوا كرمالو روحوا", surl: "https://archive.org/download/38_20230916/22.mp3" },
+                    { name: "المسك فاح", surl: "https://archive.org/download/38_20230916/23.mp3" },
+                    { name: "زد صلاتك على هادينا", surl: "https://archive.org/download/38_20230916/24.mp3" },
+                    { name: "الصبح بدا", surl: "https://archive.org/download/38_20230916/25.mp3" },
+                    { name: "ياما هويتو", surl: "https://archive.org/download/38_20230916/26.mp3" },
+                    { name: "يا أهل المدينة", surl: "https://archive.org/download/38_20230916/27.mp3" },
+                    { name: "يا سيد أحمد", surl: "https://archive.org/download/38_20230916/28.mp3" },
+                    { name: "شدوا المطيّة", surl: "https://archive.org/download/38_20230916/29.mp3" },
+                    { name: "كلما الركب يروح راما", surl: "https://archive.org/download/38_20230916/30.mp3" },
+                    { name: "ميلاد الهادي", surl: "https://archive.org/download/38_20230916/31.mp3" },
+                    { name: "أخذت العهد", surl: "https://archive.org/download/38_20230916/32.mp3" },
+                    { name: "خدني لطيبة", surl: "https://archive.org/download/38_20230916/33.mp3" },
+                    { name: "عاشق هوى خير البشر", surl: "https://archive.org/download/38_20230916/34.mp3" },
+                    { name: "لطيبة في قلب المحبين", surl: "https://archive.org/download/38_20230916/35.mp3" },
+                    { name: "محبوبي", surl: "https://archive.org/download/38_20230916/36.mp3" },
+                    { name: "يا ايها المختار", surl: "https://archive.org/download/38_20230916/37.mp3" },
+                    { name: "سائلي", surl: "https://archive.org/download/38_20230916/38.mp3" },
+                    { name: "الحاج هادي فايد", surl: "https://archive.org/download/38_20230916/39.mp3" },
+                    { name: "لآل البيت عزّ لا يزول", surl: "https://archive.org/download/38_20230916/40.mp3" },
+                    { name: "أي نفح من طيب", surl: "https://archive.org/download/38_20230916/41.mp3" },
+                    { name: "يا راكبا الجمال", surl: "https://archive.org/download/38_20230916/42.mp3" },
+                    { name: "أتيناك بالفقرد", surl: "https://archive.org/download/38_20230916/43.mp3" },
+                    { name: "يلي توصف", surl: "https://archive.org/download/38_20230916/44.mp3" },
+                    { name: "عمر عنبتاوي", surl: "https://archive.org/download/38_20230916/45.mp3" },
+                    { name: "يا أيها المختار", surl: "https://archive.org/download/38_20230916/46.mp3" },
+                    { name: "متى يا حبيبي", surl: "https://archive.org/download/38_20230916/47.mp3" },
+                    { name: "إني يا طه دخيل", surl: "https://archive.org/download/38_20230916/48.mp3" },
+                    { name: "عمر عنبتاوي", surl: "https://archive.org/download/38_20230916/49.mp3" },
+                    { name: "صلاة الله", surl: "https://archive.org/download/38_20230916/50.mp3" },
+                    { name: "خالد الأطير", surl: "https://archive.org/download/38_20230916/51.mp3" },
+                    { name: "وديلي سلامي", surl: "https://archive.org/download/38_20230916/52.mp3" },
+                    { name: "بالمصطفى والآل", surl: "https://archive.org/download/38_20230916/53.mp3" },
+                    { name: "خالد الأطير", surl: "https://archive.org/download/38_20230916/54.mp3" },
+                    { name: "أسرى الإله بأحمد", surl: "https://archive.org/download/38_20230916/55.mp3" },
+                    { name: "خالد الأطير", surl: "https://archive.org/download/38_20230916/56.mp3" },
+                    { name: "أنا قلبي عطشان", surl: "https://archive.org/download/38_20230916/57.mp3" },
+                    { name: "محبوبتي", surl: "https://archive.org/download/38_20230916/58.mp3" },
+                    { name: "مقطع 59", surl: "https://archive.org/download/38_20230916/59.mp3" },
+                    { name: "يا باز", surl: "https://archive.org/download/38_20230916/60.mp3" },
+                    { name: "ناديت وقلبي منكسر", surl: "https://archive.org/download/38_20230916/61.mp3" },
+                    { name: "إن مسك الضيم", surl: "https://archive.org/download/38_20230916/62.mp3" },
+                    { name: "مقطع 63", surl: "https://archive.org/download/38_20230916/63.mp3" },
+                    { name: "مقطع 64", surl: "https://archive.org/download/38_20230916/64.mp3" },
+                    { name: "مقطع 65", surl: "https://archive.org/download/38_20230916/65.mp3" },
+                    { name: "مقطع 66", surl: "https://archive.org/download/38_20230916/66.mp3" }
+                ]
+            },
+            palestine: {
+                id: 'palestine',
+                name: 'أناشيد فلسطين',
+                sub: 'أناشيد فلسطين الحبيبة',
+                cover: 'https://telegra.ph/file/e51c8a02aaa2799fa3995.jpg',
+                songs: [
+                    { name: "بالعلم الفلسطيني والكوفية لفوني", surl: "https://www.sunnaonline.org/anasheed/5/AUD-20190622-WA0018.mp3" },
+                    { name: "ما بال الضفة لا تسأل", surl: "http://www.sunnaonline.org/anasheed/4/1267769256.mp3" },
+                    { name: "من لغزة", surl: "http://www.sunnaonline.org/anasheed/4/1275321011.mp3" },
+                    { name: "شعلتنا صارت بركانا", surl: "http://www.sunnaonline.org/anasheed/4/1251585224.mp3" },
+                    { name: "فلسطين ستظل حرة دائما", surl: "http://www.sunnaonline.org/anasheed/4/1293262307.mp3" },
+                    { name: "لك الاشواق يا قدس", surl: "http://www.sunnaonline.org/anasheed/4/1243276129.mp3" },
+                    { name: "بيض صنائعنا بصوت الشاعر غانم جلول", surl: "http://www.sunnaonline.org/anasheed/4/bidun-sana2i3una.mp3" },
+                    { name: "أرجم عدو الله", surl: "http://www.sunnaonline.org/anasheed/4/1262586332.mp3" },
+                    { name: "يا قدس سلامك موعده فجر للعزة مشهده", surl: "http://www.sunnaonline.org/anasheed/4/1273906427.mp3" },
+                    { name: "بلاد الطهر يا أرضا زكية", surl: "http://www.sunnaonline.org/anasheed/4/1275317375.mp3" }
+                ]
+            },
+
+            anwar: {
+                id: 'anwar',
+                name: 'أمسية الأنوار بمولد سيد الأبرار',
+                sub: 'مولد نبوي',
+                cover: 'https://www.aicpmadih.de/wp-content/uploads/2019/11/anwar-mawaled-sayed-al-abrar-1-1.jpg',
+                songs: [
+                    { name: "صلِ على الهادي الاطيب", iurl: "https://www.aicpmadih.de/wp-content/uploads/2019/11/anwar-mawaled-sayed-al-abrar-1-1.jpg", surl: "https://www.aicpmadih.de/Multimedia/Anasheed/Anasheed/na37_CD%20'Umsiat%20al-'Anwar%20Bi%20Mawlid%20Sayidil-'Abrar/na37_01.mp3", art: "أمسية الأنوار" },
+{ name: "تأمل في رياض الأرض", iurl: "https://www.aicpmadih.de/wp-content/uploads/2019/11/anwar-mawaled-sayed-al-abrar-1-1.jpg", surl: "https://www.aicpmadih.de/Multimedia/Anasheed/Anasheed/na37_CD%20'Umsiat%20al-'Anwar%20Bi%20Mawlid%20Sayidil-'Abrar/na37_02.mp3", art: "أمسية الأنوار" },
+{ name: "وأنا داخل على عتاب", iurl: "https://www.aicpmadih.de/wp-content/uploads/2019/11/anwar-mawaled-sayed-al-abrar-1-1.jpg", surl: "https://www.aicpmadih.de/Multimedia/Anasheed/Anasheed/na37_CD%20'Umsiat%20al-'Anwar%20Bi%20Mawlid%20Sayidil-'Abrar/na37_03.mp3", art: "أمسية الأنوار" },
+{ name: "دم يا زمان المنى", iurl: "https://www.aicpmadih.de/wp-content/uploads/2019/11/anwar-mawaled-sayed-al-abrar-1-1.jpg", surl: "https://www.aicpmadih.de/Multimedia/Anasheed/Anasheed/na37_CD%20'Umsiat%20al-'Anwar%20Bi%20Mawlid%20Sayidil-'Abrar/na37_04.mp3", art: "أمسية الأنوار" },
+{ name: "في روضة التجلي", iurl: "https://www.aicpmadih.de/wp-content/uploads/2019/11/anwar-mawaled-sayed-al-abrar-1-1.jpg", surl: "https://www.aicpmadih.de/Multimedia/Anasheed/Anasheed/na37_CD%20'Umsiat%20al-'Anwar%20Bi%20Mawlid%20Sayidil-'Abrar/na37_05.mp3", art: "أمسية الأنوار" },
+{ name: "زهت وتسامت الأنوار بمولد سيد الأبرار", iurl: "https://www.aicpmadih.de/wp-content/uploads/2019/11/anwar-mawaled-sayed-al-abrar-1-1.jpg", surl: "https://www.aicpmadih.de/Multimedia/Anasheed/Anasheed/na37_CD%20'Umsiat%20al-'Anwar%20Bi%20Mawlid%20Sayidil-'Abrar/na37_06.mp3", art: "أمسية الأنوار" }
+                ]
+            },
+            layali: {
+                id: 'layali',
+                name: 'أنس الليالي',
+                sub: 'أناشيد ومدائح',
+                cover: 'https://www.aicpmadih.de/wp-content/uploads/2019/11/na33-cd-1.jpg',
+                songs: [
+                    { name: "أنشودة أنس الليالي", iurl: "https://www.aicpmadih.de/wp-content/uploads/2019/11/na33-cd-1.jpg", surl: "https://www.aicpmadih.de/Multimedia/Anasheed/Anasheed/na33/1_onosallayale.mp3", art: "أنس الليالي" },
+{ name: "أنشودة أنا جيت الحمى", iurl: "https://www.aicpmadih.de/wp-content/uploads/2019/11/na33-cd-1.jpg", surl: "https://www.aicpmadih.de/Multimedia/Anasheed/Anasheed/na33/2_anajeetal7ema.mp3", art: "أنس الليالي" },
+{ name: "أنشودة أشرقت أنوار طه", iurl: "https://www.aicpmadih.de/wp-content/uploads/2019/11/na33-cd-1.jpg", surl: "https://www.aicpmadih.de/Multimedia/Anasheed/Anasheed/na33/3_mazhabdaybag.mp3", art: "أنس الليالي" },
+{ name: "أنشودة يا بارئ الاكوان زاد", iurl: "https://www.aicpmadih.de/wp-content/uploads/2019/11/na33-cd-1.jpg", surl: "https://www.aicpmadih.de/Multimedia/Anasheed/Anasheed/na33/4_yabare2a.mp3", art: "أنس الليالي" },
+{ name: "أنشودة أدعو وأناجي", iurl: "https://www.aicpmadih.de/wp-content/uploads/2019/11/na33-cd-1.jpg", surl: "https://www.aicpmadih.de/Multimedia/Anasheed/Anasheed/na33/5_ad3owaonage.mp3", art: "أنس الليالي" },
+{ name: "أنشودة وحشتينا يا مدينة", iurl: "https://www.aicpmadih.de/wp-content/uploads/2019/11/na33-cd-1.jpg", surl: "https://www.aicpmadih.de/Multimedia/Anasheed/Anasheed/na33/6_wa7shteena.mp3", art: "أنس الليالي" }
+                ]
+            },
+            atfal: {
+                id: 'atfal',
+                name: 'أناشيد الأطفال',
+                sub: 'أناشيد تربوية للأطفال',
+                cover: 'https://s5files.mobeasy.com/static/u/722316/file-722316-593973.jpg',
+                songs: [
+                    
+            { name: "علمتني", iurl: "https://s5files.mobeasy.com/static/u/722316/file-722316-593973.jpg", surl: "https://archive.org/download/MuslimKidsSongGodIsTheCreatorNasheed/3allametne-%20%D8%B9%D9%84%D9%85%D8%AA%D9%86%D9%8A.mp3", art: "أناشيد أطفال" },
+            { name: "عمبر", iurl: "https://s5files.mobeasy.com/static/u/722316/file-722316-593973.jpg", surl: "https://archive.org/download/MuslimKidsSongGodIsTheCreatorNasheed/3ambar-%20%D8%B9%D9%85%D8%A8%D8%B1.mp3", art: "أناشيد أطفال" },
+            { name: "عند الصباح", iurl: "https://s5files.mobeasy.com/static/u/722316/file-722316-593973.jpg", surl: "https://archive.org/download/MuslimKidsSongGodIsTheCreatorNasheed/3indassaba7-%20%D8%B9%D9%86%D8%AF%20%D8%A7%D9%84%D8%B5%D8%A8%D8%A7%D8%AD.mp3", art: "أناشيد أطفال" },
+            { name: "ارنب", iurl: "https://s5files.mobeasy.com/static/u/722316/file-722316-593973.jpg", surl: "https://archive.org/download/MuslimKidsSongGodIsTheCreatorNasheed/A2rnab-%20%D8%A7%D8%B1%D9%86%D8%A8.mp3", art: "أناشيد أطفال" },
+            { name: "اداب", iurl: "https://s5files.mobeasy.com/static/u/722316/file-722316-593973.jpg", surl: "https://archive.org/download/MuslimKidsSongGodIsTheCreatorNasheed/Adaab-%20%D8%A7%D8%AF%D8%A7%D8%A8.mp3", art: "أناشيد أطفال" },
+            { name: "افضل الأعمال", iurl: "https://s5files.mobeasy.com/static/u/722316/file-722316-593973.jpg", surl: "https://archive.org/download/MuslimKidsSongGodIsTheCreatorNasheed/Afdalula3mali-%20%D8%A7%D9%81%D8%B6%D9%84%20%D8%A7%D9%84%D8%A3%D8%B9%D9%85%D8%A7%D9%84.mp3", art: "أناشيد أطفال" },
+            { name: "الدورية", iurl: "https://s5files.mobeasy.com/static/u/722316/file-722316-593973.jpg", surl: "https://archive.org/download/MuslimKidsSongGodIsTheCreatorNasheed/AlDawreh-%20%D8%A7%D9%84%D8%AF%D9%88%D8%B1%D9%8A%D8%A9.mp3", art: "أناشيد أطفال" },
+            { name: "الديك", iurl: "https://s5files.mobeasy.com/static/u/722316/file-722316-593973.jpg", surl: "https://archive.org/download/MuslimKidsSongGodIsTheCreatorNasheed/AlDeek-%D8%A7%D9%84%D8%AF%D9%8A%D9%83.mp3", art: "أناشيد أطفال" },
+            { name: "الدراجة النارية", iurl: "https://s5files.mobeasy.com/static/u/722316/file-722316-593973.jpg", surl: "https://archive.org/download/MuslimKidsSongGodIsTheCreatorNasheed/AldrajehalNareh-%20%D8%A7%D9%84%D8%AF%D8%B1%D8%A7%D8%AC%D8%A9%20%D8%A7%D9%84%D9%86%D8%A7%D8%B1%D9%8A%D8%A9.mp3", art: "أناشيد أطفال" },
+            { name: "ارنوب", iurl: "https://s5files.mobeasy.com/static/u/722316/file-722316-593973.jpg", surl: "https://archive.org/download/MuslimKidsSongGodIsTheCreatorNasheed/Arnoob-%20%D8%A7%D8%B1%D9%86%D9%88%D8%A8.mp3", art: "أناشيد أطفال" },
+            { name: "اسناني", iurl: "https://s5files.mobeasy.com/static/u/722316/file-722316-593973.jpg", surl: "https://archive.org/download/MuslimKidsSongGodIsTheCreatorNasheed/Asnani-%20%D8%A7%D8%B3%D9%86%D8%A7%D9%86%D9%8A.mp3", art: "أناشيد أطفال" },
+            { name: "اوتو كار", iurl: "https://s5files.mobeasy.com/static/u/722316/file-722316-593973.jpg", surl: "https://archive.org/download/MuslimKidsSongGodIsTheCreatorNasheed/AutoCar-%20%D8%A7%D9%88%D8%AA%D9%88%20%D9%83%D8%A7%D8%B1.mp3", art: "أناشيد أطفال" },
+            { name: "بشم", iurl: "https://s5files.mobeasy.com/static/u/722316/file-722316-593973.jpg", surl: "https://archive.org/download/MuslimKidsSongGodIsTheCreatorNasheed/Bashem-%20%D8%A8%D8%B4%D9%85.mp3", art: "أناشيد أطفال" },
+            { name: "بطه", iurl: "https://s5files.mobeasy.com/static/u/722316/file-722316-593973.jpg", surl: "https://archive.org/download/MuslimKidsSongGodIsTheCreatorNasheed/Batta-%20%D8%A8%D8%B7%D9%87.mp3", art: "أناشيد أطفال" },
+            { name: "بيئتنا", iurl: "https://s5files.mobeasy.com/static/u/722316/file-722316-593973.jpg", surl: "https://archive.org/download/MuslimKidsSongGodIsTheCreatorNasheed/Be2etna-%20%D8%A8%D9%8A%D8%A6%D8%AA%D9%86%D8%A7.mp3", art: "أناشيد أطفال" },
+            { name: "بدنا", iurl: "https://s5files.mobeasy.com/static/u/722316/file-722316-593973.jpg", surl: "https://archive.org/download/MuslimKidsSongGodIsTheCreatorNasheed/Bednna-%20%D8%A8%D8%AF%D9%86%D8%A7.mp3", art: "أناشيد أطفال" },
+            { name: "بالعين", iurl: "https://s5files.mobeasy.com/static/u/722316/file-722316-593973.jpg", surl: "https://archive.org/download/MuslimKidsSongGodIsTheCreatorNasheed/Bel3een-%20%D8%A8%D8%A7%D9%84%D8%B9%D9%8A%D9%86.mp3", art: "أناشيد أطفال" },
+            { name: "بتعرفوا", iurl: "https://s5files.mobeasy.com/static/u/722316/file-722316-593973.jpg", surl: "https://archive.org/download/MuslimKidsSongGodIsTheCreatorNasheed/Bte3rafo-%20%D8%A8%D8%AA%D8%B9%D8%B1%D9%81%D9%88%D8%A7.mp3", art: "أناشيد أطفال" },
+            { name: "Celebrate", iurl: "https://s5files.mobeasy.com/static/u/722316/file-722316-593973.jpg", surl: "https://archive.org/download/MuslimKidsSongGodIsTheCreatorNasheed/Celebrate.mp3", art: "أناشيد أطفال" },
+            { name: "Muslim Kids Song - God Is The Creator", iurl: "https://s5files.mobeasy.com/static/u/722316/file-722316-593973.jpg", surl: "https://archive.org/download/MuslimKidsSongGodIsTheCreatorNasheed/Muslim%20Kids%20Song%20-%20God%20Is%20The%20Creator%20Nasheed%20-%20%D8%A3%D9%86%D8%A7%D8%B4%D9%8A%D8%AF%20%D8%A3%D8%B7%D9%81%D8%A7%D9%84.mp3", art: "أناشيد أطفال" },
+            { name: "تيجي العصافير", iurl: "https://s5files.mobeasy.com/static/u/722316/file-722316-593973.jpg", surl: "https://archive.org/download/MuslimKidsSongGodIsTheCreatorNasheed/TejeAl3asafeer-%20%D8%AA%D9%8A%D8%AC%D9%8A%20%D8%A7%D9%84%D8%B9%D8%B5%D8%A7%D9%81%D9%8A%D8%B1.mp3", art: "أناشيد أطفال" },
+            { name: "الأحرف الأبجدية", iurl: "https://s5files.mobeasy.com/static/u/722316/file-722316-593973.jpg", surl: "https://archive.org/download/MuslimKidsSongGodIsTheCreatorNasheed/abjadiyya-%20%D8%A7%D9%84%D8%A3%D8%AD%D8%B1%D9%81%20%D8%A7%D9%84%D8%A3%D8%A8%D8%AC%D8%AF%D9%8A%D8%A9.mp3", art: "أناشيد أطفال" },
+            { name: "الموج", iurl: "https://s5files.mobeasy.com/static/u/722316/file-722316-593973.jpg", surl: "https://archive.org/download/MuslimKidsSongGodIsTheCreatorNasheed/almawju-%20%D8%A7%D9%84%D9%85%D9%88%D8%AC.mp3", art: "أناشيد أطفال" },
+            { name: "انا وماشي", iurl: "https://s5files.mobeasy.com/static/u/722316/file-722316-593973.jpg", surl: "https://archive.org/download/MuslimKidsSongGodIsTheCreatorNasheed/ana%20w%20machi%20%D8%A7%D9%86%D8%A7%20%D9%88%D9%85%D8%A7%D8%B4%D9%8A.mp3", art: "أناشيد أطفال" },
+            { name: "ارقام", iurl: "https://s5files.mobeasy.com/static/u/722316/file-722316-593973.jpg", surl: "https://archive.org/download/MuslimKidsSongGodIsTheCreatorNasheed/arqamG-%20%D8%A7%D8%B1%D9%82%D8%A7%D9%85.mp3", art: "أناشيد أطفال" },
+            { name: "ارقامي", iurl: "https://s5files.mobeasy.com/static/u/722316/file-722316-593973.jpg", surl: "https://archive.org/download/MuslimKidsSongGodIsTheCreatorNasheed/arqamI-%20%D8%A7%D8%B1%D9%82%D8%A7%D9%85%D9%8A.mp3", art: "أناشيد أطفال" },
+            { name: "فرحي", iurl: "https://s5files.mobeasy.com/static/u/722316/file-722316-593973.jpg", surl: "https://archive.org/download/MuslimKidsSongGodIsTheCreatorNasheed/farahi-%20%D9%81%D8%B1%D8%AD%D9%8A.mp3", art: "أناشيد أطفال" },
+            { name: "في عينا", iurl: "https://s5files.mobeasy.com/static/u/722316/file-722316-593973.jpg", surl: "https://archive.org/download/MuslimKidsSongGodIsTheCreatorNasheed/fi3enna-%20%D9%81%D9%8A%20%D8%B9%D9%8A%D9%86%D8%A7.mp3", art: "أناشيد أطفال" },
+            { name: "هذي اذني", iurl: "https://s5files.mobeasy.com/static/u/722316/file-722316-593973.jpg", surl: "https://archive.org/download/MuslimKidsSongGodIsTheCreatorNasheed/hath%D9%92%D9%92%D9%92%D9%92iUithuni-%20%D9%87%D8%B0%D9%8A%20%D8%A7%D8%B0%D9%86%D9%8A.mp3", art: "أناشيد أطفال" },
+            { name: "هي عيني", iurl: "https://s5files.mobeasy.com/static/u/722316/file-722316-593973.jpg", surl: "https://archive.org/download/MuslimKidsSongGodIsTheCreatorNasheed/hay3ayni-%20%D9%87%D9%8A%20%D8%B9%D9%8A%D9%86%D9%8A.mp3", art: "أناشيد أطفال" },
+            { name: "هدهد", iurl: "https://s5files.mobeasy.com/static/u/722316/file-722316-593973.jpg", surl: "https://archive.org/download/MuslimKidsSongGodIsTheCreatorNasheed/hudhud-%20%D9%87%D8%AF%D9%87%D8%AF.mp3", art: "أناشيد أطفال" },
+            { name: "إجى الخبر", iurl: "https://s5files.mobeasy.com/static/u/722316/file-722316-593973.jpg", surl: "https://archive.org/download/MuslimKidsSongGodIsTheCreatorNasheed/ijalkhabar-%20%D8%A5%D8%AC%D9%89%20%D8%A7%D9%84%D8%AE%D8%A8%D8%B1.mp3", art: "أناشيد أطفال" },
+            { name: "جل جلال الله", iurl: "https://s5files.mobeasy.com/static/u/722316/file-722316-593973.jpg", surl: "https://archive.org/download/MuslimKidsSongGodIsTheCreatorNasheed/jalla-%20%D8%AC%D9%84%20%D8%AC%D9%84%D8%A7%D9%84%20%D8%A7%D9%84%D9%84%D9%87.mp3", art: "أناشيد أطفال" },
+            { name: "ك حديقتنا", iurl: "https://s5files.mobeasy.com/static/u/722316/file-722316-593973.jpg", surl: "https://archive.org/download/MuslimKidsSongGodIsTheCreatorNasheed/ka7adeeqatina-%20%D9%83%20%D8%AD%D8%AF%D9%8A%D9%82%D8%AA%D9%86%D8%A7.mp3", art: "أناشيد أطفال" },
+            { name: "كتكوت", iurl: "https://s5files.mobeasy.com/static/u/722316/file-722316-593973.jpg", surl: "https://archive.org/download/MuslimKidsSongGodIsTheCreatorNasheed/katkout-%20%D9%83%D8%AA%D9%83%D9%88%D8%AA.mp3", art: "أناشيد أطفال" },
+            { name: "كيف بتعمل", iurl: "https://s5files.mobeasy.com/static/u/722316/file-722316-593973.jpg", surl: "https://archive.org/download/MuslimKidsSongGodIsTheCreatorNasheed/keefBta3mil-%20%D9%83%D9%8A%D9%81%20%D8%A8%D8%AA%D8%B9%D9%85%D9%84.mp3", art: "أناشيد أطفال" },
+            { name: "كنا مره", iurl: "https://s5files.mobeasy.com/static/u/722316/file-722316-593973.jpg", surl: "https://archive.org/download/MuslimKidsSongGodIsTheCreatorNasheed/kennaMarra-%20%D9%83%D9%86%D8%A7%20%D9%85%D8%B1%D9%87.mp3", art: "أناشيد أطفال" },
+            { name: "لي رجلان", iurl: "https://s5files.mobeasy.com/static/u/722316/file-722316-593973.jpg", surl: "https://archive.org/download/MuslimKidsSongGodIsTheCreatorNasheed/liRijlan-%20%D9%84%D9%8A%20%D8%B1%D8%AC%D9%84%D8%A7%D9%86.mp3", art: "أناشيد أطفال" },
+            { name: "لعبات", iurl: "https://s5files.mobeasy.com/static/u/722316/file-722316-593973.jpg", surl: "https://archive.org/download/MuslimKidsSongGodIsTheCreatorNasheed/lo3bat-%20%D9%84%D8%B9%D8%A8%D8%A7%D8%AA.mp3", art: "أناشيد أطفال" },
+            { name: "لعبة زينب", iurl: "https://s5files.mobeasy.com/static/u/722316/file-722316-593973.jpg", surl: "https://archive.org/download/MuslimKidsSongGodIsTheCreatorNasheed/lo3batZainab-%20%D9%84%D8%B9%D8%A8%D8%A9%20%D8%B2%D9%8A%D9%86%D8%A8.mp3", art: "أناشيد أطفال" },
+            { name: "ما احلاها", iurl: "https://s5files.mobeasy.com/static/u/722316/file-722316-593973.jpg", surl: "https://archive.org/download/MuslimKidsSongGodIsTheCreatorNasheed/maA7laha-%20%D9%85%D8%A7%20%D8%A7%D8%AD%D9%84%D8%A7%D9%87%D8%A7.mp3", art: "أناشيد أطفال" },
+            { name: "ماما", iurl: "https://s5files.mobeasy.com/static/u/722316/file-722316-593973.jpg", surl: "https://archive.org/download/MuslimKidsSongGodIsTheCreatorNasheed/mama-%20%D9%85%D8%A7%D9%85%D8%A7.mp3", art: "أناشيد أطفال" },
+            { name: "من هم", iurl: "https://s5files.mobeasy.com/static/u/722316/file-722316-593973.jpg", surl: "https://archive.org/download/MuslimKidsSongGodIsTheCreatorNasheed/manhum-%20%D9%85%D9%86%20%D9%87%D9%85.mp3", art: "أناشيد أطفال" },
+            { name: "مشط شعرك", iurl: "https://s5files.mobeasy.com/static/u/722316/file-722316-593973.jpg", surl: "https://archive.org/download/MuslimKidsSongGodIsTheCreatorNasheed/mashitSha3rak-%20%D9%85%D8%B4%D8%B7%20%D8%B4%D8%B9%D8%B1%D9%83.mp3", art: "أناشيد أطفال" },
+            { name: "منيح الي", iurl: "https://s5files.mobeasy.com/static/u/722316/file-722316-593973.jpg", surl: "https://archive.org/download/MuslimKidsSongGodIsTheCreatorNasheed/mnee7elli-%20%D9%85%D9%86%D9%8A%D8%AD%20%D8%A7%D9%84%D9%8A.mp3", art: "أناشيد أطفال" },
+            { name: "نملة", iurl: "https://s5files.mobeasy.com/static/u/722316/file-722316-593973.jpg", surl: "https://archive.org/download/MuslimKidsSongGodIsTheCreatorNasheed/namleh-%20%D9%86%D9%85%D9%84%D8%A9.mp3", art: "أناشيد أطفال" },
+            { name: "نعمة", iurl: "https://s5files.mobeasy.com/static/u/722316/file-722316-593973.jpg", surl: "https://archive.org/download/MuslimKidsSongGodIsTheCreatorNasheed/ne3meh-%20%D9%86%D8%B9%D9%85%D8%A9.mp3", art: "أناشيد أطفال" },
+            { name: "نحنا بنستقبل", iurl: "https://s5files.mobeasy.com/static/u/722316/file-722316-593973.jpg", surl: "https://archive.org/download/MuslimKidsSongGodIsTheCreatorNasheed/ne7naMnesta2bil%20-%20%D9%86%D8%AD%D9%86%D8%A7%20%D8%A8%D9%86%D8%B3%D8%AA%D9%82%D8%A8%D9%84.mp3", art: "أناشيد أطفال" },
+            { name: "قد غنى", iurl: "https://s5files.mobeasy.com/static/u/722316/file-722316-593973.jpg", surl: "https://archive.org/download/MuslimKidsSongGodIsTheCreatorNasheed/qadGhanna-%20%D9%82%D8%AF%20%D8%BA%D9%86%D9%89.mp3", art: "أناشيد أطفال" },
+            { name: "قال الجار", iurl: "https://s5files.mobeasy.com/static/u/722316/file-722316-593973.jpg", surl: "https://archive.org/download/MuslimKidsSongGodIsTheCreatorNasheed/qalaljar%20-%20%D9%82%D8%A7%D9%84%20%D8%A7%D9%84%D8%AC%D8%A7%D8%B1.mp3", art: "أناشيد أطفال" },
+            { name: "ركبنا", iurl: "https://s5files.mobeasy.com/static/u/722316/file-722316-593973.jpg", surl: "https://archive.org/download/MuslimKidsSongGodIsTheCreatorNasheed/rkebna-%20%D8%B1%D9%83%D8%A8%D9%86%D8%A7.mp3", art: "أناشيد أطفال" },
+            { name: "سفينة الصحرا", iurl: "https://s5files.mobeasy.com/static/u/722316/file-722316-593973.jpg", surl: "https://archive.org/download/MuslimKidsSongGodIsTheCreatorNasheed/safeena%20-%20%D8%B3%D9%81%D9%8A%D9%86%D8%A9%20%D8%A7%D9%84%D8%B5%D8%AD%D8%B1%D8%A7.mp3", art: "أناشيد أطفال" },
+            { name: "صيصان", iurl: "https://s5files.mobeasy.com/static/u/722316/file-722316-593973.jpg", surl: "https://archive.org/download/MuslimKidsSongGodIsTheCreatorNasheed/seesan%20-%20%D8%B5%D9%8A%D8%B5%D8%A7%D9%86.mp3", art: "أناشيد أطفال" },
+            { name: "شوقي وحنيني", iurl: "https://s5files.mobeasy.com/static/u/722316/file-722316-593973.jpg", surl: "https://archive.org/download/MuslimKidsSongGodIsTheCreatorNasheed/shawqiwa7aneenee%20-%20%D8%B4%D9%88%D9%82%D9%8A%20%D9%88%D8%AD%D9%86%D9%8A%D9%86%D9%8A.mp3", art: "أناشيد أطفال" },
+            { name: "شفنا مره", iurl: "https://s5files.mobeasy.com/static/u/722316/file-722316-593973.jpg", surl: "https://archive.org/download/MuslimKidsSongGodIsTheCreatorNasheed/shefanMarra%20-%20%D8%B4%D9%81%D9%86%D8%A7%20%D9%85%D8%B1%D9%87.mp3", art: "أناشيد أطفال" },
+            { name: "طار العصفور", iurl: "https://s5files.mobeasy.com/static/u/722316/file-722316-593973.jpg", surl: "https://archive.org/download/MuslimKidsSongGodIsTheCreatorNasheed/tarel3usfour%20-%20%D8%B7%D8%A7%D8%B1%20%D8%A7%D9%84%D8%B9%D8%B5%D9%81%D9%88%D8%B1.mp3", art: "أناشيد أطفال" },
+            { name: "يا صغير", iurl: "https://s5files.mobeasy.com/static/u/722316/file-722316-593973.jpg", surl: "https://archive.org/download/MuslimKidsSongGodIsTheCreatorNasheed/yasagheer%20-%20%D9%8A%D8%A7%20%D8%B5%D8%BA%D9%8A%D8%B1.mp3", art: "أناشيد أطفال" },
+            { name: "يوبي", iurl: "https://s5files.mobeasy.com/static/u/722316/file-722316-593973.jpg", surl: "https://archive.org/download/MuslimKidsSongGodIsTheCreatorNasheed/yuppiyay%20-%20%D9%8A%D9%88%D8%A8%D9%8A.mp3", art: "أناشيد أطفال" }
+        
+                ]
+            },
+            ziyara: {
+                id: 'ziyara',
+                name: 'زيارة القبر النبوي الشريف',
+                sub: 'مدائح نبوية',
+                cover: 'https://s5files.mobeasy.com/static/u/722316/file-722316-729662.jpg',
+                songs: [
+                    
+            { name: "ICWZ001", iurl: "https://s5files.mobeasy.com/static/u/722316/file-722316-729662.jpg", surl: "https://archive.org/download/zyaarat_Alqabrulshareef/ICWZ001.mp3", art: "مدائح نبوية" },
+            { name: "ICWZ002", iurl: "https://s5files.mobeasy.com/static/u/722316/file-722316-729662.jpg", surl: "https://archive.org/download/zyaarat_Alqabrulshareef/ICWZ002.mp3", art: "مدائح نبوية" },
+            { name: "ICWZ003", iurl: "https://s5files.mobeasy.com/static/u/722316/file-722316-729662.jpg", surl: "https://archive.org/download/zyaarat_Alqabrulshareef/ICWZ003.mp3", art: "مدائح نبوية" },
+            { name: "ICWZ004", iurl: "https://s5files.mobeasy.com/static/u/722316/file-722316-729662.jpg", surl: "https://archive.org/download/zyaarat_Alqabrulshareef/ICWZ004.mp3", art: "مدائح نبوية" },
+            { name: "ICWZ005", iurl: "https://s5files.mobeasy.com/static/u/722316/file-722316-729662.jpg", surl: "https://archive.org/download/zyaarat_Alqabrulshareef/ICWZ005.mp3", art: "مدائح نبوية" },
+            { name: "ICWZ006", iurl: "https://s5files.mobeasy.com/static/u/722316/file-722316-729662.jpg", surl: "https://archive.org/download/zyaarat_Alqabrulshareef/ICWZ006.mp3", art: "مدائح نبوية" },
+            { name: "ICWZ007", iurl: "https://s5files.mobeasy.com/static/u/722316/file-722316-729662.jpg", surl: "https://archive.org/download/zyaarat_Alqabrulshareef/ICWZ007.mp3", art: "مدائح نبوية" },
+            { name: "ICWZ008", iurl: "https://s5files.mobeasy.com/static/u/722316/file-722316-729662.jpg", surl: "https://archive.org/download/zyaarat_Alqabrulshareef/ICWZ008.mp3", art: "مدائح نبوية" },
+            { name: "ICWZ009", iurl: "https://s5files.mobeasy.com/static/u/722316/file-722316-729662.jpg", surl: "https://archive.org/download/zyaarat_Alqabrulshareef/ICWZ009.mp3", art: "مدائح نبوية" },
+            { name: "ICWZ010", iurl: "https://s5files.mobeasy.com/static/u/722316/file-722316-729662.jpg", surl: "https://archive.org/download/zyaarat_Alqabrulshareef/ICWZ010.mp3", art: "مدائح نبوية" },
+            { name: "ICWZ011", iurl: "https://s5files.mobeasy.com/static/u/722316/file-722316-729662.jpg", surl: "https://archive.org/download/zyaarat_Alqabrulshareef/ICWZ011.mp3", art: "مدائح نبوية" },
+            { name: "ICWZ012", iurl: "https://s5files.mobeasy.com/static/u/722316/file-722316-729662.jpg", surl: "https://archive.org/download/zyaarat_Alqabrulshareef/ICWZ012.mp3", art: "مدائح نبوية" },
+            { name: "ICWZ013", iurl: "https://s5files.mobeasy.com/static/u/722316/file-722316-729662.jpg", surl: "https://archive.org/download/zyaarat_Alqabrulshareef/ICWZ013.mp3", art: "مدائح نبوية" },
+            { name: "ICWZ014", iurl: "https://s5files.mobeasy.com/static/u/722316/file-722316-729662.jpg", surl: "https://archive.org/download/zyaarat_Alqabrulshareef/ICWZ014.mp3", art: "مدائح نبوية" },
+            { name: "ICWZ015", iurl: "https://s5files.mobeasy.com/static/u/722316/file-722316-729662.jpg", surl: "https://archive.org/download/zyaarat_Alqabrulshareef/ICWZ015.mp3", art: "مدائح نبوية" },
+            { name: "ICWZ016", iurl: "https://s5files.mobeasy.com/static/u/722316/file-722316-729662.jpg", surl: "https://archive.org/download/zyaarat_Alqabrulshareef/ICWZ016.mp3", art: "مدائح نبوية" },
+            { name: "ICWZ017", iurl: "https://s5files.mobeasy.com/static/u/722316/file-722316-729662.jpg", surl: "https://archive.org/download/zyaarat_Alqabrulshareef/ICWZ017.mp3", art: "مدائح نبوية" },
+            { name: "يا رسول سلام عليك", iurl: "https://s5files.mobeasy.com/static/u/722316/file-722316-729662.jpg", surl: "https://archive.org/download/zyaarat_Alqabrulshareef/ICWZ018%20%D9%8A%D8%A7%20%D8%B1%D8%B3%D9%88%D9%84%20%D8%B3%D9%84%D8%A7%D9%85%20%D8%B9%D9%84%D9%8A%D9%83.mp3", art: "مدائح نبوية" },
+            { name: "ICWZ019", iurl: "https://s5files.mobeasy.com/static/u/722316/file-722316-729662.jpg", surl: "https://archive.org/download/zyaarat_Alqabrulshareef/ICWZ019.mp3", art: "مدائح نبوية" },
+            { name: "ICWZ020", iurl: "https://s5files.mobeasy.com/static/u/722316/file-722316-729662.jpg", surl: "https://archive.org/download/zyaarat_Alqabrulshareef/ICWZ020.mp3", art: "مدائح نبوية" },
+            { name: "ICWZ021", iurl: "https://s5files.mobeasy.com/static/u/722316/file-722316-729662.jpg", surl: "https://archive.org/download/zyaarat_Alqabrulshareef/ICWZ021.mp3", art: "مدائح نبوية" },
+            { name: "ICWZ022", iurl: "https://s5files.mobeasy.com/static/u/722316/file-722316-729662.jpg", surl: "https://archive.org/download/zyaarat_Alqabrulshareef/ICWZ022.mp3", art: "مدائح نبوية" },
+            { name: "ICWZ023", iurl: "https://s5files.mobeasy.com/static/u/722316/file-722316-729662.jpg", surl: "https://archive.org/download/zyaarat_Alqabrulshareef/ICWZ023.mp3", art: "مدائح نبوية" },
+            { name: "ICWZ024", iurl: "https://s5files.mobeasy.com/static/u/722316/file-722316-729662.jpg", surl: "https://archive.org/download/zyaarat_Alqabrulshareef/ICWZ024.mp3", art: "مدائح نبوية" },
+            { name: "ICWZ025", iurl: "https://s5files.mobeasy.com/static/u/722316/file-722316-729662.jpg", surl: "https://archive.org/download/zyaarat_Alqabrulshareef/ICWZ025.mp3", art: "مدائح نبوية" },
+            { name: "ICWZ026", iurl: "https://s5files.mobeasy.com/static/u/722316/file-722316-729662.jpg", surl: "https://archive.org/download/zyaarat_Alqabrulshareef/ICWZ026.mp3", art: "مدائح نبوية" },
+            { name: "ICWZ027", iurl: "https://s5files.mobeasy.com/static/u/722316/file-722316-729662.jpg", surl: "https://archive.org/download/zyaarat_Alqabrulshareef/ICWZ027.mp3", art: "مدائح نبوية" },
+            { name: "ICWZ028", iurl: "https://s5files.mobeasy.com/static/u/722316/file-722316-729662.jpg", surl: "https://archive.org/download/zyaarat_Alqabrulshareef/ICWZ028.mp3", art: "مدائح نبوية" },
+            { name: "ICWZ029", iurl: "https://s5files.mobeasy.com/static/u/722316/file-722316-729662.jpg", surl: "https://archive.org/download/zyaarat_Alqabrulshareef/ICWZ029.mp3", art: "مدائح نبوية" },
+            { name: "ICWZ030", iurl: "https://s5files.mobeasy.com/static/u/722316/file-722316-729662.jpg", surl: "https://archive.org/download/zyaarat_Alqabrulshareef/ICWZ030.mp3", art: "مدائح نبوية" },
+            { name: "ICWZ031", iurl: "https://s5files.mobeasy.com/static/u/722316/file-722316-729662.jpg", surl: "https://archive.org/download/zyaarat_Alqabrulshareef/ICWZ031.mp3", art: "مدائح نبوية" },
+            { name: "ICWZ032", iurl: "https://s5files.mobeasy.com/static/u/722316/file-722316-729662.jpg", surl: "https://archive.org/download/zyaarat_Alqabrulshareef/ICWZ032.mp3", art: "مدائح نبوية" },
+            { name: "ICWZ033", iurl: "https://s5files.mobeasy.com/static/u/722316/file-722316-729662.jpg", surl: "https://archive.org/download/zyaarat_Alqabrulshareef/ICWZ033.mp3", art: "مدائح نبوية" },
+            { name: "ICWZ034", iurl: "https://s5files.mobeasy.com/static/u/722316/file-722316-729662.jpg", surl: "https://archive.org/download/zyaarat_Alqabrulshareef/ICWZ034.mp3", art: "مدائح نبوية" },
+            { name: "ICWZ035", iurl: "https://s5files.mobeasy.com/static/u/722316/file-722316-729662.jpg", surl: "https://archive.org/download/zyaarat_Alqabrulshareef/ICWZ035.mp3", art: "مدائح نبوية" },
+            { name: "ICWZ036", iurl: "https://s5files.mobeasy.com/static/u/722316/file-722316-729662.jpg", surl: "https://archive.org/download/zyaarat_Alqabrulshareef/ICWZ036.mp3", art: "مدائح نبوية" },
+            { name: "ICWZ037", iurl: "https://s5files.mobeasy.com/static/u/722316/file-722316-729662.jpg", surl: "https://archive.org/download/zyaarat_Alqabrulshareef/ICWZ037.mp3", art: "مدائح نبوية" },
+            { name: "ICWZ038", iurl: "https://s5files.mobeasy.com/static/u/722316/file-722316-729662.jpg", surl: "https://archive.org/download/zyaarat_Alqabrulshareef/ICWZ038.mp3", art: "مدائح نبوية" },
+            { name: "ICWZ039", iurl: "https://s5files.mobeasy.com/static/u/722316/file-722316-729662.jpg", surl: "https://archive.org/download/zyaarat_Alqabrulshareef/ICWZ039.mp3", art: "مدائح نبوية" },
+            { name: "ICWZ040", iurl: "https://s5files.mobeasy.com/static/u/722316/file-722316-729662.jpg", surl: "https://archive.org/download/zyaarat_Alqabrulshareef/ICWZ040.mp3", art: "مدائح نبوية" },
+            { name: "ICWZ041", iurl: "https://s5files.mobeasy.com/static/u/722316/file-722316-729662.jpg", surl: "https://archive.org/download/zyaarat_Alqabrulshareef/ICWZ041.mp3", art: "مدائح نبوية" },
+            { name: "ICWZ042", iurl: "https://s5files.mobeasy.com/static/u/722316/file-722316-729662.jpg", surl: "https://archive.org/download/zyaarat_Alqabrulshareef/ICWZ042.mp3", art: "مدائح نبوية" },
+            { name: "ICWZ043", iurl: "https://s5files.mobeasy.com/static/u/722316/file-722316-729662.jpg", surl: "https://archive.org/download/zyaarat_Alqabrulshareef/ICWZ043.mp3", art: "مدائح نبوية" },
+            { name: "ICWZ044", iurl: "https://s5files.mobeasy.com/static/u/722316/file-722316-729662.jpg", surl: "https://archive.org/download/zyaarat_Alqabrulshareef/ICWZ044.mp3", art: "مدائح نبوية" },
+            { name: "ICWZ045", iurl: "https://s5files.mobeasy.com/static/u/722316/file-722316-729662.jpg", surl: "https://archive.org/download/zyaarat_Alqabrulshareef/ICWZ045.mp3", art: "مدائح نبوية" },
+            { name: "ICWZ046", iurl: "https://s5files.mobeasy.com/static/u/722316/file-722316-729662.jpg", surl: "https://archive.org/download/zyaarat_Alqabrulshareef/ICWZ046.mp3", art: "مدائح نبوية" },
+            { name: "ICWZ047", iurl: "https://s5files.mobeasy.com/static/u/722316/file-722316-729662.jpg", surl: "https://archive.org/download/zyaarat_Alqabrulshareef/ICWZ047.mp3", art: "مدائح نبوية" },
+            { name: "ICWZ048", iurl: "https://s5files.mobeasy.com/static/u/722316/file-722316-729662.jpg", surl: "https://archive.org/download/zyaarat_Alqabrulshareef/ICWZ048.mp3", art: "مدائح نبوية" },
+            { name: "ICWZ049", iurl: "https://s5files.mobeasy.com/static/u/722316/file-722316-729662.jpg", surl: "https://archive.org/download/zyaarat_Alqabrulshareef/ICWZ049.mp3", art: "مدائح نبوية" },
+            { name: "ICWZ050", iurl: "https://s5files.mobeasy.com/static/u/722316/file-722316-729662.jpg", surl: "https://archive.org/download/zyaarat_Alqabrulshareef/ICWZ050.mp3", art: "مدائح نبوية" },
+            { name: "ICWZ051", iurl: "https://s5files.mobeasy.com/static/u/722316/file-722316-729662.jpg", surl: "https://archive.org/download/zyaarat_Alqabrulshareef/ICWZ051.mp3", art: "مدائح نبوية" },
+            { name: "ICWZ052", iurl: "https://s5files.mobeasy.com/static/u/722316/file-722316-729662.jpg", surl: "https://archive.org/download/zyaarat_Alqabrulshareef/ICWZ052.mp3", art: "مدائح نبوية" },
+            { name: "ICWZ053", iurl: "https://s5files.mobeasy.com/static/u/722316/file-722316-729662.jpg", surl: "https://archive.org/download/zyaarat_Alqabrulshareef/ICWZ053.mp3", art: "مدائح نبوية" },
+            { name: "ICWZ054", iurl: "https://s5files.mobeasy.com/static/u/722316/file-722316-729662.jpg", surl: "https://archive.org/download/zyaarat_Alqabrulshareef/ICWZ054.mp3", art: "مدائح نبوية" },
+            { name: "ICWZ055", iurl: "https://s5files.mobeasy.com/static/u/722316/file-722316-729662.jpg", surl: "https://archive.org/download/zyaarat_Alqabrulshareef/ICWZ055.mp3", art: "مدائح نبوية" },
+            { name: "ICWZ056", iurl: "https://s5files.mobeasy.com/static/u/722316/file-722316-729662.jpg", surl: "https://archive.org/download/zyaarat_Alqabrulshareef/ICWZ056.mp3", art: "مدائح نبوية" },
+            { name: "ICWZ057", iurl: "https://s5files.mobeasy.com/static/u/722316/file-722316-729662.jpg", surl: "https://archive.org/download/zyaarat_Alqabrulshareef/ICWZ057.mp3", art: "مدائح نبوية" },
+            { name: "ICWZ058", iurl: "https://s5files.mobeasy.com/static/u/722316/file-722316-729662.jpg", surl: "https://archive.org/download/zyaarat_Alqabrulshareef/ICWZ058.mp3", art: "مدائح نبوية" },
+            { name: "ICWZ059", iurl: "https://s5files.mobeasy.com/static/u/722316/file-722316-729662.jpg", surl: "https://archive.org/download/zyaarat_Alqabrulshareef/ICWZ059.mp3", art: "مدائح نبوية" },
+            { name: "ICWZ060", iurl: "https://s5files.mobeasy.com/static/u/722316/file-722316-729662.jpg", surl: "https://archive.org/download/zyaarat_Alqabrulshareef/ICWZ060.mp3", art: "مدائح نبوية" },
+            { name: "ICWZ061", iurl: "https://s5files.mobeasy.com/static/u/722316/file-722316-729662.jpg", surl: "https://archive.org/download/zyaarat_Alqabrulshareef/ICWZ061.mp3", art: "مدائح نبوية" },
+            { name: "ICWZ062", iurl: "https://s5files.mobeasy.com/static/u/722316/file-722316-729662.jpg", surl: "https://archive.org/download/zyaarat_Alqabrulshareef/ICWZ062.mp3", art: "مدائح نبوية" },
+            { name: "ICWZ063", iurl: "https://s5files.mobeasy.com/static/u/722316/file-722316-729662.jpg", surl: "https://archive.org/download/zyaarat_Alqabrulshareef/ICWZ063.mp3", art: "مدائح نبوية" },
+            { name: "ICWZ064", iurl: "https://s5files.mobeasy.com/static/u/722316/file-722316-729662.jpg", surl: "https://archive.org/download/zyaarat_Alqabrulshareef/ICWZ064.mp3", art: "مدائح نبوية" },
+            { name: "ICWZ065", iurl: "https://s5files.mobeasy.com/static/u/722316/file-722316-729662.jpg", surl: "https://archive.org/download/zyaarat_Alqabrulshareef/ICWZ065.mp3", art: "مدائح نبوية" },
+            { name: "ICWZ066", iurl: "https://s5files.mobeasy.com/static/u/722316/file-722316-729662.jpg", surl: "https://archive.org/download/zyaarat_Alqabrulshareef/ICWZ066.mp3", art: "مدائح نبوية" },
+            { name: "كنتُ في الدجى حزيناً", iurl: "https://s5files.mobeasy.com/static/u/722316/file-722316-729662.jpg", surl: "https://archive.org/download/zyaarat_Alqabrulshareef/ICWZ067%20%D9%83%D9%86%D8%AA%D9%8F%20%D9%81%D9%8A%20%D8%A7%D9%84%D8%AF%D8%AC%D9%89%20%D8%AD%D8%B2%D9%8A%D9%86%D9%8B%D8%A7.mp3", art: "مدائح نبوية" },
+            { name: "ICWZ068", iurl: "https://s5files.mobeasy.com/static/u/722316/file-722316-729662.jpg", surl: "https://archive.org/download/zyaarat_Alqabrulshareef/ICWZ068.mp3", art: "مدائح نبوية" },
+            { name: "ICWZ069", iurl: "https://s5files.mobeasy.com/static/u/722316/file-722316-729662.jpg", surl: "https://archive.org/download/zyaarat_Alqabrulshareef/ICWZ069.mp3", art: "مدائح نبوية" },
+            { name: "ICWZ070", iurl: "https://s5files.mobeasy.com/static/u/722316/file-722316-729662.jpg", surl: "https://archive.org/download/zyaarat_Alqabrulshareef/ICWZ070.mp3", art: "مدائح نبوية" },
+            { name: "ICWZ071", iurl: "https://s5files.mobeasy.com/static/u/722316/file-722316-729662.jpg", surl: "https://archive.org/download/zyaarat_Alqabrulshareef/ICWZ071.mp3", art: "مدائح نبوية" },
+            { name: "ICWZ072", iurl: "https://s5files.mobeasy.com/static/u/722316/file-722316-729662.jpg", surl: "https://archive.org/download/zyaarat_Alqabrulshareef/ICWZ072.mp3", art: "مدائح نبوية" },
+            { name: "ICWZ073", iurl: "https://s5files.mobeasy.com/static/u/722316/file-722316-729662.jpg", surl: "https://archive.org/download/zyaarat_Alqabrulshareef/ICWZ073.mp3", art: "مدائح نبوية" },
+            { name: "ICWZ074", iurl: "https://s5files.mobeasy.com/static/u/722316/file-722316-729662.jpg", surl: "https://archive.org/download/zyaarat_Alqabrulshareef/ICWZ074.mp3", art: "مدائح نبوية" },
+            { name: "ICWZ075", iurl: "https://s5files.mobeasy.com/static/u/722316/file-722316-729662.jpg", surl: "https://archive.org/download/zyaarat_Alqabrulshareef/ICWZ075.mp3", art: "مدائح نبوية" },
+            { name: "ICWZ076", iurl: "https://s5files.mobeasy.com/static/u/722316/file-722316-729662.jpg", surl: "https://archive.org/download/zyaarat_Alqabrulshareef/ICWZ076.mp3", art: "مدائح نبوية" },
+            { name: "ICWZ077", iurl: "https://s5files.mobeasy.com/static/u/722316/file-722316-729662.jpg", surl: "https://archive.org/download/zyaarat_Alqabrulshareef/ICWZ077.mp3", art: "مدائح نبوية" },
+            { name: "ICWZ078", iurl: "https://s5files.mobeasy.com/static/u/722316/file-722316-729662.jpg", surl: "https://archive.org/download/zyaarat_Alqabrulshareef/ICWZ078.mp3", art: "مدائح نبوية" },
+            { name: "ICWZ079", iurl: "https://s5files.mobeasy.com/static/u/722316/file-722316-729662.jpg", surl: "https://archive.org/download/zyaarat_Alqabrulshareef/ICWZ079.mp3", art: "مدائح نبوية" },
+            { name: "ICWZ080", iurl: "https://s5files.mobeasy.com/static/u/722316/file-722316-729662.jpg", surl: "https://archive.org/download/zyaarat_Alqabrulshareef/ICWZ080.mp3", art: "مدائح نبوية" },
+            { name: "ICWZ081", iurl: "https://s5files.mobeasy.com/static/u/722316/file-722316-729662.jpg", surl: "https://archive.org/download/zyaarat_Alqabrulshareef/ICWZ081.mp3", art: "مدائح نبوية" },
+            { name: "ICWZ082", iurl: "https://s5files.mobeasy.com/static/u/722316/file-722316-729662.jpg", surl: "https://archive.org/download/zyaarat_Alqabrulshareef/ICWZ082.mp3", art: "مدائح نبوية" },
+            { name: "ICWZ083", iurl: "https://s5files.mobeasy.com/static/u/722316/file-722316-729662.jpg", surl: "https://archive.org/download/zyaarat_Alqabrulshareef/ICWZ083.mp3", art: "مدائح نبوية" },
+            { name: "ICWZ084", iurl: "https://s5files.mobeasy.com/static/u/722316/file-722316-729662.jpg", surl: "https://archive.org/download/zyaarat_Alqabrulshareef/ICWZ084.mp3", art: "مدائح نبوية" },
+            { name: "ICWZ085", iurl: "https://s5files.mobeasy.com/static/u/722316/file-722316-729662.jpg", surl: "https://archive.org/download/zyaarat_Alqabrulshareef/ICWZ085.mp3", art: "مدائح نبوية" },
+            { name: "ICWZ086", iurl: "https://s5files.mobeasy.com/static/u/722316/file-722316-729662.jpg", surl: "https://archive.org/download/zyaarat_Alqabrulshareef/ICWZ086.mp3", art: "مدائح نبوية" },
+            { name: "ICWZ087", iurl: "https://s5files.mobeasy.com/static/u/722316/file-722316-729662.jpg", surl: "https://archive.org/download/zyaarat_Alqabrulshareef/ICWZ087.mp3", art: "مدائح نبوية" }
+        
+                ]
+            },
+            huruf: {
+                id: 'huruf',
+                name: 'حروف ومعاني',
+                sub: 'مدائح أطفال · تعليم الحروف',
+                cover: 'https://www.aicpmadih.de/wp-content/uploads/2019/11/9-1-170x159.jpg',
+                songs: [
+                    { name: "مقدمة", iurl: "https://www.aicpmadih.de/wp-content/uploads/2019/11/9-1-170x159.jpg", surl: "https://www.aicpmadih.de/Multimedia/Anasheed/kinder/kn09/kn9_001.mp3", art: "09 حروف ومعاني" },
+{ name: "الي الي يا اطفال", iurl: "https://www.aicpmadih.de/wp-content/uploads/2019/11/9-1-170x159.jpg", surl: "https://www.aicpmadih.de/Multimedia/Anasheed/kinder/kn09/kn9_002.mp3", art: "09 حروف ومعاني" },
+{ name: "فاصل", iurl: "https://www.aicpmadih.de/wp-content/uploads/2019/11/9-1-170x159.jpg", surl: "https://www.aicpmadih.de/Multimedia/Anasheed/kinder/kn09/kn9_003.mp3", art: "09 حروف ومعاني" },
+{ name: "ما احلى اللغة العربية", iurl: "https://www.aicpmadih.de/wp-content/uploads/2019/11/9-1-170x159.jpg", surl: "https://www.aicpmadih.de/Multimedia/Anasheed/kinder/kn09/kn9_004.mp3", art: "09 حروف ومعاني" },
+{ name: "فاصل", iurl: "https://www.aicpmadih.de/wp-content/uploads/2019/11/9-1-170x159.jpg", surl: "https://www.aicpmadih.de/Multimedia/Anasheed/kinder/kn09/kn9_005.mp3", art: "09 حروف ومعاني" },
+{ name: "حرف الالف ارسمه", iurl: "https://www.aicpmadih.de/wp-content/uploads/2019/11/9-1-170x159.jpg", surl: "https://www.aicpmadih.de/Multimedia/Anasheed/kinder/kn09/kn9_006.mp3", art: "09 حروف ومعاني" },
+{ name: "انا اريد ان اتعلم", iurl: "https://www.aicpmadih.de/wp-content/uploads/2019/11/9-1-170x159.jpg", surl: "https://www.aicpmadih.de/Multimedia/Anasheed/kinder/kn09/kn9_007.mp3", art: "09 حروف ومعاني" },
+{ name: "الف باء يا خلان", iurl: "https://www.aicpmadih.de/wp-content/uploads/2019/11/9-1-170x159.jpg", surl: "https://www.aicpmadih.de/Multimedia/Anasheed/kinder/kn09/kn9_008.mp3", art: "09 حروف ومعاني" },
+{ name: "فاصل", iurl: "https://www.aicpmadih.de/wp-content/uploads/2019/11/9-1-170x159.jpg", surl: "https://www.aicpmadih.de/Multimedia/Anasheed/kinder/kn09/kn9_009.mp3", art: "09 حروف ومعاني" },
+{ name: "باء بيت اول بيت", iurl: "https://www.aicpmadih.de/wp-content/uploads/2019/11/9-1-170x159.jpg", surl: "https://www.aicpmadih.de/Multimedia/Anasheed/kinder/kn09/kn9_010.mp3", art: "09 حروف ومعاني" },
+{ name: "فاصل", iurl: "https://www.aicpmadih.de/wp-content/uploads/2019/11/9-1-170x159.jpg", surl: "https://www.aicpmadih.de/Multimedia/Anasheed/kinder/kn09/kn9_011.mp3", art: "09 حروف ومعاني" },
+{ name: "تاء تمر ما احلاه", iurl: "https://www.aicpmadih.de/wp-content/uploads/2019/11/9-1-170x159.jpg", surl: "https://www.aicpmadih.de/Multimedia/Anasheed/kinder/kn09/kn9_012.mp3", art: "09 حروف ومعاني" },
+{ name: "فاصل", iurl: "https://www.aicpmadih.de/wp-content/uploads/2019/11/9-1-170x159.jpg", surl: "https://www.aicpmadih.de/Multimedia/Anasheed/kinder/kn09/kn9_013.mp3", art: "09 حروف ومعاني" },
+{ name: "ثاء ثقفنا استاذ الصف", iurl: "https://www.aicpmadih.de/wp-content/uploads/2019/11/9-1-170x159.jpg", surl: "https://www.aicpmadih.de/Multimedia/Anasheed/kinder/kn09/kn9_014.mp3", art: "09 حروف ومعاني" },
+{ name: "فاصل", iurl: "https://www.aicpmadih.de/wp-content/uploads/2019/11/9-1-170x159.jpg", surl: "https://www.aicpmadih.de/Multimedia/Anasheed/kinder/kn09/kn9_015.mp3", art: "09 حروف ومعاني" },
+{ name: "جيم جذع نخل", iurl: "https://www.aicpmadih.de/wp-content/uploads/2019/11/9-1-170x159.jpg", surl: "https://www.aicpmadih.de/Multimedia/Anasheed/kinder/kn09/kn9_016.mp3", art: "09 حروف ومعاني" },
+{ name: "فاصل", iurl: "https://www.aicpmadih.de/wp-content/uploads/2019/11/9-1-170x159.jpg", surl: "https://www.aicpmadih.de/Multimedia/Anasheed/kinder/kn09/kn9_017.mp3", art: "09 حروف ومعاني" },
+{ name: "حرف الحاء حج البيت", iurl: "https://www.aicpmadih.de/wp-content/uploads/2019/11/9-1-170x159.jpg", surl: "https://www.aicpmadih.de/Multimedia/Anasheed/kinder/kn09/kn9_018.mp3", art: "09 حروف ومعاني" },
+{ name: "فاصل", iurl: "https://www.aicpmadih.de/wp-content/uploads/2019/11/9-1-170x159.jpg", surl: "https://www.aicpmadih.de/Multimedia/Anasheed/kinder/kn09/kn9_019.mp3", art: "09 حروف ومعاني" },
+{ name: "خير الخلق محمد", iurl: "https://www.aicpmadih.de/wp-content/uploads/2019/11/9-1-170x159.jpg", surl: "https://www.aicpmadih.de/Multimedia/Anasheed/kinder/kn09/kn9_020.mp3", art: "09 حروف ومعاني" },
+{ name: "فاصل", iurl: "https://www.aicpmadih.de/wp-content/uploads/2019/11/9-1-170x159.jpg", surl: "https://www.aicpmadih.de/Multimedia/Anasheed/kinder/kn09/kn9_021.mp3", art: "09 حروف ومعاني" },
+{ name: "دال درس اليوم", iurl: "https://www.aicpmadih.de/wp-content/uploads/2019/11/9-1-170x159.jpg", surl: "https://www.aicpmadih.de/Multimedia/Anasheed/kinder/kn09/kn9_022.mp3", art: "09 حروف ومعاني" },
+{ name: "فاصل", iurl: "https://www.aicpmadih.de/wp-content/uploads/2019/11/9-1-170x159.jpg", surl: "https://www.aicpmadih.de/Multimedia/Anasheed/kinder/kn09/kn9_023.mp3", art: "09 حروف ومعاني" },
+{ name: "حرف الذال ذكر الله", iurl: "https://www.aicpmadih.de/wp-content/uploads/2019/11/9-1-170x159.jpg", surl: "https://www.aicpmadih.de/Multimedia/Anasheed/kinder/kn09/kn9_024.mp3", art: "09 حروف ومعاني" },
+{ name: "فاصل", iurl: "https://www.aicpmadih.de/wp-content/uploads/2019/11/9-1-170x159.jpg", surl: "https://www.aicpmadih.de/Multimedia/Anasheed/kinder/kn09/kn9_025.mp3", art: "09 حروف ومعاني" },
+{ name: "راء راقبنا ظهور هلالك", iurl: "https://www.aicpmadih.de/wp-content/uploads/2019/11/9-1-170x159.jpg", surl: "https://www.aicpmadih.de/Multimedia/Anasheed/kinder/kn09/kn9_026.mp3", art: "09 حروف ومعاني" },
+{ name: "فاصل", iurl: "https://www.aicpmadih.de/wp-content/uploads/2019/11/9-1-170x159.jpg", surl: "https://www.aicpmadih.de/Multimedia/Anasheed/kinder/kn09/kn9_027.mp3", art: "09 حروف ومعاني" },
+{ name: "زاي زر ابا الزهراء", iurl: "https://www.aicpmadih.de/wp-content/uploads/2019/11/9-1-170x159.jpg", surl: "https://www.aicpmadih.de/Multimedia/Anasheed/kinder/kn09/kn9_028.mp3", art: "09 حروف ومعاني" },
+{ name: "فاصل", iurl: "https://www.aicpmadih.de/wp-content/uploads/2019/11/9-1-170x159.jpg", surl: "https://www.aicpmadih.de/Multimedia/Anasheed/kinder/kn09/kn9_029.mp3", art: "09 حروف ومعاني" },
+{ name: "حرف السين قل سبحان الله", iurl: "https://www.aicpmadih.de/wp-content/uploads/2019/11/9-1-170x159.jpg", surl: "https://www.aicpmadih.de/Multimedia/Anasheed/kinder/kn09/kn9_030.mp3", art: "09 حروف ومعاني" },
+{ name: "فاصل", iurl: "https://www.aicpmadih.de/wp-content/uploads/2019/11/9-1-170x159.jpg", surl: "https://www.aicpmadih.de/Multimedia/Anasheed/kinder/kn09/kn9_031.mp3", art: "09 حروف ومعاني" },
+{ name: "حرف الشين شوال", iurl: "https://www.aicpmadih.de/wp-content/uploads/2019/11/9-1-170x159.jpg", surl: "https://www.aicpmadih.de/Multimedia/Anasheed/kinder/kn09/kn9_032.mp3", art: "09 حروف ومعاني" },
+{ name: "فاصل", iurl: "https://www.aicpmadih.de/wp-content/uploads/2019/11/9-1-170x159.jpg", surl: "https://www.aicpmadih.de/Multimedia/Anasheed/kinder/kn09/kn9_033.mp3", art: "09 حروف ومعاني" },
+{ name: "صاد صدقنا هادينا المختار", iurl: "https://www.aicpmadih.de/wp-content/uploads/2019/11/9-1-170x159.jpg", surl: "https://www.aicpmadih.de/Multimedia/Anasheed/kinder/kn09/kn9_034.mp3", art: "09 حروف ومعاني" },
+{ name: "فاصل", iurl: "https://www.aicpmadih.de/wp-content/uploads/2019/11/9-1-170x159.jpg", surl: "https://www.aicpmadih.de/Multimedia/Anasheed/kinder/kn09/kn9_035.mp3", art: "09 حروف ومعاني" },
+{ name: "حرف الضاد اكرموا الضيوف", iurl: "https://www.aicpmadih.de/wp-content/uploads/2019/11/9-1-170x159.jpg", surl: "https://www.aicpmadih.de/Multimedia/Anasheed/kinder/kn09/kn9_036.mp3", art: "09 حروف ومعاني" },
+{ name: "فاصل", iurl: "https://www.aicpmadih.de/wp-content/uploads/2019/11/9-1-170x159.jpg", surl: "https://www.aicpmadih.de/Multimedia/Anasheed/kinder/kn09/kn9_037.mp3", art: "09 حروف ومعاني" },
+{ name: "طارت طائرة الركاب", iurl: "https://www.aicpmadih.de/wp-content/uploads/2019/11/9-1-170x159.jpg", surl: "https://www.aicpmadih.de/Multimedia/Anasheed/kinder/kn09/kn9_038.mp3", art: "09 حروف ومعاني" },
+{ name: "فاصل", iurl: "https://www.aicpmadih.de/wp-content/uploads/2019/11/9-1-170x159.jpg", surl: "https://www.aicpmadih.de/Multimedia/Anasheed/kinder/kn09/kn9_039.mp3", art: "09 حروف ومعاني" },
+{ name: "ظل تحت الشجرة", iurl: "https://www.aicpmadih.de/wp-content/uploads/2019/11/9-1-170x159.jpg", surl: "https://www.aicpmadih.de/Multimedia/Anasheed/kinder/kn09/kn9_040.mp3", art: "09 حروف ومعاني" },
+{ name: "فاصل", iurl: "https://www.aicpmadih.de/wp-content/uploads/2019/11/9-1-170x159.jpg", surl: "https://www.aicpmadih.de/Multimedia/Anasheed/kinder/kn09/kn9_041.mp3", art: "09 حروف ومعاني" },
+{ name: "العين نعمة", iurl: "https://www.aicpmadih.de/wp-content/uploads/2019/11/9-1-170x159.jpg", surl: "https://www.aicpmadih.de/Multimedia/Anasheed/kinder/kn09/kn9_042.mp3", art: "09 حروف ومعاني" },
+{ name: "فاصل", iurl: "https://www.aicpmadih.de/wp-content/uploads/2019/11/9-1-170x159.jpg", surl: "https://www.aicpmadih.de/Multimedia/Anasheed/kinder/kn09/kn9_043.mp3", art: "09 حروف ومعاني" },
+{ name: "غين غنم", iurl: "https://www.aicpmadih.de/wp-content/uploads/2019/11/9-1-170x159.jpg", surl: "https://www.aicpmadih.de/Multimedia/Anasheed/kinder/kn09/kn9_044.mp3", art: "09 حروف ومعاني" },
+{ name: "فاصل", iurl: "https://www.aicpmadih.de/wp-content/uploads/2019/11/9-1-170x159.jpg", surl: "https://www.aicpmadih.de/Multimedia/Anasheed/kinder/kn09/kn9_045.mp3", art: "09 حروف ومعاني" },
+{ name: "فاء فراشة تطير", iurl: "https://www.aicpmadih.de/wp-content/uploads/2019/11/9-1-170x159.jpg", surl: "https://www.aicpmadih.de/Multimedia/Anasheed/kinder/kn09/kn9_046.mp3", art: "09 حروف ومعاني" },
+{ name: "فاصل", iurl: "https://www.aicpmadih.de/wp-content/uploads/2019/11/9-1-170x159.jpg", surl: "https://www.aicpmadih.de/Multimedia/Anasheed/kinder/kn09/kn9_047.mp3", art: "09 حروف ومعاني" },
+{ name: "نقرا قرءان الرحمن", iurl: "https://www.aicpmadih.de/wp-content/uploads/2019/11/9-1-170x159.jpg", surl: "https://www.aicpmadih.de/Multimedia/Anasheed/kinder/kn09/kn9_048.mp3", art: "09 حروف ومعاني" },
+{ name: "فاصل", iurl: "https://www.aicpmadih.de/wp-content/uploads/2019/11/9-1-170x159.jpg", surl: "https://www.aicpmadih.de/Multimedia/Anasheed/kinder/kn09/kn9_049.mp3", art: "09 حروف ومعاني" },
+{ name: "الكاف كعبة شريفة", iurl: "https://www.aicpmadih.de/wp-content/uploads/2019/11/9-1-170x159.jpg", surl: "https://www.aicpmadih.de/Multimedia/Anasheed/kinder/kn09/kn9_050.mp3", art: "09 حروف ومعاني" },
+{ name: "فاصل", iurl: "https://www.aicpmadih.de/wp-content/uploads/2019/11/9-1-170x159.jpg", surl: "https://www.aicpmadih.de/Multimedia/Anasheed/kinder/kn09/kn9_051.mp3", art: "09 حروف ومعاني" },
+{ name: "ان اللسان نعمة", iurl: "https://www.aicpmadih.de/wp-content/uploads/2019/11/9-1-170x159.jpg", surl: "https://www.aicpmadih.de/Multimedia/Anasheed/kinder/kn09/kn9_052.mp3", art: "09 حروف ومعاني" },
+{ name: "فاصل", iurl: "https://www.aicpmadih.de/wp-content/uploads/2019/11/9-1-170x159.jpg", surl: "https://www.aicpmadih.de/Multimedia/Anasheed/kinder/kn09/kn9_053.mp3", art: "09 حروف ومعاني" },
+{ name: "محمد بدا", iurl: "https://www.aicpmadih.de/wp-content/uploads/2019/11/9-1-170x159.jpg", surl: "https://www.aicpmadih.de/Multimedia/Anasheed/kinder/kn09/kn9_054.mp3", art: "09 حروف ومعاني" },
+{ name: "فاصل", iurl: "https://www.aicpmadih.de/wp-content/uploads/2019/11/9-1-170x159.jpg", surl: "https://www.aicpmadih.de/Multimedia/Anasheed/kinder/kn09/kn9_055.mp3", art: "09 حروف ومعاني" },
+{ name: "نون نخل في البستان", iurl: "https://www.aicpmadih.de/wp-content/uploads/2019/11/9-1-170x159.jpg", surl: "https://www.aicpmadih.de/Multimedia/Anasheed/kinder/kn09/kn9_056.mp3", art: "09 حروف ومعاني" },
+{ name: "فاصل", iurl: "https://www.aicpmadih.de/wp-content/uploads/2019/11/9-1-170x159.jpg", surl: "https://www.aicpmadih.de/Multimedia/Anasheed/kinder/kn09/kn9_057.mp3", art: "09 حروف ومعاني" },
+{ name: "الهدهد الجميل", iurl: "https://www.aicpmadih.de/wp-content/uploads/2019/11/9-1-170x159.jpg", surl: "https://www.aicpmadih.de/Multimedia/Anasheed/kinder/kn09/kn9_058.mp3", art: "09 حروف ومعاني" },
+{ name: "فاصل", iurl: "https://www.aicpmadih.de/wp-content/uploads/2019/11/9-1-170x159.jpg", surl: "https://www.aicpmadih.de/Multimedia/Anasheed/kinder/kn09/kn9_059.mp3", art: "09 حروف ومعاني" },
+{ name: "ان الوضوء للصلاة", iurl: "https://www.aicpmadih.de/wp-content/uploads/2019/11/9-1-170x159.jpg", surl: "https://www.aicpmadih.de/Multimedia/Anasheed/kinder/kn09/kn9_060.mp3", art: "09 حروف ومعاني" },
+{ name: "فاصل", iurl: "https://www.aicpmadih.de/wp-content/uploads/2019/11/9-1-170x159.jpg", surl: "https://www.aicpmadih.de/Multimedia/Anasheed/kinder/kn09/kn9_061.mp3", art: "09 حروف ومعاني" },
+{ name: "اليد انا نستعملها", iurl: "https://www.aicpmadih.de/wp-content/uploads/2019/11/9-1-170x159.jpg", surl: "https://www.aicpmadih.de/Multimedia/Anasheed/kinder/kn09/kn9_062.mp3", art: "09 حروف ومعاني" },
+{ name: "ربي يا سميع", iurl: "https://www.aicpmadih.de/wp-content/uploads/2019/11/9-1-170x159.jpg", surl: "https://www.aicpmadih.de/Multimedia/Anasheed/kinder/kn09/kn9_063.mp3", art: "09 حروف ومعاني" }
+                ]
+            },
+        };
+
+        // إكمال بيانات الأغاني
+        Object.values(COLLECTIONS).forEach(col => {
+            col.songs.forEach((s, i) => {
+                s.iurl = col.cover;
+                s.art = col.name;
+                s.index = i;
+            });
+        });
+
+        // ============================================================
+        //  الحالة
+        // ============================================================
+        let currentCollection = 'rifai';
+        let songs = COLLECTIONS.rifai.songs;
+        let currentIndex = 0;
+        let isPlaying = false;
+        let isShuffle = false;
+        let repeatMode = 0;
+        let isDragging = false;
+        let isFsDragging = false;
+        let lastVolume = 0.8;
+        let likedSet = new Set();
+        let filteredSongs = [...songs];
+
+        // ============================================================
+        //  المراجع
+        // ============================================================
+        const audio = document.getElementById('audioPlayer');
+        const playBtn = document.getElementById('playBtn');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const shuffleBtn = document.getElementById('shuffleBtn');
+        const repeatBtn = document.getElementById('repeatBtn');
+        const progressBar = document.getElementById('progressBar');
+        const bufferBar = document.getElementById('bufferBar');
+        const progressThumb = document.getElementById('progressThumb');
+        const progressTrack = document.getElementById('progressTrack');
+        const currentTimeEl = document.getElementById('currentTime');
+        const durationLabel = document.getElementById('durationLabel');
+        const albumArt = document.getElementById('albumArt');
+        const albumGlow = document.getElementById('albumGlow');
+        const trackTitle = document.getElementById('trackTitle');
+        const trackArtist = document.getElementById('trackArtist');
+        const trackBadge = document.getElementById('trackBadge');
+        const volumeSlider = document.getElementById('volumeSlider');
+        const volLabel = document.getElementById('volLabel');
+        const muteBtn = document.getElementById('muteBtn');
+        const playlistBody = document.getElementById('playlistBody');
+        const searchInput = document.getElementById('searchInput');
+        const themeToggle = document.getElementById('themeToggle');
+        const fullscreenToggle = document.getElementById('fullscreenToggle');
+        const fullscreenOverlay = document.getElementById('fullscreenOverlay');
+        const fsClose = document.getElementById('fsClose');
+        const fsAlbum = document.getElementById('fsAlbum');
+        const fsTitle = document.getElementById('fsTitle');
+        const fsArtist = document.getElementById('fsArtist');
+        const fsPlay = document.getElementById('fsPlay');
+        const fsPrev = document.getElementById('fsPrev');
+        const fsNext = document.getElementById('fsNext');
+        const fsRepeat = document.getElementById('fsRepeat');
+        const fsProgressBar = document.getElementById('fsProgressBar');
+        const fsProgressThumb = document.getElementById('fsProgressThumb');
+        const fsProgressTrack = document.getElementById('fsProgressTrack');
+        const fsCurrentTime = document.getElementById('fsCurrentTime');
+        const fsDuration = document.getElementById('fsDuration');
+        const miniPlayer = document.getElementById('miniPlayer');
+        const miniImg = document.getElementById('miniImg');
+        const miniTitle = document.getElementById('miniTitle');
+        const miniArtist = document.getElementById('miniArtist');
+        const miniPlay = document.getElementById('miniPlay');
+        const miniPrev = document.getElementById('miniPrev');
+        const miniNext = document.getElementById('miniNext');
+        const miniClose = document.getElementById('miniClose');
+        const miniProgressBar = document.getElementById('miniProgressBar');
+        const backwardBtn = document.getElementById('backwardBtn');
+        const forwardBtn = document.getElementById('forwardBtn');
+        const downloadBtn = document.getElementById('downloadBtn');
+        const shareBtn = document.getElementById('shareBtn');
+        const likeBtn = document.getElementById('likeBtn');
+        const loaderScreen = document.getElementById('loaderScreen');
+        const toastContainer = document.getElementById('toastContainer');
+        const collectionSelector = document.getElementById('collectionSelector');
+        const mainApp = document.getElementById('mainApp');
+
+        // ============================================================
+        //  التخزين
+        // ============================================================
+        const STORAGE = {
+            THEME: 'madayih_theme',
+            VOLUME: 'madayih_volume',
+            COLLECTION: 'madayih_collection',
+            LAST_TRACK: 'madayih_last_track',
+            LAST_TIME: 'madayih_last_time',
+            SHUFFLE: 'madayih_shuffle',
+            REPEAT: 'madayih_repeat',
+            LIKES: 'madayih_likes'
+        };
+
+        function loadStorage() {
+            const theme = localStorage.getItem(STORAGE.THEME);
+            if (theme === 'light') {
+                document.documentElement.setAttribute('data-theme', 'light');
+                themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+            }
+            const vol = parseFloat(localStorage.getItem(STORAGE.VOLUME));
+            if (!isNaN(vol) && vol >= 0 && vol <= 1) {
+                audio.volume = vol;
+                volumeSlider.value = vol * 100;
+                volLabel.textContent = Math.round(vol * 100) + '%';
+                lastVolume = vol;
+                updateVolumeIcon(vol);
+            } else {
+                audio.volume = 0.8;
+            }
+            isShuffle = localStorage.getItem(STORAGE.SHUFFLE) === 'true';
+            if (isShuffle) shuffleBtn.classList.add('active');
+            const rep = parseInt(localStorage.getItem(STORAGE.REPEAT));
+            if (!isNaN(rep) && rep >= 0 && rep <= 2) repeatMode = rep;
+            updateRepeatIcon();
+            const likes = localStorage.getItem(STORAGE.LIKES);
+            if (likes) likedSet = new Set(JSON.parse(likes));
+
+            const savedCol = localStorage.getItem(STORAGE.COLLECTION);
+            if (savedCol && COLLECTIONS[savedCol]) {
+                // سيتم استدعاؤها بعد اختيار المجموعة
+            }
+        }
+
+        function saveStorage() {
+            localStorage.setItem(STORAGE.THEME, document.documentElement.getAttribute('data-theme') || 'dark');
+            localStorage.setItem(STORAGE.VOLUME, audio.volume);
+            localStorage.setItem(STORAGE.COLLECTION, currentCollection);
+            localStorage.setItem(STORAGE.LAST_TRACK, currentIndex);
+            localStorage.setItem(STORAGE.LAST_TIME, audio.currentTime || 0);
+            localStorage.setItem(STORAGE.SHUFFLE, isShuffle);
+            localStorage.setItem(STORAGE.REPEAT, repeatMode);
+            localStorage.setItem(STORAGE.LIKES, JSON.stringify([...likedSet]));
+        }
+        setInterval(saveStorage, 4000);
+        window.addEventListener('beforeunload', saveStorage);
+
+        // ============================================================
+        //  اختيار المجموعة
+        // ============================================================
+        function selectCollection(colId) {
+            if (!COLLECTIONS[colId]) return;
+            const wasPlaying = isPlaying;
+            if (isPlaying) audio.pause();
+
+            currentCollection = colId;
+            songs = COLLECTIONS[colId].songs;
+            currentIndex = 0;
+            filteredSongs = [...songs];
+
+            // تحديث السمة
+            document.body.setAttribute('data-collection', colId);
+
+            // تحديث الهيدر
+            const col = COLLECTIONS[colId];
+            document.getElementById('headerLogoImg').src = col.cover;
+            document.getElementById('headerName').textContent = col.name;
+            document.getElementById('headerSub').textContent = 'اضغط للتبديل · ' + col.sub;
+            document.getElementById('totalCount').textContent = songs.length;
+
+            // تحديث التبويبات
+            document.querySelectorAll('.collection-tab').forEach(t => t.classList.remove('active'));
+            const tabIds = { rifai: 'tabRifai', khair: 'tabKhair', maher: 'tabMaher', qaranuh: 'tabQaranuh' };
+            const tabEl = document.getElementById(tabIds[colId] || ('tab_' + colId));
+            if (tabEl) tabEl.classList.add('active');
+
+            // إخفاء شاشة الاختيار وإظهار التطبيق
+            collectionSelector.classList.add('hidden');
+            mainApp.style.display = 'block';
+
+            // تحميل المقطع الأول
+            searchInput.value = '';
+            loadTrack(0, false);
+            renderPlaylist();
+            updateLikeButton();
+
+            showToast(`تم التبديل إلى: ${col.name}`, 'fa-music', 'gold');
+            saveStorage();
+        }
+
+        function showSelector() {
+            if (isPlaying) audio.pause();
+            collectionSelector.classList.remove('hidden');
+        }
+
+        // ============================================================
+        //  أدوات
+        // ============================================================
+        function formatTime(sec) {
+            if (isNaN(sec) || !isFinite(sec)) return '00:00';
+            const m = Math.floor(sec / 60);
+            const s = Math.floor(sec % 60);
+            return m.toString().padStart(2, '0') + ':' + s.toString().padStart(2, '0');
+        }
+
+        function showToast(msg, icon = 'fa-check', color = 'gold') {
+            const el = document.createElement('div');
+            el.className = 'toast';
+            el.innerHTML = `<i class="fas ${icon}" style="color:var(--${color})"></i><span>${msg}</span>`;
+            toastContainer.appendChild(el);
+            requestAnimationFrame(() => el.classList.add('show'));
+            setTimeout(() => {
+                el.classList.remove('show');
+                setTimeout(() => el.remove(), 400);
+            }, 2800);
+        }
+
+        function vibrate(ms = 40) {
+            if (navigator.vibrate) navigator.vibrate(ms);
+        }
+
+        // ============================================================
+        //  تحميل المقطع
+        // ============================================================
+        function loadTrack(index, autoplay = false) {
+            if (index < 0) index = songs.length - 1;
+            if (index >= songs.length) index = 0;
+            currentIndex = index;
+            const song = songs[index];
+            audio.src = song.surl;
+            audio.preload = "auto";
+            audio.load();
+
+            albumArt.src = song.iurl;
+            fsAlbum.src = song.iurl;
+            miniImg.src = song.iurl;
+            trackTitle.textContent = song.name;
+            trackArtist.textContent = song.art;
+            trackBadge.textContent = `المقطع ${index + 1} / ${songs.length}`;
+            fsTitle.textContent = song.name;
+            fsArtist.textContent = song.art;
+            miniTitle.textContent = song.name;
+            miniArtist.textContent = song.art;
+
+            document.querySelectorAll('.playlist-item').forEach((el) => {
+                const idx = parseInt(el.dataset.index);
+                el.classList.toggle('active', idx === index);
+            });
+
+            updateLikeButton();
+            updateMediaSession();
+
+            if (autoplay) {
+                setTimeout(() => {
+                    audio.play().catch(() => {});
+                }, 100);
+            }
+        }
+
+        // ============================================================
+        //  التشغيل
+        // ============================================================
+        function togglePlay() {
+            vibrate();
+            if (isPlaying) {
+                audio.pause();
+            } else {
+                if (!audio.src || audio.readyState < 1) {
+                    loadTrack(currentIndex, true);
+                    return;
+                }
+                audio.play().catch(() => loadTrack(currentIndex, true));
+            }
+        }
+
+        function updatePlayUI(playing) {
+            isPlaying = playing;
+            const icon = playing ? 'fa-pause' : 'fa-play';
+            playBtn.innerHTML = `<i class="fas ${icon}"></i>`;
+            fsPlay.innerHTML = `<i class="fas ${icon}"></i>`;
+            miniPlay.innerHTML = `<i class="fas ${icon}"></i>`;
+            albumArt.classList.toggle('spinning', playing);
+            fsAlbum.classList.toggle('spinning', playing);
+            albumGlow.classList.toggle('active', playing);
+            if (playing) miniPlayer.classList.add('visible');
+        }
+
+        audio.addEventListener('play', () => updatePlayUI(true));
+        audio.addEventListener('pause', () => updatePlayUI(false));
+        audio.addEventListener('ended', handleEnded);
+
+        audio.addEventListener('loadedmetadata', function() {
+            if (audio.duration) {
+                durationLabel.textContent = formatTime(audio.duration);
+                fsDuration.textContent = formatTime(audio.duration);
+                songs[currentIndex].dur = formatTime(audio.duration);
+                renderPlaylist(searchInput.value);
+            }
+        });
+
+        function handleEnded() {
+            if (repeatMode === 2) {
+                audio.currentTime = 0;
+                audio.play().catch(() => {});
+                return;
+            }
+            if (isShuffle) {
+                playNext();
+            } else {
+                if (currentIndex + 1 < songs.length) {
+                    playNext();
+                } else {
+                    if (repeatMode === 1) {
+                        loadTrack(0, true);
+                    } else {
+                        updatePlayUI(false);
+                    }
+                }
+            }
+        }
+
+        function playNext() {
+            let idx;
+            if (isShuffle) {
+                do { idx = Math.floor(Math.random() * songs.length); }
+                while (idx === currentIndex && songs.length > 1);
+            } else {
+                idx = currentIndex + 1;
+                if (idx >= songs.length) idx = 0;
+            }
+            loadTrack(idx, true);
+        }
+
+        function playPrev() {
+            let idx = currentIndex - 1;
+            if (idx < 0) idx = songs.length - 1;
+            loadTrack(idx, true);
+        }
+
+        // ============================================================
+        //  شريط التقدم
+        // ============================================================
+        function updateProgress() {
+            if (isDragging || isFsDragging) return;
+            const pct = audio.duration ? (audio.currentTime / audio.duration) * 100 : 0;
+            const pctClamped = Math.min(100, Math.max(0, pct));
+            progressBar.style.width = pctClamped + '%';
+            progressThumb.style.right = pctClamped + '%';
+            fsProgressBar.style.width = pctClamped + '%';
+            fsProgressThumb.style.right = pctClamped + '%';
+            miniProgressBar.style.width = pctClamped + '%';
+            currentTimeEl.textContent = formatTime(audio.currentTime);
+            durationLabel.textContent = formatTime(audio.duration);
+            fsCurrentTime.textContent = formatTime(audio.currentTime);
+            fsDuration.textContent = formatTime(audio.duration);
+        }
+
+        audio.addEventListener('timeupdate', updateProgress);
+        audio.addEventListener('loadedmetadata', updateProgress);
+        audio.addEventListener('progress', () => {
+            if (audio.buffered.length > 0) {
+                const end = audio.buffered.end(audio.buffered.length - 1);
+                const dur = audio.duration;
+                if (dur > 0) bufferBar.style.width = Math.min(100, (end / dur) * 100) + '%';
+            }
+        });
+
+        function setupSeek(track, bar, thumb, timeEl, isFs = false) {
+            let dragging = false;
+            function getPercent(e) {
+                const rect = track.getBoundingClientRect();
+                const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+                let pct = ((rect.right - clientX) / rect.width) * 100;
+                return Math.max(0, Math.min(100, pct));
+            }
+            function startDrag(e) {
+                e.preventDefault();
+                dragging = true;
+                if (isFs) isFsDragging = true; else isDragging = true;
+                thumb.classList.add('dragging');
+                const pct = getPercent(e);
+                bar.style.width = pct + '%';
+                thumb.style.right = pct + '%';
+                if (audio.duration) audio.currentTime = (pct / 100) * audio.duration;
+            }
+            function moveDrag(e) {
+                if (!dragging) return;
+                e.preventDefault();
+                const pct = getPercent(e);
+                bar.style.width = pct + '%';
+                thumb.style.right = pct + '%';
+                if (audio.duration) audio.currentTime = (pct / 100) * audio.duration;
+                if (timeEl) timeEl.textContent = formatTime(audio.currentTime);
+            }
+            function endDrag() {
+                if (dragging) {
+                    dragging = false;
+                    if (isFs) isFsDragging = false; else isDragging = false;
+                    thumb.classList.remove('dragging');
+                }
+            }
+            track.addEventListener('mousedown', startDrag);
+            track.addEventListener('touchstart', startDrag, { passive: false });
+            document.addEventListener('mousemove', moveDrag);
+            document.addEventListener('touchmove', moveDrag, { passive: false });
+            document.addEventListener('mouseup', endDrag);
+            document.addEventListener('touchend', endDrag);
+        }
+
+        setupSeek(progressTrack, progressBar, progressThumb, currentTimeEl, false);
+        setupSeek(fsProgressTrack, fsProgressBar, fsProgressThumb, fsCurrentTime, true);
+
+        // ============================================================
+        //  الصوت
+        // ============================================================
+        function updateVolumeIcon(vol) {
+            const icon = muteBtn.querySelector('i');
+            if (audio.muted || vol === 0) icon.className = 'fas fa-volume-xmark';
+            else if (vol < 0.4) icon.className = 'fas fa-volume-low';
+            else icon.className = 'fas fa-volume-high';
+        }
+
+        volumeSlider.addEventListener('input', function() {
+            const val = parseFloat(this.value) / 100;
+            audio.volume = val;
+            audio.muted = false;
+            volLabel.textContent = Math.round(val * 100) + '%';
+            lastVolume = val;
+            updateVolumeIcon(val);
+        });
+
+        muteBtn.addEventListener('click', function() {
+            vibrate();
+            if (audio.muted || audio.volume === 0) {
+                audio.muted = false;
+                audio.volume = lastVolume || 0.8;
+                volumeSlider.value = (lastVolume || 0.8) * 100;
+                volLabel.textContent = Math.round((lastVolume || 0.8) * 100) + '%';
+                updateVolumeIcon(audio.volume);
+                showToast('تم إلغاء الكتم', 'fa-volume-high', 'gold');
+            } else {
+                lastVolume = audio.volume;
+                audio.muted = true;
+                volumeSlider.value = 0;
+                volLabel.textContent = '0%';
+                updateVolumeIcon(0);
+                showToast('تم كتم الصوت', 'fa-volume-xmark', 'red');
+            }
+        });
+
+        // ============================================================
+        //  التكرار والعشوائي
+        // ============================================================
+        function updateRepeatIcon() {
+            const icons = ['fa-repeat', 'fa-repeat', 'fa-1'];
+            repeatBtn.innerHTML = `<i class="fas ${icons[repeatMode]}"></i>`;
+            repeatBtn.classList.toggle('active', repeatMode > 0);
+            fsRepeat.innerHTML = `<i class="fas ${icons[repeatMode]}"></i>`;
+            fsRepeat.classList.toggle('active', repeatMode > 0);
+        }
+
+        repeatBtn.addEventListener('click', () => {
+            vibrate();
+            repeatMode = (repeatMode + 1) % 3;
+            updateRepeatIcon();
+            const msgs = ['إلغاء التكرار', 'تكرار الكل', 'تكرار المقطع الحالي'];
+            showToast(msgs[repeatMode], 'fa-repeat', 'gold');
+        });
+        fsRepeat.addEventListener('click', () => repeatBtn.click());
+
+        shuffleBtn.addEventListener('click', () => {
+            vibrate();
+            isShuffle = !isShuffle;
+            shuffleBtn.classList.toggle('active', isShuffle);
+            showToast(isShuffle ? 'تفعيل العشوائي' : 'إلغاء العشوائي', 'fa-shuffle', 'gold');
+        });
+
+        // ============================================================
+        //  أزرار إضافية
+        // ============================================================
+        backwardBtn.addEventListener('click', () => {
+            vibrate();
+            audio.currentTime = Math.max(0, audio.currentTime - 10);
+            showToast('تأخير 10 ثوانٍ', 'fa-rotate-left', 'gold');
+        });
+        forwardBtn.addEventListener('click', () => {
+            vibrate();
+            audio.currentTime = Math.min(audio.duration || Infinity, audio.currentTime + 10);
+            showToast('تقديم 10 ثوانٍ', 'fa-rotate-right', 'gold');
+        });
+
+        downloadBtn.addEventListener('click', () => {
+            vibrate();
+            const song = songs[currentIndex];
+            const a = document.createElement('a');
+            a.href = song.surl;
+            a.download = song.name + '.mp3';
+            a.target = '_blank';
+            a.click();
+            showToast('جاري تحميل الملف...', 'fa-download', 'green');
+        });
+
+        shareBtn.addEventListener('click', () => {
+            vibrate();
+            const song = songs[currentIndex];
+            const text = `🎧 ${song.name}\n🎙️ ${song.art}\n🔗 ${song.surl}`;
+            if (navigator.share) {
+                navigator.share({ title: song.name, text, url: song.surl })
+                    .then(() => showToast('تمت المشاركة', 'fa-share-nodes', 'gold'))
+                    .catch(() => copyToClipboard(text));
+            } else {
+                copyToClipboard(text);
+            }
+        });
+
+        function copyToClipboard(text) {
+            navigator.clipboard.writeText(text).then(() => {
+                showToast('تم نسخ الرابط والنص', 'fa-copy', 'gold');
+            }).catch(() => showToast('تعذر النسخ', 'fa-exclamation-triangle', 'red'));
+        }
+
+        likeBtn.addEventListener('click', () => {
+            vibrate();
+            const key = currentCollection + '_' + currentIndex;
+            if (likedSet.has(key)) {
+                likedSet.delete(key);
+                showToast('تم إلغاء الإعجاب', 'fa-heart', 'red');
+            } else {
+                likedSet.add(key);
+                showToast('تم الإعجاب', 'fa-heart', 'gold');
+            }
+            updateLikeButton();
+        });
+
+        function updateLikeButton() {
+            const key = currentCollection + '_' + currentIndex;
+            const liked = likedSet.has(key);
+            likeBtn.innerHTML = liked ? '<i class="fas fa-heart"></i> أعجبني' : '<i class="far fa-heart"></i> إعجاب';
+            likeBtn.classList.toggle('liked', liked);
+        }
+
+        // ============================================================
+        //  قائمة التشغيل
+        // ============================================================
+        function renderPlaylist(filter = '') {
+            const q = filter.trim().toLowerCase();
+            filteredSongs = songs.filter((s, i) =>
+                s.name.toLowerCase().includes(q) || (i + 1).toString().includes(q)
+            );
+            playlistBody.innerHTML = '';
+            filteredSongs.forEach((song) => {
+                const origIndex = song.index;
+                const item = document.createElement('div');
+                item.className = 'playlist-item' + (origIndex === currentIndex ? ' active' : '');
+                item.dataset.index = origIndex;
+                item.innerHTML = `
+                    <span class="pl-num">${origIndex + 1}</span>
+                    <img class="pl-img" src="${song.iurl}" alt="">
+                    <div class="pl-info">
+                        <div class="pl-title">${song.name}</div>
+                        <div class="pl-artist">${song.art}</div>
+                    </div>
+                    <i class="fas fa-wave-square pl-play-icon"></i>
+                    <div class="pl-dur">${song.dur || '--:--'}</div>
+                `;
+                item.addEventListener('click', () => {
+                    vibrate();
+                    loadTrack(origIndex, true);
+                });
+                playlistBody.appendChild(item);
+            });
+            document.getElementById('playlistCount').textContent = filteredSongs.length;
+        }
+
+        searchInput.addEventListener('input', function() {
+            renderPlaylist(this.value);
+        });
+
+        // ============================================================
+        //  MediaSession
+        // ============================================================
+        function updateMediaSession() {
+            if ('mediaSession' in navigator) {
+                const song = songs[currentIndex];
+                navigator.mediaSession.metadata = new MediaMetadata({
+                    title: song.name,
+                    artist: song.art,
+                    album: COLLECTIONS[currentCollection].name,
+                    artwork: [{ src: song.iurl, sizes: '512x512', type: 'image/jpeg' }]
+                });
+                navigator.mediaSession.setActionHandler('play', () => audio.play().catch(() => {}));
+                navigator.mediaSession.setActionHandler('pause', () => audio.pause());
+                navigator.mediaSession.setActionHandler('previoustrack', playPrev);
+                navigator.mediaSession.setActionHandler('nexttrack', playNext);
+                navigator.mediaSession.setActionHandler('seekbackward', () => audio.currentTime = Math.max(0, audio.currentTime - 10));
+                navigator.mediaSession.setActionHandler('seekforward', () => audio.currentTime = Math.min(audio.duration || Infinity, audio.currentTime + 10));
+            }
+        }
+
+        // ============================================================
+        //  أحداث الأزرار
+        // ============================================================
+        playBtn.addEventListener('click', togglePlay);
+        fsPlay.addEventListener('click', togglePlay);
+        miniPlay.addEventListener('click', togglePlay);
+        prevBtn.addEventListener('click', () => { vibrate(); playPrev(); });
+        fsPrev.addEventListener('click', () => { vibrate(); playPrev(); });
+        miniPrev.addEventListener('click', () => { vibrate(); playPrev(); });
+        nextBtn.addEventListener('click', () => { vibrate(); playNext(); });
+        fsNext.addEventListener('click', () => { vibrate(); playNext(); });
+        miniNext.addEventListener('click', () => { vibrate(); playNext(); });
+        miniClose.addEventListener('click', () => {
+            vibrate();
+            miniPlayer.classList.remove('visible');
+        });
+
+        fullscreenToggle.addEventListener('click', () => {
+            vibrate();
+            fullscreenOverlay.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        });
+        fsClose.addEventListener('click', () => {
+            vibrate();
+            fullscreenOverlay.classList.remove('active');
+            document.body.style.overflow = '';
+        });
+
+        themeToggle.addEventListener('click', () => {
+            vibrate();
+            const current = document.documentElement.getAttribute('data-theme');
+            if (current === 'light') {
+                document.documentElement.removeAttribute('data-theme');
+                themeToggle.innerHTML = '<i class="fas fa-moon"></i>';
+                showToast('الوضع الليلي', 'fa-moon', 'gold');
+            } else {
+                document.documentElement.setAttribute('data-theme', 'light');
+                themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+                showToast('الوضع النهاري', 'fa-sun', 'gold');
+            }
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if (e.target.tagName === 'INPUT') return;
+            if (e.code === 'Space') { e.preventDefault(); togglePlay(); }
+            if (e.code === 'ArrowRight') { e.preventDefault(); playNext(); }
+            if (e.code === 'ArrowLeft') { e.preventDefault(); playPrev(); }
+            if (e.code === 'KeyM') { e.preventDefault(); muteBtn.click(); }
+            if (e.code === 'KeyF') { e.preventDefault(); fullscreenToggle.click(); }
+            if (e.code === 'ArrowUp') {
+                e.preventDefault();
+                const val = Math.min(100, parseFloat(volumeSlider.value) + 5);
+                volumeSlider.value = val;
+                volumeSlider.dispatchEvent(new Event('input'));
+            }
+            if (e.code === 'ArrowDown') {
+                e.preventDefault();
+                const val = Math.max(0, parseFloat(volumeSlider.value) - 5);
+                volumeSlider.value = val;
+                volumeSlider.dispatchEvent(new Event('input'));
+            }
+        });
+
+        // ============================================================
+        //  التهيئة
+        // ============================================================
+        window.addEventListener('load', () => {
+            setTimeout(() => loaderScreen.classList.add('hidden'), 800);
+        });
+
+        loadStorage();
+        updateVolumeIcon(audio.volume);
+        updateRepeatIcon();
+
+        // دائماً نعرض قائمة الاختيار أولاً (الزيارة تبدأ من القائمة الكبيرة)
+        // المجموعة المحفوظة تُستعاد فقط عند العودة من داخل التطبيق
+
+        console.log('🚀 مشغل المدائح الموحد جاهز ✅');
+    </script>
+</body>
+</html>
