@@ -269,6 +269,17 @@
       margin-bottom: 6px;
     }
 
+    .section-card .section-cover {
+      width: 46px;
+      height: 46px;
+      object-fit: cover;
+      border-radius: 12px;
+      margin: 0 auto 7px;
+      display: block;
+      border: 1px solid rgba(212, 175, 55, 0.25);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.10);
+    }
+
     .section-card h4 {
       font-size: 14px;
       font-weight: 600;
@@ -523,6 +534,188 @@
       opacity: 0.7;
       margin-top: 8px;
     }
+
+    /* ===== AWRAD PLAYER ===== */
+    .awrad-player {
+      background: linear-gradient(145deg, #0a3d2e 0%, #1a6b52 100%);
+      border-radius: 28px;
+      padding: 24px 20px;
+      color: #fff;
+      text-align: center;
+      margin-bottom: 20px;
+      box-shadow: 0 12px 28px rgba(15, 92, 71, 0.35);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .awrad-player::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at 80% 20%, rgba(212,175,55,0.16), transparent 52%);
+      pointer-events: none;
+    }
+
+    .awrad-cover-wrap {
+      width: 150px;
+      height: 150px;
+      margin: 0 auto 16px;
+      border-radius: 28px;
+      overflow: hidden;
+      box-shadow: 0 8px 26px rgba(0,0,0,0.35);
+      border: 3px solid rgba(212,175,55,0.55);
+      position: relative;
+      z-index: 1;
+    }
+
+    .awrad-cover-wrap img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .awrad-cover-wrap.playing {
+      box-shadow: 0 8px 30px rgba(0,0,0,0.35), 0 0 28px rgba(212,175,55,0.35);
+    }
+
+    .awrad-now-title {
+      position: relative;
+      z-index: 1;
+      font-size: 18px;
+      font-weight: 700;
+      margin-bottom: 5px;
+    }
+
+    .awrad-now-sub {
+      position: relative;
+      z-index: 1;
+      font-size: 13px;
+      opacity: 0.82;
+      margin-bottom: 16px;
+    }
+
+    .awrad-progress-wrap {
+      position: relative;
+      z-index: 1;
+      margin: 8px 0 16px;
+    }
+
+    .awrad-progress {
+      width: 100%;
+      height: 7px;
+      accent-color: var(--gold);
+      cursor: pointer;
+    }
+
+    .awrad-time-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      direction: ltr;
+      font-size: 12px;
+      opacity: 0.8;
+      margin-top: 3px;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .awrad-main-controls,
+    .awrad-extra-controls {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+
+    .awrad-extra-controls { margin-top: 12px; }
+
+    .awrad-control-btn {
+      width: 46px;
+      height: 46px;
+      border-radius: 50%;
+      border: 1px solid rgba(255,255,255,0.22);
+      background: rgba(255,255,255,0.10);
+      color: #fff;
+      font-size: 18px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      backdrop-filter: blur(6px);
+      transition: transform 0.2s, background 0.2s;
+    }
+
+    .awrad-control-btn:active { transform: scale(0.92); }
+
+    .awrad-play-btn {
+      width: 64px;
+      height: 64px;
+      border: none;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #d4af37, #c9a227);
+      color: #0a3d2e;
+      font-size: 28px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 6px 20px rgba(212,175,55,0.42);
+      transition: transform 0.2s;
+    }
+
+    .awrad-play-btn:active { transform: scale(0.92); }
+
+    .awrad-status {
+      position: relative;
+      z-index: 1;
+      margin-top: 12px;
+      font-size: 12px;
+      opacity: 0.78;
+    }
+
+    .awrad-track-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .awrad-track-card {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      background: var(--card-bg);
+      backdrop-filter: blur(4px);
+      border-radius: 18px;
+      padding: 12px 14px;
+      border: 1px solid rgba(212,175,55,0.15);
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    .awrad-track-card:active { transform: scale(0.97); }
+
+    .awrad-track-card.active {
+      border-color: var(--gold);
+      box-shadow: 0 0 0 2px rgba(212,175,55,0.22);
+      background: rgba(15,92,71,0.08);
+    }
+
+    body.dark .awrad-track-card.active { background: rgba(212,175,55,0.10); }
+
+    .awrad-track-card img {
+      width: 58px;
+      height: 58px;
+      border-radius: 14px;
+      object-fit: cover;
+      flex-shrink: 0;
+    }
+
+    .awrad-track-card .info { flex: 1; min-width: 0; }
+    .awrad-track-card .info h4 { font-size: 15px; font-weight: 600; }
+    .awrad-track-card .info p { font-size: 12px; opacity: 0.65; margin-top: 2px; }
+    .awrad-track-card .play-icon { font-size: 22px; color: var(--gold); flex-shrink: 0; }
 
     /* bottom nav */
     .bottom-nav {
@@ -1003,6 +1196,55 @@
     @keyframes splashSpin {
       to { transform: rotate(360deg); }
     }
+
+    /* ===== شريط الرجوع داخل الأقسام ===== */
+    .page-back-bar {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 16px 4px;
+      margin-bottom: 4px;
+    }
+    .page-back-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--card-bg);
+      border: 1px solid rgba(212, 175, 55, 0.35);
+      color: var(--text);
+      border-radius: 40px;
+      padding: 8px 16px;
+      font-size: 14px;
+      font-weight: 600;
+      font-family: inherit;
+      cursor: pointer;
+      box-shadow: 0 4px 14px rgba(0,0,0,0.06);
+      transition: transform 0.15s, background 0.2s;
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+    }
+    .page-back-btn:active {
+      transform: scale(0.96);
+      background: rgba(15, 92, 71, 0.12);
+    }
+    body.dark .page-back-btn:active {
+      background: rgba(212, 175, 55, 0.12);
+    }
+    .page-back-btn .back-arrow {
+      font-size: 16px;
+      line-height: 1;
+      color: var(--gold);
+    }
+    .page-back-title {
+      font-size: 14px;
+      font-weight: 600;
+      opacity: 0.75;
+      flex: 1;
+      min-width: 0;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
   </style>
 </head>
 <body>
@@ -1066,7 +1308,7 @@
 
   <!-- SEARCH -->
   <div class="search-bar glass">
-    <input type="text" id="globalSearch" placeholder="ابحث في المكتبة...">
+    <input type="text" id="globalSearch" placeholder="ابحث في التطبيق...">
     <button id="searchBtn">🔍</button>
   </div>
 
@@ -1085,10 +1327,14 @@
     </div>
 
     <div class="section-grid" id="quickSections">
-      <div class="section-card" data-section="quran"><div class="icon">📖</div><h4>القرآن</h4></div>
-      <div class="section-card" data-section="audio"><div class="icon">🎧</div><h4>الدروس الصوتية</h4></div>
-      <div class="section-card" data-section="madaih"><div class="icon">🎵</div><h4>المدائح</h4></div>
-      <div class="section-card" data-section="library"><div class="icon">📚</div><h4>المكتبة</h4></div>
+      <div class="section-card" data-external-url="https://abedelkareem1989.github.io/Islamicculture/6.index.html"><div class="icon">📖</div><h4>القرآن الكريم</h4></div>
+      <div class="section-card" data-external-url="https://abedelkareem1989.github.io/Islamicculture2/12.index.html"><div class="icon">🎧</div><h4>الدروس الصوتية</h4></div>
+      <div class="section-card" data-section="radios"><div class="icon">📻</div><h4>الإذاعات</h4></div>
+      <div class="section-card" data-section="awrad"><div class="icon">🛡️</div><h4>أوراد التحصين</h4></div>
+      <div class="section-card" data-external-url="https://abedelkareem1989.github.io/Islamicculture/10.index.html"><img class="section-cover" src="https://s5files.mobeasy.com/static/u/722316/file-722316-345170.jpg" alt="أذكاري"><h4>أذكاري</h4></div>
+      <div class="section-card" data-external-url="https://abedelkareem1989.github.io/Islamicculture/8.index.html"><div class="icon">🎵</div><h4>المدائح</h4></div>
+      <div class="section-card" data-external-url="https://abedelkareem1989.github.io/Islamiclibrary"><div class="icon">📚</div><h4>المكتبة الإسلامية</h4></div>
+      <div class="section-card" data-external-url="https://abedelkareem1989.github.io/Islamicculture/4.index.html"><div class="icon">📄</div><h4>المكتبة الإسلامية PDF</h4></div>
       <div class="section-card" data-section="gallery"><div class="icon">🖼️</div><h4>الصور</h4></div>
       <div class="section-card" data-section="video"><div class="icon">🎬</div><h4>الفيديوهات</h4></div>
       <div class="section-card" data-section="apps"><div class="icon">📱</div><h4>التطبيقات</h4></div>
@@ -1102,10 +1348,7 @@
   </div>
 
   <!-- صفحات الأقسام -->
-  <div id="page-quran" class="page"><div class="content-area" id="quranContent"></div></div>
-  <div id="page-audio" class="page"><div class="content-area" id="audioContent"></div></div>
-  <div id="page-madaih" class="page"><div class="content-area" id="madaihContent"></div></div>
-  <div id="page-library" class="page"><div class="content-area" id="libraryContent"></div></div>
+  <div id="page-search" class="page"><div class="content-area" id="searchResultsContent"></div></div>
   <div id="page-gallery" class="page"><div class="content-area" id="galleryContent"></div></div>
   <div id="page-video" class="page"><div class="content-area" id="videoContent"></div></div>
   <div id="page-apps" class="page"><div class="content-area" id="appsContent"></div></div>
@@ -1113,7 +1356,9 @@
   <div id="page-settings" class="page"><div class="content-area" id="settingsContent"></div></div>
   <div id="page-more" class="page"><div class="content-area" id="moreContent"></div></div>
   <div id="page-radios" class="page"><div class="content-area" id="radiosContent"></div></div>
+  <div id="page-awrad" class="page"><div class="content-area" id="awradContent"></div></div>
   <audio id="radioAudio" preload="none"></audio>
+  <audio id="awradAudio" preload="metadata"></audio>
 
   <!-- عداد الزوار الحقيقي - أسفل الموقع -->
   <div class="visitor-footer" id="visitorFooter">
@@ -1127,74 +1372,22 @@
   <!-- BOTTOM NAV - 4 أقسام + المزيد -->
   <nav class="bottom-nav" id="bottomNav">
     <button class="active" data-page="home"><span class="nav-icon">🏠</span>الرئيسية</button>
-    <button data-page="quran"><span class="nav-icon">📖</span>القرآن</button>
-    <button data-page="audio"><span class="nav-icon">🎧</span>الدروس</button>
-    <button data-page="madaih"><span class="nav-icon">🎵</span>المدائح</button>
+    <button data-external-url="https://abedelkareem1989.github.io/Islamicculture/6.index.html"><span class="nav-icon">📖</span>القرآن</button>
+    <button data-external-url="https://abedelkareem1989.github.io/Islamicculture2/12.index.html"><span class="nav-icon">🎧</span>الدروس</button>
+    <button data-external-url="https://abedelkareem1989.github.io/Islamicculture/8.index.html"><span class="nav-icon">🎵</span>المدائح</button>
     <button data-page="more"><span class="nav-icon">⋯</span>المزيد</button>
   </nav>
 
   <script>
     // ========== DATA ==========
     const DATA = [
-      // القرآن
-      { category:"quran", title:"القرآن الكريم", image:"https://s5files.mobeasy.com/static/u/722316/file-722316-581518.jpg", description:"القرآن الكريم", url:"https://abedelkareem1989.github.io/Islamicculture2/3.index.html" },
-      { category:"quran", title:"المصحف المعلم", image:"https://s5files.mobeasy.com/static/u/722316/file-722316-148458.jpg", description:"تلاوة معلم", url:"https://abedelkareem1989.github.io/bidjade.github.io/2026.index.html" },
-      { category:"quran", title:"جزء قد سمع", image:"https://s5files.mobeasy.com/static/u/722316/file-722316-29850.jpg", description:"تلاوة ميسرة", url:"https://abedelkareem1989.github.io/bidjade.github.io/12345.index.html" },
-      { category:"quran", title:"جزء تبارك", image:"https://s5files.mobeasy.com/static/u/722316/file-722316-349450.jpg", description:"تلاوة ميسرة", url:"https://abedelkareem1989.github.io/bidjade.github.io/10.html" },
-      { category:"quran", title:"جزء عم ", image:"https://s5files.mobeasy.com/static/u/722316/file-722316-565791.jpg", description:"تلاوة ميسرة", url:"https://abedelkareem.freehosting.dev/1.html" },
-      { category:"quran", title:"تفسير سورة ق ", image:"https://s5files.mobeasy.com/static/u/722316/file-722316-780378.jpg", description:"تفسير", url:"https://abedelkareem1989.github.io/bidjade.github.io/15.index.html" },
+      // أقسام مستقلة
+      { category:"radios", title:"إذاعات أهل السنة", image:"https://s5files.mobeasy.com/static/u/722316/file-722316-19625.jpg", description:"إذاعات مباشرة • مشغل داخل التطبيق", url:"internal:radios" },
+      { category:"awrad", title:"أوراد التحصين", image:"https://s5files.mobeasy.com/static/u/722316/file-722316-462328.jpg", description:"أوراد الصباح والمساء والرقية الشرعية", url:"internal:awrad" },
 
-      // الدروس الصوتية (تم فصل المدائح)
-      { category:"audio", title:"الدرة البهية - الشيخ جميل حليم", image:"https://s5files.mobeasy.com/static/u/722316/file-722316-250042.jpg", description:"دروس صوتية", url:"https://abedelkareem1989.github.io/Islamicculture2/1.index.html" },
-      { category:"audio", title:"التحصين صوتي", image:"https://s5files.mobeasy.com/static/u/722316/file-722316-665630.jpg", description:"تحصين ورقية", url:"https://abedelkareem1989.github.io/Islamicculture/44.index.html" },
-      { category:"audio", title:"إذاعات أهل السنة", image:"https://s5files.mobeasy.com/static/u/722316/file-722316-19625.jpg", description:"إذاعات مباشرة • مشغل احترافي", url:"internal:radios" },
-      { category:"audio", title:"دروس الشيخ نزار الحلبي", image:"https://s5files.mobeasy.com/static/u/722316/file-722316-259061.jpg", description:"دروس صوتية", url:"https://abedelkareem1989.github.io/bidjade.github.io/nizar.index.html" },
-      { category:"audio", title:"   برنامج دليل الشيخ الدكتور جميل حليم   ", image:"https://s5files.mobeasy.com/static/u/722316/file-722316-83997.jpg", description:"دروس ", url:"https://abedelkareem.freehosting.dev/17.index.html" },
-      { category:"audio", title:"خطب الجمعة", image:"https://s5files.mobeasy.com/static/u/722316/file-722316-652036.jpg", description:"خطب منبرية", url:"https://abedelkareem1989.github.io/Islamicculture/7.index.html" },
-      { category:"audio", title:"شرح العقيدة الطحاوية - سمير القاضي", image:"https://s5files.mobeasy.com/static/u/722316/file-722316-390716.jpg", description:"شرح الدرة", url:"https://abedelkareem1989.github.io/bidjade.github.io/222.index.html" },
-      { category:"audio", title:"قواعد مهمة - سمير القاضي", image:"https://s5files.mobeasy.com/static/u/722316/file-722316-629250.jpg", description:"قواعد العقيدة", url:"https://abedelkareem1989.github.io/bidjade.github.io/222.index.html" },
-      { category:"audio", title:"  شمائل النبي | الشيخ الدكتور سمير القاضي", image:"https://s5files.mobeasy.com/static/u/722316/file-722316-3801.jpg", description:"دروس ", url:"https://abedelkareem.freehosting.dev/13.index.html" },
-      { category:"audio", title:"حل ألفاظ الصراط المستقيم", image:"https://s5files.mobeasy.com/static/u/722316/file-722316-179273.jpg", description:"شرح مهم", url:"https://abedelkareem1989.github.io/Islamicculture/31.index.html" },
-      { category:"audio", title:"الحيدة فنون الرد", image:"https://s5files.mobeasy.com/static/u/722316/file-722316-424670.jpg", description:"فنون الرد", url:"https://abedelkareem1989.github.io/bidjade.github.io/27.index.html" },
-      { category:"audio", title:"شرح العقيدة الطحاوية - جميل حليم", image:"https://s5files.mobeasy.com/static/u/722316/file-722316-649939.jpg", description:"شرح وافي", url:"https://abedelkareem1989.github.io/Islamicculture/5.index.html" },
-      { category:"audio", title:"الدروس الصوتية العامة", image:"https://s5files.mobeasy.com/static/u/722316/file-722316-21272.jpg", description:"متنوع", url:"https://widget.spreaker.com/player?show_id=6281103&theme=light&playlist=show&playlist-continuous=true&chapters-image=true" },
-      { category:"audio", title:"سيد الشهداء  حمزه", image:"https://s5files.mobeasy.com/static/u/722316/file-722316-391953.jpg", description:"دروس ", url:"https://abedelkareem.freehosting.dev/12.index.html" },
-      { category:"audio", title:"  يوسف داوود علامات الساعة   ", image:"https://s5files.mobeasy.com/static/u/722316/file-722316-383043.jpg", description:"دروس ", url:"https://abedelkareem.freehosting.dev/14.index.html" },
-      { category:"audio", title:"الدر المصون في تفسير جزء عم يتساءلون", image:"https://s5files.mobeasy.com/static/u/722316/file-722316-823895.jpg", description:"دروس صوتية", url:"https://abedelkareem1989.github.io/bidjade.github.io/11.index.html" },
-      { category:"audio", title:"صريح البيان في الرد على من خالف القرآن", image:"https://s5files.mobeasy.com/static/u/722316/file-722316-608297.jpg", description:"دروس صوتية", url:"https://abedelkareem1989.github.io/bidjade.github.io/12.index.html" },
-      { category:"audio", title:"     برنامج كيف أنجو؟   أحمد حلمي   ", image:"https://s5files.mobeasy.com/static/u/722316/file-722316-795667.jpg", description:"دروس ", url:"https://abedelkareem1989.github.io/bidjade.github.io/14.index.html" },
-      { category:"audio", title:"       قواعد مهمة - الشيخ أحمد حلمي   ", image:"https://s5files.mobeasy.com/static/u/722316/file-722316-255017.jpg", description:"دروس ", url:"https://abedelkareem1989.github.io/bidjade.github.io/20.index.html" },
-      { category:"audio", title:"   ساعة سكون   ", image:"https://s5files.mobeasy.com/static/u/722316/file-722316-811547.jpg", description:"دروس ", url:"https://abedelkareem1989.github.io/bidjade.github.io/18.index.html" },
-
-      // المدائح (قسم جديد)
-      { category:"madaih", title:"المداح أحمد الرفاعي", image:"https://s5files.mobeasy.com/static/u/722316/file-722316-51719.jpg", description:"مدائح نبوية", url:"https://abedelkareem1989.github.io/bidjade.github.io/21.index.html" },
-      { category:"madaih", title:"المنشد الحاج محمد الخير", image:"https://s5files.mobeasy.com/static/u/722316/file-722316-55268.jpg", description:"أناشيد إسلامية", url:"https://abedelkareem1989.github.io/bidjade.github.io" },
-      { category:"madaih", title:"المداح محمد معروف", image:"https://s5files.mobeasy.com/static/u/722316/file-722316-47117.jpg", description:"مدائح نبوية", url:"https://abedelkareem1989.github.io/bidjade.github.io/13.index.html" },
-      { category:"madaih", title:" فريق الإنشاد في السويد", image:"https://s5files.mobeasy.com/static/u/722316/file-722316-653930.jpg", description:"مدائح نبوية", url:"https://abedelkareem.freehosting.dev/16.index.html" },
-      { category:"madaih", title:"  ماهر حمودة ", image:"https://s5files.mobeasy.com/static/u/722316/file-722316-424397.jpg", description:"مدائح نبوية", url:"https://abedelkareem1989.github.io/Islamicculture/18.index.html" },
-      { category:"madaih", title:"   أناشيد زيارة القبر النبوي الشريفة", image:"https://s5files.mobeasy.com/static/u/722316/file-722316-729662.jpg", description:"مدائح ", url:"https://abedelkareem1989.github.io/Islamicculture/20.index.html" },
-      { category:"madaih", title:"  أناشيد الأطفال ", image:"https://s5files.mobeasy.com/static/u/722316/file-722316-432477.jpg", description:"أناشيد الأطفال", url:"https://abedelkareem1989.github.io/Islamicculture/19.index.html" },
-      // يمكن إضافة المزيد من المدائح هنا
-
-      // المكتبة
-      { category:"library", title:"حلية البشر مع الأدعية المختارة", image:"https://s5files.mobeasy.com/static/u/722316/file-722316-37198.jpg", description:"كتب ومراجع", url:"https://abedelkareem1989.github.io/Islamicculture2/5.index.html" },
-      { category:"library", title:"الروائح الزكية في مولد خير البرية", image:"https://s5files.mobeasy.com/static/u/722316/file-722316-479807.jpg", description:"كتب ومراجع", url:"https://abedelkareem1989.github.io/Islamicculture2/4.index.html" },
-      { category:"library", title:"قصص من الماضي", image:"https://s5files.mobeasy.com/static/u/722316/file-722316-144798.jpg", description:"كتب ومراجع", url:"https://abedelkareem1989.github.io/Islamicculture2/7.index.html" },
-      { category:"library", title:"متن الشمائل المحمدية", image:"https://s5files.mobeasy.com/static/u/722316/file-722316-664099.jpg", description:"كتب ومراجع", url:"https://abedelkareem1989.github.io/Islamicculture2/10.index.html" },
-      { category:"library", title:"حل ألفاظ العقيدة الطحاوية", image:"https://s5files.mobeasy.com/static/u/722316/file-722316-49112.jpg", description:"كتب ومراجع", url:"https://abedelkareem1989.github.io/Islamicculture2/8.index.html" },
-      { category:"library", title:"كتاب عمدة الراغب", image:"https://s5files.mobeasy.com/static/u/722316/file-722316-852021.jpg", description:"كتب ومراجع", url:"https://abedelkareem1989.github.io/Islamicculture2/9.index.html" },
-      { category:"library", title:"المكتبة الإسلامية", image:"https://s5files.mobeasy.com/static/u/722316/file-722316-816366.jpg", description:"كتب ومراجع", url:"https://abedelkareem2.blogspot.com/2022/09/blog-post_9.html?m=1" },
-      { category:"library", title:"تفسير آيات", image:"https://s5files.mobeasy.com/static/u/722316/file-722316-612684.jpg", description:"تفسير مختصر", url:"https://abedelkareem1989.github.io/Islamicculture/66.index.html" },
-      { category:"library", title:"الجواهر اللامعة ", image:"https://s5files.mobeasy.com/static/u/722316/file-722316-736014.jpg", description:"كتب ومراجع", url:"https://abedelkareem.freehosting.dev/15.index.html" },
-      { category:"library", title:"تطبيق أذكاري", image:"https://s5files.mobeasy.com/static/u/722316/file-722316-345170.jpg", description:"أذكار المسلم", url:"https://effervescent-meerkat-bcf7cd.netlify.app/" },
-      { category:"library", title:"شرح الصفات الثلاث عشر", image:"https://s5files.mobeasy.com/static/u/722316/file-722316-901454.jpg", description:"عقيدة", url:"https://abedelkareem1989.github.io/Islamicculture/1.index.html" },
-      { category:"library", title:"كتب عقيدة المسلمين", image:"https://s5files.mobeasy.com/static/u/722316/file-722316-225005.jpg", description:"كتب", url:"https://abedelkareem1989.github.io/Islamicculture/2.index.html" },
-      { category:"library", title:" المكتبة  السنية", image:"https://s5files.mobeasy.com/static/u/722316/file-722316-571182.jpg", description:"كتب ومراجع", url:"https://abedelkareem.freehosting.dev/2.index.html" },
-      { category:"library", title:" الميسر في أحكام الدين الاجزاء الثلاثة  ", image:"https://s5files.mobeasy.com/static/u/722316/file-722316-301963.jpg", description:"كتب ومراجع", url:"https://abedelkareem.freehosting.dev/9.index.html" },
-      { category:"library", title:" مقصد الطالبين ", image:"https://s5files.mobeasy.com/static/u/722316/file-722316-238828.jpg", description:"كتب ومراجع", url:"https://abedelkareem.freehosting.dev/10.index.html" },
-      { category:"library", title:"   الثقافة الإسلامية الأجزاء الخمس  ", image:"https://s5files.mobeasy.com/static/u/722316/file-722316-57550.jpg", description:"كتب ومراجع", url:"https://abedelkareem1989.github.io/Islamicculture2/6.index.html" },
-      { category:"library", title:"الدرة البهية في حل ألفاظ العقيدة الطحاوية", image:"https://s5files.mobeasy.com/static/u/722316/file-722316-422715.jpg", description:"كتب ومراجع", url:"https://abedelkareem1989.github.io/bidjade.github.io/index-9.html" },
-      { category:"library", title:"   مقصد الراغبين في تعلم العقيدة وأحكام الدين  ", image:"https://s5files.mobeasy.com/static/u/722316/file-722316-723325.jpg", description:"كتب ومراجع", url:"https://abedelkareem1989.github.io/bidjade.github.io/16.index.html" },
+      // روابط المكتبات المستقلة
+      { category:"resources", title:"المكتبة الإسلامية", image:"https://s5files.mobeasy.com/static/u/722316/file-722316-816366.jpg", description:"المكتبة الإسلامية", url:"https://abedelkareem1989.github.io/Islamiclibrary" },
+      { category:"resources", title:"المكتبة الإسلامية PDF", image:"https://s5files.mobeasy.com/static/u/722316/file-722316-571182.jpg", description:"مكتبة الكتب بصيغة PDF", url:"https://abedelkareem1989.github.io/Islamicculture/4.index.html" },
       // صور
       { category:"gallery", title:"لوحات إسلامية", image:"https://s5files.mobeasy.com/static/u/722316/file-722316-3101.jpg", description:"معرض صور", url:"https://photos.app.goo.gl/Y2DJfjyHqxjC8e4X7" },
       // فيديوهات
@@ -1208,49 +1401,6 @@
     // هذه القائمة تمثل المحتوى الموجود وقت إنشاء هذه النسخة.
     // أي عنصر جديد تضيفه لاحقًا إلى DATA ولا يوجد هنا سيظهر تلقائيًا في "آخر الإضافات".
     const LATEST_BASELINE_KEYS = new Set([
-      "quran||المصحف المعلم||https://abedelkareem1989.github.io/bidjade.github.io/2026.index.html",
-      "quran||جزء قد سمع||https://abedelkareem1989.github.io/bidjade.github.io/12345.index.html",
-      "quran||جزء تبارك||https://abedelkareem1989.github.io/bidjade.github.io/10.html",
-      "quran||جزء عم||https://abedelkareem.freehosting.dev/1.html",
-      "quran||تفسير سورة ق||https://abedelkareem1989.github.io/bidjade.github.io/15.index.html",
-      "audio||التحصين صوتي||https://abedelkareem1989.github.io/Islamicculture/44.index.html",
-      "audio||إذاعات أهل السنة||internal:radios",
-      "audio||دروس الشيخ نزار الحلبي||https://abedelkareem1989.github.io/bidjade.github.io/nizar.index.html",
-      "audio||برنامج دليل الشيخ الدكتور جميل حليم||https://abedelkareem.freehosting.dev/17.index.html",
-      "audio||خطب الجمعة||https://abedelkareem1989.github.io/Islamicculture/7.index.html",
-      "audio||شرح العقيدة الطحاوية - سمير القاضي||https://abedelkareem1989.github.io/bidjade.github.io/222.index.html",
-      "audio||قواعد مهمة - سمير القاضي||https://abedelkareem1989.github.io/bidjade.github.io/222.index.html",
-      "audio||شمائل النبي | الشيخ الدكتور سمير القاضي||https://abedelkareem.freehosting.dev/13.index.html",
-      "audio||حل ألفاظ الصراط المستقيم||https://abedelkareem1989.github.io/Islamicculture/31.index.html",
-      "audio||الحيدة فنون الرد||https://abedelkareem1989.github.io/bidjade.github.io/27.index.html",
-      "audio||شرح العقيدة الطحاوية - جميل حليم||https://abedelkareem1989.github.io/Islamicculture/5.index.html",
-      "audio||الدروس الصوتية العامة||https://widget.spreaker.com/player?show_id=6281103&theme=light&playlist=show&playlist-continuous=true&chapters-image=true",
-      "audio||سيد الشهداء  حمزه||https://abedelkareem.freehosting.dev/12.index.html",
-      "audio||يوسف داوود علامات الساعة||https://abedelkareem.freehosting.dev/14.index.html",
-      "audio||الدر المصون في تفسير جزء عم يتساءلون||https://abedelkareem1989.github.io/bidjade.github.io/11.index.html",
-      "audio||صريح البيان في الرد على من خالف القرآن||https://abedelkareem1989.github.io/bidjade.github.io/12.index.html",
-      "audio||برنامج كيف أنجو؟   أحمد حلمي||https://abedelkareem1989.github.io/bidjade.github.io/14.index.html",
-      "audio||قواعد مهمة - الشيخ أحمد حلمي||https://abedelkareem1989.github.io/bidjade.github.io/20.index.html",
-      "audio||ساعة سكون||https://abedelkareem1989.github.io/bidjade.github.io/18.index.html",
-      "madaih||المداح أحمد الرفاعي||https://abedelkareem1989.github.io/bidjade.github.io/21.index.html",
-      "madaih||المنشد الحاج محمد الخير||https://abedelkareem1989.github.io/bidjade.github.io",
-      "madaih||المداح محمد معروف||https://abedelkareem1989.github.io/bidjade.github.io/13.index.html",
-      "madaih||فريق الإنشاد في السويد||https://abedelkareem.freehosting.dev/16.index.html",
-      "madaih||ماهر حمودة||https://abedelkareem1989.github.io/Islamicculture/18.index.html",
-      "madaih||أناشيد زيارة القبر النبوي الشريفة||https://abedelkareem1989.github.io/Islamicculture/20.index.html",
-      "madaih||أناشيد الأطفال||https://abedelkareem1989.github.io/Islamicculture/19.index.html",
-      "library||المكتبة الإسلامية||https://abedelkareem2.blogspot.com/2022/09/blog-post_9.html?m=1",
-      "library||تفسير آيات||https://abedelkareem1989.github.io/Islamicculture/66.index.html",
-      "library||الجواهر اللامعة||https://abedelkareem.freehosting.dev/15.index.html",
-      "library||تطبيق أذكاري||https://effervescent-meerkat-bcf7cd.netlify.app/",
-      "library||شرح الصفات الثلاث عشر||https://abedelkareem1989.github.io/Islamicculture/1.index.html",
-      "library||كتب عقيدة المسلمين||https://abedelkareem1989.github.io/Islamicculture/2.index.html",
-      "library||المكتبة  السنية||https://abedelkareem.freehosting.dev/2.index.html",
-      "library||الميسر في أحكام الدين الاجزاء الثلاثة||https://abedelkareem.freehosting.dev/9.index.html",
-      "library||مقصد الطالبين||https://abedelkareem.freehosting.dev/10.index.html",
-      "library||الثقافة الإسلامية الأجزاء الخمس||https://abedelkareem1989.github.io/Islamicculture2/6.index.html",
-      "library||الدرة البهية في حل ألفاظ العقيدة الطحاوية||https://abedelkareem1989.github.io/bidjade.github.io/index-9.html",
-      "library||مقصد الراغبين في تعلم العقيدة وأحكام الدين||https://abedelkareem1989.github.io/bidjade.github.io/16.index.html",
       "gallery||لوحات إسلامية||https://photos.app.goo.gl/Y2DJfjyHqxjC8e4X7",
       "video||الدروس الأساسية لفهم العقيدة الإسلامية||https://dulcet-cuchufli-abfcb8.netlify.app",
       "video||فيديوهات للأطفال||https://abedelkareem.freehosting.dev/3.index.html",
@@ -1272,17 +1422,15 @@
     const $ = id => document.getElementById(id);
     const pages = {
       home: $('page-home'),
-      quran: $('page-quran'),
-      audio: $('page-audio'),
-      madaih: $('page-madaih'),
-      library: $('page-library'),
+      search: $('page-search'),
       gallery: $('page-gallery'),
       video: $('page-video'),
       apps: $('page-apps'),
       favorites: $('page-favorites'),
       settings: $('page-settings'),
       more: $('page-more'),
-      radios: $('page-radios')
+      radios: $('page-radios'),
+      awrad: $('page-awrad')
     };
 
     // ========== TOAST ==========
@@ -1307,17 +1455,26 @@
     });
     $('closeAboutModal').addEventListener('click', hideAboutModal);
 
+    function openItemUrl(url) {
+      if (url === 'internal:radios') navigate('radios');
+      else if (url === 'internal:awrad') navigate('awrad');
+      else if (url) window.open(url, '_blank', 'noopener,noreferrer');
+    }
+
     // ========== RENDER ==========
     function renderItems(category, containerId, filter = '') {
       const container = document.getElementById(containerId);
       if (!container) return;
       let items = DATA.filter(d => d.category === category);
       if (filter) items = items.filter(d => d.title.includes(filter) || d.description.includes(filter));
+      const title = PAGE_TITLES[category] || category;
+      const back = pageBackBarHTML(title);
       if (items.length === 0) {
-        container.innerHTML = `<div class="card" style="text-align:center;padding:30px;">لا توجد عناصر</div>`;
+        container.innerHTML = back + `<div class="card" style="text-align:center;padding:30px;">لا توجد عناصر</div>`;
+        bindPageBackButtons(container);
         return;
       }
-      container.innerHTML = items.map((item, idx) => {
+      container.innerHTML = back + items.map((item, idx) => {
         const isFav = favorites.includes(item.title) ? '⭐' : '☆';
         return `
           <div class="item-card" data-url="${item.url}" data-title="${item.title}">
@@ -1331,15 +1488,12 @@
         `;
       }).join('');
 
+      bindPageBackButtons(container);
       container.querySelectorAll('.item-card').forEach(el => {
         el.addEventListener('click', (e) => {
           if (e.target.closest('.fav-btn')) return;
           const url = el.dataset.url;
-          if (url === 'internal:radios') {
-            navigate('radios');
-          } else if (url) {
-            window.open(url, '_blank', 'noopener,noreferrer');
-          }
+          openItemUrl(url);
         });
       });
       container.querySelectorAll('.fav-btn').forEach(btn => {
@@ -1363,23 +1517,25 @@
     function renderFavorites() {
       const container = $('favoritesContent');
       const favItems = DATA.filter(d => favorites.includes(d.title));
+      const back = pageBackBarHTML(PAGE_TITLES.favorites);
       if (favItems.length === 0) {
-        container.innerHTML = `<div class="card" style="text-align:center;padding:30px;">لا توجد مفضلات</div>`;
+        container.innerHTML = back + `<div class="card" style="text-align:center;padding:30px;">لا توجد مفضلات</div>`;
+        bindPageBackButtons(container);
         return;
       }
-      container.innerHTML = favItems.map(item => `
+      container.innerHTML = back + favItems.map(item => `
         <div class="item-card" data-url="${item.url}">
           <img src="${item.image}" loading="lazy" class="lazy" onload="this.classList.add('loaded')">
           <div class="info"><h4>${item.title}</h4><p>${item.description}</p></div>
           <button class="fav-btn" data-title="${item.title}">⭐</button>
         </div>
       `).join('');
+      bindPageBackButtons(container);
       container.querySelectorAll('.item-card').forEach(el => {
         el.addEventListener('click', (e) => {
           if (e.target.closest('.fav-btn')) return;
           const url = el.dataset.url;
-          if (url === 'internal:radios') navigate('radios');
-          else if (url) window.open(url, '_blank', 'noopener,noreferrer');
+          openItemUrl(url);
         });
       });
       container.querySelectorAll('.fav-btn').forEach(btn => {
@@ -1451,8 +1607,7 @@
       container.querySelectorAll('.item-card').forEach(el => {
         el.addEventListener('click', () => {
           const url = el.dataset.url;
-          if (url === 'internal:radios') navigate('radios');
-          else if (url) window.open(url, '_blank', 'noopener,noreferrer');
+          openItemUrl(url);
         });
       });
     }
@@ -1460,7 +1615,7 @@
     function renderSettings() {
       const container = $('settingsContent');
       const countText = window.__visitorCountFormatted || '...';
-      container.innerHTML = `
+      container.innerHTML = pageBackBarHTML(PAGE_TITLES.settings) + `
         <h3><span></span> الإعدادات</h3>
         <div class="card">
           <div class="settings-visitor">
@@ -1471,6 +1626,7 @@
           <div class="setting-item"><span>📱 عن التطبيق</span><button id="aboutAppBtn" style="background:var(--gold);border:none;padding:8px 20px;border-radius:40px;cursor:pointer;font-weight:600;">عرض</button></div>
         </div>
       `;
+      bindPageBackButtons(container);
       document.getElementById('darkToggleSetting').addEventListener('click', toggleDark);
       document.getElementById('aboutAppBtn').addEventListener('click', showAboutModal);
     }
@@ -1478,10 +1634,14 @@
     function renderMore() {
       const container = $('moreContent');
       if (!container) return;
-      container.innerHTML = `
+      container.innerHTML = pageBackBarHTML(PAGE_TITLES.more) + `
         <h3><span></span> المزيد</h3>
         <div class="section-grid" style="grid-template-columns: 1fr 1fr; padding: 0; margin-top: 8px;">
-          <div class="section-card" data-more="library"><div class="icon">📚</div><h4>المكتبة</h4></div>
+          <div class="section-card" data-more="radios"><div class="icon">📻</div><h4>الإذاعات</h4></div>
+          <div class="section-card" data-more="awrad"><div class="icon">🛡️</div><h4>أوراد التحصين</h4></div>
+          <div class="section-card" data-more-url="https://abedelkareem1989.github.io/Islamicculture/10.index.html"><img class="section-cover" src="https://s5files.mobeasy.com/static/u/722316/file-722316-345170.jpg" alt="أذكاري"><h4>أذكاري</h4></div>
+          <div class="section-card" data-more-url="https://abedelkareem1989.github.io/Islamiclibrary"><div class="icon">📚</div><h4>المكتبة الإسلامية</h4></div>
+          <div class="section-card" data-more-url="https://abedelkareem1989.github.io/Islamicculture/4.index.html"><div class="icon">📄</div><h4>المكتبة الإسلامية PDF</h4></div>
           <div class="section-card" data-more="gallery"><div class="icon">🖼️</div><h4>الصور</h4></div>
           <div class="section-card" data-more="video"><div class="icon">🎬</div><h4>الفيديوهات</h4></div>
           <div class="section-card" data-more="apps"><div class="icon">📱</div><h4>التطبيقات</h4></div>
@@ -1489,8 +1649,14 @@
           <div class="section-card" data-more="settings"><div class="icon">⚙️</div><h4>الإعدادات</h4></div>
         </div>
       `;
+      bindPageBackButtons(container);
       container.querySelectorAll('.section-card').forEach(card => {
         card.addEventListener('click', () => {
+          const externalUrl = card.dataset.moreUrl;
+          if (externalUrl) {
+            window.open(externalUrl, '_blank', 'noopener,noreferrer');
+            return;
+          }
           const section = card.dataset.more;
           if (section) navigate(section);
         });
@@ -1566,6 +1732,10 @@
       const station = RADIO_STATIONS[index];
       if (!station) return;
 
+      // لا نشغّل الإذاعة والأوراد معًا.
+      const awradAudio = getAwradAudio();
+      if (awradAudio && !awradAudio.paused) awradAudio.pause();
+
       // نفس المحطة: تبديل تشغيل/إيقاف
       if (index === currentRadioIndex && audio.src) {
         if (isRadioPlaying) {
@@ -1631,7 +1801,7 @@
       if (!container) return;
       const station = RADIO_STATIONS[currentRadioIndex];
 
-      container.innerHTML = `
+      container.innerHTML = pageBackBarHTML(PAGE_TITLES.radios) + `
         <h3><span></span> إذاعات أهل السنة</h3>
 
         <div class="radio-now-playing">
@@ -1694,37 +1864,358 @@
           if (statusEl) statusEl.innerHTML = '⏳ جاري التحميل...';
         });
       }
+      bindPageBackButtons(container);
     }
 
-    // ========== NAVIGATION ==========
-    function navigate(page) {
+    // ========== AWRAD PLAYER ==========
+    const AWRAD_COVER = 'https://s5files.mobeasy.com/static/u/722316/file-722316-462328.jpg';
+    const AWRAD_TRACKS = [
+      {
+        title: 'أوراد التحصين',
+        subtitle: 'ما يقال في الصباح والمساء',
+        src: 'https://www.aicpmadih.de/Multimedia/quran/Awrad/Awrad_Al-Tahseen.mp3'
+      },
+      {
+        title: 'أوراد الصباح',
+        subtitle: 'أذكار وأوراد الصباح',
+        src: 'https://www.aicpmadih.de/Multimedia/quran/Awrad/Awrad_Al-Sabah.mp3'
+      },
+      {
+        title: 'أوراد المساء',
+        subtitle: 'أذكار وأوراد المساء',
+        src: "https://www.aicpmadih.de/Multimedia/quran/Awrad/Awrad_Al-Masa'.mp3"
+      },
+      {
+        title: 'رقية شرعية',
+        subtitle: 'رقية شرعية صوتية',
+        src: 'https://archive.org/download/588_20231001/588.ogg'
+      }
+    ];
+
+    let currentAwradIndex = 0;
+    let isAwradPlaying = false;
+    let isAwradSeeking = false;
+
+    function getAwradAudio() {
+      return document.getElementById('awradAudio');
+    }
+
+    function formatAudioTime(seconds) {
+      if (!Number.isFinite(seconds) || seconds < 0) return '00:00';
+      const total = Math.floor(seconds);
+      const h = Math.floor(total / 3600);
+      const m = Math.floor((total % 3600) / 60);
+      const s = total % 60;
+      if (h > 0) return `${h}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+      return `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+    }
+
+    function updateAwradProgress() {
+      const audio = getAwradAudio();
+      const progress = document.getElementById('awradProgress');
+      const current = document.getElementById('awradCurrentTime');
+      const duration = document.getElementById('awradDuration');
+      if (!audio) return;
+
+      if (current) current.textContent = formatAudioTime(audio.currentTime);
+      if (duration) duration.textContent = formatAudioTime(audio.duration);
+      if (progress && !isAwradSeeking) {
+        const value = Number.isFinite(audio.duration) && audio.duration > 0
+          ? (audio.currentTime / audio.duration) * 1000
+          : 0;
+        progress.value = String(Math.max(0, Math.min(1000, value)));
+      }
+    }
+
+    function updateAwradUI() {
+      const track = AWRAD_TRACKS[currentAwradIndex];
+      if (!track) return;
+
+      const title = document.getElementById('awradNowTitle');
+      const sub = document.getElementById('awradNowSub');
+      const play = document.getElementById('awradPlayBtn');
+      const coverWrap = document.getElementById('awradCoverWrap');
+      const status = document.getElementById('awradStatus');
+
+      if (title) title.textContent = track.title;
+      if (sub) sub.textContent = track.subtitle;
+      if (play) play.textContent = isAwradPlaying ? '⏸' : '▶';
+      if (coverWrap) coverWrap.classList.toggle('playing', isAwradPlaying);
+      if (status) status.textContent = isAwradPlaying ? 'جاري التشغيل الآن' : 'اضغط تشغيل للاستماع';
+
+      document.querySelectorAll('.awrad-track-card').forEach((card, i) => {
+        card.classList.toggle('active', i === currentAwradIndex);
+        const icon = card.querySelector('.play-icon');
+        if (icon) icon.textContent = (i === currentAwradIndex && isAwradPlaying) ? '⏸' : '▶';
+      });
+
+      updateAwradProgress();
+    }
+
+    function playAwrad(index = currentAwradIndex) {
+      const audio = getAwradAudio();
+      const track = AWRAD_TRACKS[index];
+      if (!audio || !track) return;
+
+      // لا نشغّل الإذاعة والأوراد معًا.
+      const radio = getRadioAudio();
+      if (radio && !radio.paused) radio.pause();
+
+      const changed = index !== currentAwradIndex || audio.dataset.trackIndex !== String(index);
+      currentAwradIndex = index;
+
+      if (changed || !audio.src) {
+        audio.src = track.src;
+        audio.dataset.trackIndex = String(index);
+        audio.load();
+      }
+
+      const playPromise = audio.play();
+      if (playPromise && typeof playPromise.then === 'function') {
+        playPromise.then(() => {
+          isAwradPlaying = true;
+          updateAwradUI();
+          showToast('🎧 ' + track.title);
+        }).catch((err) => {
+          isAwradPlaying = false;
+          updateAwradUI();
+          const status = document.getElementById('awradStatus');
+          if (status) status.textContent = 'تعذّر تشغيل المقطع — حاول مرة أخرى';
+          showToast('⚠️ تعذّر تشغيل المقطع');
+          console.warn('Awrad play error:', err);
+        });
+      }
+    }
+
+    function toggleAwradPlay() {
+      const audio = getAwradAudio();
+      if (!audio) return;
+      if (!audio.paused && isAwradPlaying) {
+        audio.pause();
+      } else {
+        playAwrad(currentAwradIndex);
+      }
+    }
+
+    function changeAwrad(step) {
+      const next = (currentAwradIndex + step + AWRAD_TRACKS.length) % AWRAD_TRACKS.length;
+      playAwrad(next);
+    }
+
+    function seekAwradBy(seconds) {
+      const audio = getAwradAudio();
+      if (!audio || !Number.isFinite(audio.duration)) return;
+      audio.currentTime = Math.max(0, Math.min(audio.duration, audio.currentTime + seconds));
+      updateAwradProgress();
+    }
+
+    function renderAwrad() {
+      const container = $('awradContent');
+      if (!container) return;
+      const track = AWRAD_TRACKS[currentAwradIndex];
+
+      container.innerHTML = pageBackBarHTML(PAGE_TITLES.awrad) + `
+        <h3><span></span> أوراد التحصين</h3>
+
+        <div class="awrad-player">
+          <div class="awrad-cover-wrap ${isAwradPlaying ? 'playing' : ''}" id="awradCoverWrap">
+            <img src="${AWRAD_COVER}" alt="أوراد التحصين">
+          </div>
+          <div class="awrad-now-title" id="awradNowTitle">${track.title}</div>
+          <div class="awrad-now-sub" id="awradNowSub">${track.subtitle}</div>
+
+          <div class="awrad-progress-wrap">
+            <input class="awrad-progress" id="awradProgress" type="range" min="0" max="1000" value="0" step="1" aria-label="التقدم في المقطع">
+            <div class="awrad-time-row">
+              <span id="awradCurrentTime">00:00</span>
+              <span id="awradDuration">00:00</span>
+            </div>
+          </div>
+
+          <div class="awrad-main-controls">
+            <button class="awrad-control-btn" id="awradPrevBtn" aria-label="السابق">⏮</button>
+            <button class="awrad-play-btn" id="awradPlayBtn" aria-label="تشغيل أو إيقاف">${isAwradPlaying ? '⏸' : '▶'}</button>
+            <button class="awrad-control-btn" id="awradNextBtn" aria-label="التالي">⏭</button>
+          </div>
+
+          <div class="awrad-extra-controls">
+            <button class="awrad-control-btn" id="awradBackBtn" aria-label="رجوع 10 ثوان">↶10</button>
+            <button class="awrad-control-btn" id="awradForwardBtn" aria-label="تقديم 10 ثوان">10↷</button>
+          </div>
+          <div class="awrad-status" id="awradStatus">${isAwradPlaying ? 'جاري التشغيل الآن' : 'اضغط تشغيل للاستماع'}</div>
+        </div>
+
+        <h3 style="margin-top:8px;"><span></span> قائمة الأوراد</h3>
+        <div class="awrad-track-list">
+          ${AWRAD_TRACKS.map((item, i) => `
+            <div class="awrad-track-card ${i === currentAwradIndex ? 'active' : ''}" data-index="${i}">
+              <img src="${AWRAD_COVER}" alt="${item.title}" loading="lazy">
+              <div class="info">
+                <h4>${item.title}</h4>
+                <p>${item.subtitle}</p>
+              </div>
+              <span class="play-icon">${(i === currentAwradIndex && isAwradPlaying) ? '⏸' : '▶'}</span>
+            </div>
+          `).join('')}
+        </div>
+      `;
+
+      document.getElementById('awradPlayBtn')?.addEventListener('click', toggleAwradPlay);
+      document.getElementById('awradPrevBtn')?.addEventListener('click', () => changeAwrad(-1));
+      document.getElementById('awradNextBtn')?.addEventListener('click', () => changeAwrad(1));
+      document.getElementById('awradBackBtn')?.addEventListener('click', () => seekAwradBy(-10));
+      document.getElementById('awradForwardBtn')?.addEventListener('click', () => seekAwradBy(10));
+
+      const progress = document.getElementById('awradProgress');
+      if (progress) {
+        progress.addEventListener('input', () => {
+          isAwradSeeking = true;
+          const audio = getAwradAudio();
+          if (!audio || !Number.isFinite(audio.duration)) return;
+          const preview = (Number(progress.value) / 1000) * audio.duration;
+          const current = document.getElementById('awradCurrentTime');
+          if (current) current.textContent = formatAudioTime(preview);
+        });
+        progress.addEventListener('change', () => {
+          const audio = getAwradAudio();
+          if (audio && Number.isFinite(audio.duration)) {
+            audio.currentTime = (Number(progress.value) / 1000) * audio.duration;
+          }
+          isAwradSeeking = false;
+          updateAwradProgress();
+        });
+        progress.addEventListener('pointerup', () => { isAwradSeeking = false; updateAwradProgress(); });
+      }
+
+      container.querySelectorAll('.awrad-track-card').forEach(card => {
+        card.addEventListener('click', () => {
+          const idx = parseInt(card.dataset.index, 10);
+          const audio = getAwradAudio();
+          if (idx === currentAwradIndex && audio && !audio.paused) audio.pause();
+          else playAwrad(idx);
+        });
+      });
+
+      const audio = getAwradAudio();
+      if (audio && !audio._awradBound) {
+        audio._awradBound = true;
+        audio.addEventListener('playing', () => { isAwradPlaying = true; updateAwradUI(); });
+        audio.addEventListener('pause', () => { isAwradPlaying = false; updateAwradUI(); });
+        audio.addEventListener('timeupdate', updateAwradProgress);
+        audio.addEventListener('loadedmetadata', updateAwradProgress);
+        audio.addEventListener('durationchange', updateAwradProgress);
+        audio.addEventListener('ended', () => changeAwrad(1));
+        audio.addEventListener('waiting', () => {
+          const status = document.getElementById('awradStatus');
+          if (status) status.textContent = '⏳ جاري التحميل...';
+        });
+        audio.addEventListener('error', () => {
+          isAwradPlaying = false;
+          updateAwradUI();
+          const status = document.getElementById('awradStatus');
+          if (status) status.textContent = 'تعذّر تحميل هذا المقطع';
+        });
+      }
+
+      // حمّل بيانات المقطع الحالي فقط دون تشغيل تلقائي.
+      if (audio && audio.dataset.trackIndex !== String(currentAwradIndex)) {
+        audio.src = track.src;
+        audio.dataset.trackIndex = String(currentAwradIndex);
+        audio.load();
+      }
+      updateAwradUI();
+      bindPageBackButtons(container);
+    }
+
+    // ========== NAVIGATION + HISTORY (رجوع داخل التطبيق) ==========
+    const PAGE_TITLES = {
+      home: 'الرئيسية',
+      more: 'المزيد',
+      search: 'نتائج البحث',
+      gallery: 'الصور',
+      video: 'الفيديوهات',
+      apps: 'التطبيقات',
+      favorites: 'المفضلة',
+      settings: 'الإعدادات',
+      radios: 'الإذاعات',
+      awrad: 'أوراد التحصين'
+    };
+
+    function goBackToHome() {
+      navigate('home', { push: false, replace: true });
+    }
+
+    function bindPageBackButtons(root) {
+      if (!root) return;
+      root.querySelectorAll('.page-back-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          goBackToHome();
+        });
+      });
+    }
+
+    function pageBackBarHTML(title) {
+      return `
+        <div class="page-back-bar">
+          <button type="button" class="page-back-btn" aria-label="الرجوع للقائمة الرئيسية">
+            <span class="back-arrow">→</span>
+            <span>رجوع</span>
+          </button>
+          <span class="page-back-title">${title || ''}</span>
+        </div>
+      `;
+    }
+
+    function navigate(page, options = {}) {
+      const { push = true, replace = false } = options;
+      if (!pages[page]) page = 'home';
+
+      const prevPage = currentPage;
       Object.keys(pages).forEach(key => pages[key].classList.remove('active'));
-      if (pages[page]) pages[page].classList.add('active');
+      pages[page].classList.add('active');
       currentPage = page;
       document.querySelectorAll('.bottom-nav button').forEach(b => b.classList.remove('active'));
 
-      // الأقسام الفرعية تحت «المزيد» تُبقي زر المزيد نشطاً
-      // صفحة الإذاعات تُبقي زر الدروس نشطاً
-      const morePages = ['library', 'gallery', 'video', 'apps', 'favorites', 'settings', 'more'];
+      // الأقسام المستقلة والفرعية تحت «المزيد» تُبقي زر المزيد نشطاً
+      const morePages = ['search', 'gallery', 'video', 'apps', 'favorites', 'settings', 'more', 'radios', 'awrad'];
       let navPage = page;
       if (morePages.includes(page)) navPage = 'more';
-      else if (page === 'radios') navPage = 'audio';
       document.querySelector(`.bottom-nav button[data-page="${navPage}"]`)?.classList.add('active');
 
-      if (page === 'quran') renderItems('quran', 'quranContent');
-      else if (page === 'audio') renderItems('audio', 'audioContent');
-      else if (page === 'madaih') renderItems('madaih', 'madaihContent');
-      else if (page === 'library') renderItems('library', 'libraryContent');
-      else if (page === 'gallery') renderItems('gallery', 'galleryContent');
+      if (page === 'gallery') renderItems('gallery', 'galleryContent');
       else if (page === 'video') renderItems('video', 'videoContent');
       else if (page === 'apps') renderItems('apps', 'appsContent');
       else if (page === 'favorites') renderFavorites();
       else if (page === 'settings') renderSettings();
       else if (page === 'more') renderMore();
       else if (page === 'radios') renderRadios();
+      else if (page === 'awrad') renderAwrad();
       else if (page === 'home') { renderLatest(); }
+
+      // إدارة سجل المتصفح: الدخول لقسم يُضاف للسجل، والرجوع يعود داخل التطبيق
+      try {
+        const state = { page };
+        if (replace || page === 'home') {
+          history.replaceState(state, '', location.pathname + location.search + (page === 'home' ? '' : '#' + page));
+        } else if (push && page !== prevPage) {
+          history.pushState(state, '', location.pathname + location.search + '#' + page);
+        }
+      } catch (err) {}
+
       window.scrollTo(0, 0);
     }
+
+    // زر رجوع الجهاز / المتصفح → داخل التطبيق بدل الخروج
+    window.addEventListener('popstate', (e) => {
+      const page = (e.state && e.state.page) ? e.state.page : 'home';
+      if (page === 'home' || !pages[page]) {
+        navigate('home', { push: false, replace: true });
+      } else {
+        navigate(page, { push: false });
+      }
+    });
 
     // ========== DARK MODE ==========
     function toggleDark() {
@@ -1741,19 +2232,19 @@
       if (!q) { showToast('⚠️ أدخل نصاً للبحث'); return; }
       const results = DATA.filter(d => d.title.includes(q) || d.description.includes(q));
       if (results.length === 0) { showToast('❌ لا نتائج'); return; }
-      navigate('library');
-      const container = document.getElementById('libraryContent');
-      container.innerHTML = results.map(item => `
+      navigate('search');
+      const container = document.getElementById('searchResultsContent');
+      container.innerHTML = pageBackBarHTML(PAGE_TITLES.search) + `<h3><span></span> نتائج البحث</h3>` + results.map(item => `
         <div class="item-card" data-url="${item.url}">
           <img src="${item.image}" loading="lazy" class="lazy" onload="this.classList.add('loaded')">
           <div class="info"><h4>${item.title}</h4><p>${item.description}</p></div>
         </div>
       `).join('');
+      bindPageBackButtons(container);
       container.querySelectorAll('.item-card').forEach(el => {
         el.addEventListener('click', () => {
           const url = el.dataset.url;
-          if (url === 'internal:radios') navigate('radios');
-          else if (url) window.open(url, '_blank', 'noopener,noreferrer');
+          openItemUrl(url);
         });
       });
       showToast(`🔍 ${results.length} نتيجة`);
@@ -1865,18 +2356,27 @@
     function init() {
       if (darkMode) document.body.classList.add('dark');
       document.getElementById('darkToggle').textContent = darkMode ? '☀️' : '🌙';
+
+      // تثبيت حالة البداية في سجل المتصفح حتى يعمل زر الرجوع داخل التطبيق
+      try {
+        history.replaceState({ page: 'home' }, '', location.pathname + location.search);
+      } catch (e) {}
+
       renderLatest();
       renderSettings();
       loadRealVisitorCount(); // عدّاد الزوار الحقيقي
       
       document.querySelectorAll('.section-card').forEach(card => {
         card.addEventListener('click', () => {
+          const externalUrl = card.dataset.externalUrl;
+          if (externalUrl) {
+            window.open(externalUrl, '_blank', 'noopener,noreferrer');
+            return;
+          }
           const section = card.dataset.section;
           if (section === 'favorites') navigate('favorites');
-          else if (section === 'quran') navigate('quran');
-          else if (section === 'audio') navigate('audio');
-          else if (section === 'madaih') navigate('madaih');
-          else if (section === 'library') navigate('library');
+          else if (section === 'radios') navigate('radios');
+          else if (section === 'awrad') navigate('awrad');
           else if (section === 'gallery') navigate('gallery');
           else if (section === 'video') navigate('video');
           else if (section === 'apps') navigate('apps');
@@ -1884,7 +2384,14 @@
       });
 
       document.querySelectorAll('.bottom-nav button').forEach(btn => {
-        btn.addEventListener('click', () => navigate(btn.dataset.page));
+        btn.addEventListener('click', () => {
+          const externalUrl = btn.dataset.externalUrl;
+          if (externalUrl) {
+            window.open(externalUrl, '_blank', 'noopener,noreferrer');
+            return;
+          }
+          navigate(btn.dataset.page);
+        });
       });
 
       document.getElementById('darkToggle').addEventListener('click', toggleDark);
