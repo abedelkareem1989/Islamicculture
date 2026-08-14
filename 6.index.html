@@ -1,0 +1,1132 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>القرآن الكريم | المنشاوي · البنا · جزء قد سمع</title>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        :root {
+            --primary: #1a7a3a;
+            --gold: #d4af37;
+            --gold-dark: #b8860b;
+            --gold-glow: rgba(212, 175, 55, 0.4);
+            --bg-dark: #0b0e12;
+            --bg-card: #14181e;
+            --bg-card-hover: #1c222a;
+            --bg-input: #1e2630;
+            --text-primary: #ecf0f3;
+            --text-secondary: #8f9ba8;
+            --border: #2a323d;
+            --shadow: 0 12px 48px rgba(0, 0, 0, 0.6);
+            --glass: rgba(20, 24, 30, 0.9);
+            --radius: 18px;
+            --radius-sm: 12px;
+            --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        [data-theme="light"] {
+            --bg-dark: #f2f5f9;
+            --bg-card: #ffffff;
+            --bg-card-hover: #f0f2f6;
+            --bg-input: #e8ecf2;
+            --text-primary: #1e2328;
+            --text-secondary: #5a6878;
+            --border: #d0d7e0;
+            --shadow: 0 12px 48px rgba(0, 0, 0, 0.08);
+            --glass: rgba(255, 255, 255, 0.94);
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        body {
+            font-family: 'Tajawal', sans-serif;
+            background: var(--bg-dark);
+            color: var(--text-primary);
+            min-height: 100vh;
+            overflow-x: hidden;
+            transition: background var(--transition), color var(--transition);
+        }
+        .bg-layer {
+            position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden;
+        }
+        .bg-layer::before {
+            content: '';
+            position: absolute; width: 200%; height: 200%; top: -50%; left: -50%;
+            background:
+                radial-gradient(circle at 30% 40%, rgba(26, 122, 58, 0.12) 0%, transparent 60%),
+                radial-gradient(circle at 80% 70%, rgba(212, 175, 55, 0.08) 0%, transparent 50%);
+            animation: bgFloat 28s ease-in-out infinite alternate;
+        }
+        @keyframes bgFloat {
+            0% { transform: translate(0,0) scale(1); }
+            50% { transform: translate(2%,-2%) scale(1.05); }
+            100% { transform: translate(-2%,2%) scale(0.95); }
+        }
+
+        .app {
+            position: relative; z-index: 1;
+            max-width: 1100px; margin: 0 auto;
+            padding: 16px 18px 110px; min-height: 100vh;
+        }
+
+        /* Header */
+        .header {
+            display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px;
+            padding: 12px 18px; background: var(--glass); backdrop-filter: blur(20px);
+            border-radius: var(--radius); border: 1px solid var(--border); box-shadow: var(--shadow);
+            margin-bottom: 18px;
+        }
+        .header-brand { display: flex; align-items: center; gap: 12px; }
+        .header-brand .logo {
+            width: 42px; height: 42px; border-radius: var(--radius-sm);
+            background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+            display: flex; align-items: center; justify-content: center;
+            font-size: 18px; color: #fff; box-shadow: 0 4px 14px rgba(212,175,55,0.35);
+        }
+        .header-brand .name { font-size: 1.15rem; font-weight: 800; }
+        .header-brand .sub { font-size: 0.7rem; color: var(--text-secondary); }
+        .header-actions { display: flex; gap: 8px; }
+        .header-actions button {
+            width: 38px; height: 38px; border-radius: var(--radius-sm); border: 1px solid var(--border);
+            background: var(--bg-card); color: var(--text-secondary); cursor: pointer;
+            display: flex; align-items: center; justify-content: center; transition: var(--transition); font-size: 15px;
+        }
+        .header-actions button:hover {
+            background: var(--gold); color: #fff; border-color: var(--gold); transform: translateY(-2px);
+        }
+
+        /* ========== شاشة اختيار الأقسام (قوائم كبيرة) ========== */
+        .sections-view { display: block; }
+        .sections-view.hidden { display: none; }
+        .sections-title {
+            text-align: center; margin-bottom: 22px;
+        }
+        .sections-title h1 {
+            font-size: 1.6rem; font-weight: 900; margin-bottom: 4px;
+        }
+        .sections-title p {
+            color: var(--text-secondary); font-size: 0.95rem;
+        }
+        .sections-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 18px;
+        }
+        .section-card {
+            background: var(--glass); backdrop-filter: blur(16px);
+            border: 1px solid var(--border); border-radius: var(--radius);
+            overflow: hidden; cursor: pointer; transition: var(--transition);
+            box-shadow: var(--shadow); position: relative;
+        }
+        .section-card:hover {
+            transform: translateY(-6px);
+            border-color: var(--gold);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.45), 0 0 0 1px var(--gold);
+        }
+        .section-card .card-img {
+            width: 100%; height: 160px; object-fit: cover;
+            display: block;
+        }
+        .section-card .card-body {
+            padding: 16px 18px 18px;
+        }
+        .section-card .card-body h2 {
+            font-size: 1.15rem; font-weight: 800; margin-bottom: 4px;
+            color: var(--text-primary);
+        }
+        .section-card .card-body p {
+            font-size: 0.82rem; color: var(--text-secondary); margin-bottom: 10px; line-height: 1.4;
+        }
+        .section-card .card-meta {
+            display: flex; align-items: center; gap: 12px; font-size: 0.78rem; color: var(--text-secondary); font-weight: 600;
+        }
+        .section-card .card-meta i { color: var(--gold); }
+        .section-card .card-badge {
+            position: absolute; top: 12px; left: 12px;
+            background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+            color: #0b0e12; font-weight: 800; font-size: 0.72rem;
+            padding: 3px 12px; border-radius: 20px;
+        }
+
+        /* ========== شاشة المشغل ========== */
+        .player-view { display: none; }
+        .player-view.active { display: block; }
+
+        .back-btn {
+            display: inline-flex; align-items: center; gap: 8px;
+            background: var(--bg-card); border: 1px solid var(--border);
+            color: var(--text-secondary); padding: 8px 16px; border-radius: 30px;
+            font-family: 'Tajawal', sans-serif; font-weight: 600; font-size: 0.85rem;
+            cursor: pointer; margin-bottom: 14px; transition: var(--transition);
+        }
+        .back-btn:hover { background: var(--gold); color: #fff; border-color: var(--gold); }
+
+        .banner {
+            display: flex; flex-wrap: wrap; gap: 16px; background: var(--glass); backdrop-filter: blur(16px);
+            border-radius: var(--radius); border: 1px solid var(--border); padding: 16px 20px;
+            box-shadow: var(--shadow); margin-bottom: 16px; align-items: center;
+        }
+        .banner-img {
+            width: 100px; height: 100px; border-radius: var(--radius-sm); object-fit: cover;
+            border: 3px solid var(--gold); flex-shrink: 0;
+        }
+        .banner-info h1 { font-size: 1.3rem; font-weight: 900; margin-bottom: 2px; }
+        .banner-info .desc { font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 4px; }
+        .banner-info .meta { font-size: 0.78rem; color: var(--text-secondary); display: flex; gap: 12px; flex-wrap: wrap; }
+        .banner-info .meta i { color: var(--gold); }
+
+        .search-bar { margin-bottom: 14px; }
+        .search-wrap { position: relative; }
+        .search-wrap i {
+            position: absolute; left: 16px; top: 50%; transform: translateY(-50%);
+            color: var(--text-secondary);
+        }
+        .search-bar input {
+            width: 100%; padding: 12px 18px 12px 46px; border-radius: 50px;
+            border: 1px solid var(--border); background: var(--bg-input); color: var(--text-primary);
+            font-family: 'Tajawal', sans-serif; font-size: 0.95rem; outline: none;
+        }
+        .search-bar input:focus { border-color: var(--gold); box-shadow: 0 0 0 3px var(--gold-glow); }
+
+        .main-grid {
+            display: grid; grid-template-columns: 1fr 340px; gap: 18px;
+        }
+        @media (max-width: 900px) { .main-grid { grid-template-columns: 1fr; } }
+
+        /* Player card */
+        .player-card {
+            background: var(--glass); backdrop-filter: blur(16px); border-radius: var(--radius);
+            border: 1px solid var(--border); padding: 22px 18px 18px; box-shadow: var(--shadow);
+            display: flex; flex-direction: column; align-items: center; position: relative; overflow: hidden;
+        }
+        .album-wrap {
+            position: relative; width: 180px; height: 180px; margin-bottom: 14px; z-index: 2;
+        }
+        @media (max-width: 500px) { .album-wrap { width: 150px; height: 150px; } }
+        .album-wrap img {
+            width: 100%; height: 100%; border-radius: 50%; object-fit: cover;
+            box-shadow: 0 14px 48px rgba(0,0,0,0.5), 0 0 0 4px rgba(212,175,55,0.15);
+        }
+        .album-wrap img.spinning { animation: spinAlbum 24s linear infinite; }
+        @keyframes spinAlbum { to { transform: rotate(360deg); } }
+        .album-glow {
+            position: absolute; inset: -18%;
+            background: radial-gradient(circle, var(--gold-glow) 0%, transparent 70%);
+            filter: blur(40px); opacity: 0; transition: opacity 0.5s; pointer-events: none;
+        }
+        .album-glow.active { opacity: 1; }
+
+        .track-info { text-align: center; width: 100%; z-index: 2; }
+        .track-info .title { font-size: 1.25rem; font-weight: 800; margin-bottom: 2px; }
+        .track-info .artist { font-size: 0.88rem; color: var(--text-secondary); }
+        .track-info .badge {
+            display: inline-block; margin-top: 6px;
+            background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+            color: #0b0e12; padding: 2px 12px; border-radius: 20px; font-weight: 700; font-size: 0.72rem;
+        }
+
+        .progress-section { width: 100%; margin-top: 12px; z-index: 2; }
+        .progress-track {
+            position: relative; height: 6px; background: var(--border); border-radius: 10px;
+            cursor: pointer; touch-action: none; margin-bottom: 6px;
+        }
+        .progress-track .buffer {
+            position: absolute; top: 0; right: 0; height: 100%;
+            background: rgba(212,175,55,0.2); border-radius: 10px; width: 0%;
+        }
+        .progress-track .bar {
+            position: absolute; top: 0; right: 0; height: 100%;
+            background: linear-gradient(90deg, var(--gold), var(--gold-dark)); border-radius: 10px; width: 0%;
+        }
+        .progress-track .thumb {
+            position: absolute; top: 50%; transform: translate(50%, -50%);
+            width: 16px; height: 16px; background: radial-gradient(circle at 35% 35%, #fff, var(--gold));
+            border-radius: 50%; box-shadow: 0 0 0 3px rgba(212,175,55,0.25); right: 0%;
+            pointer-events: none; transition: transform 0.15s;
+        }
+        .progress-track .thumb.dragging { transform: translate(50%, -50%) scale(1.3); }
+        .time-row { display: flex; justify-content: space-between; font-size: 0.75rem; color: var(--text-secondary); font-weight: 600; }
+
+        .controls {
+            display: flex; align-items: center; justify-content: center; gap: 12px; margin: 12px 0 8px; z-index: 2;
+        }
+        .controls button {
+            background: none; border: none; color: var(--text-secondary); cursor: pointer;
+            display: flex; align-items: center; justify-content: center; border-radius: 50%; transition: var(--transition);
+        }
+        .controls button:hover { color: var(--gold); transform: scale(1.08); }
+        .controls .secondary {
+            width: 40px; height: 40px; font-size: 16px; background: var(--bg-card);
+            border: 1px solid var(--border); border-radius: 50%;
+        }
+        .controls .secondary:hover { background: var(--gold); color: #fff; border-color: var(--gold); }
+        .controls .primary {
+            width: 60px; height: 60px; font-size: 26px;
+            background: linear-gradient(135deg, var(--gold), var(--gold-dark)); color: #0b0e12;
+            box-shadow: 0 8px 28px rgba(212,175,55,0.4);
+        }
+        .controls .active { color: var(--gold); }
+
+        .extras {
+            display: flex; flex-wrap: wrap; justify-content: center; gap: 7px; z-index: 2; width: 100%;
+        }
+        .extras button {
+            display: flex; align-items: center; gap: 4px; padding: 5px 12px; border-radius: 30px;
+            border: 1px solid var(--border); background: var(--bg-card); color: var(--text-secondary);
+            font-family: 'Tajawal', sans-serif; font-weight: 600; font-size: 0.72rem; cursor: pointer; transition: var(--transition);
+        }
+        .extras button:hover { background: var(--gold); color: #fff; border-color: var(--gold); }
+        .extras .liked { background: rgba(218,54,51,0.15); border-color: #da3633; color: #da3633; }
+
+        .volume-row {
+            display: flex; align-items: center; gap: 8px; width: 100%; max-width: 220px; margin-top: 10px; z-index: 2;
+        }
+        .volume-row button {
+            width: 30px; height: 30px; border-radius: 50%; border: 1px solid var(--border);
+            background: var(--bg-card); color: var(--text-secondary); cursor: pointer;
+            display: flex; align-items: center; justify-content: center; font-size: 12px;
+        }
+        .volume-row input[type="range"] {
+            flex: 1; height: 4px; -webkit-appearance: none; appearance: none;
+            background: var(--border); border-radius: 10px; outline: none;
+        }
+        .volume-row input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none; width: 12px; height: 12px; background: var(--gold); border-radius: 50%; cursor: pointer;
+        }
+        .volume-row .vol-label { font-size: 0.7rem; font-weight: 700; color: var(--text-secondary); min-width: 32px; text-align: center; }
+
+        /* Playlist */
+        .playlist-card {
+            background: var(--glass); backdrop-filter: blur(16px); border-radius: var(--radius);
+            border: 1px solid var(--border); box-shadow: var(--shadow);
+            display: flex; flex-direction: column; max-height: 620px; overflow: hidden;
+        }
+        .playlist-card .head {
+            padding: 12px 16px; border-bottom: 1px solid var(--border);
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        .playlist-card .head h3 { font-size: 0.95rem; font-weight: 700; }
+        .playlist-card .head .count {
+            background: var(--gold); color: #0b0e12; padding: 2px 10px; border-radius: 20px; font-weight: 700; font-size: 0.72rem;
+        }
+        .playlist-scroll { overflow-y: auto; padding: 6px 8px; flex: 1; }
+        .playlist-scroll::-webkit-scrollbar { width: 4px; }
+        .playlist-scroll::-webkit-scrollbar-thumb { background: var(--border); border-radius: 10px; }
+
+        .playlist-item {
+            display: flex; align-items: center; gap: 10px; padding: 8px 10px; border-radius: 10px;
+            cursor: pointer; transition: var(--transition); margin-bottom: 2px; border: 1px solid transparent;
+        }
+        .playlist-item:hover { background: var(--bg-card-hover); }
+        .playlist-item.active {
+            background: rgba(212,175,55,0.08); border-color: var(--gold);
+        }
+        .playlist-item.active .pl-title { color: var(--gold); font-weight: 700; }
+        .playlist-item .pl-num { font-weight: 700; color: var(--text-secondary); font-size: 0.78rem; min-width: 24px; text-align: center; }
+        .playlist-item .pl-img { width: 38px; height: 38px; border-radius: 8px; object-fit: cover; flex-shrink: 0; }
+        .playlist-item .pl-info { flex: 1; min-width: 0; }
+        .playlist-item .pl-title {
+            font-size: 0.85rem; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+        }
+        .playlist-item .pl-artist { font-size: 0.7rem; color: var(--text-secondary); }
+        .playlist-item .pl-dur { font-size: 0.7rem; color: var(--text-secondary); font-weight: 600; }
+
+        /* Mini player */
+        .mini-player {
+            position: fixed; bottom: 12px; left: 12px; right: 12px;
+            background: var(--glass); backdrop-filter: blur(24px); border-radius: var(--radius);
+            border: 1px solid var(--border); box-shadow: var(--shadow);
+            padding: 8px 12px; display: none; align-items: center; gap: 10px; z-index: 900;
+        }
+        .mini-player.visible { display: flex; }
+        .mini-player .mini-img { width: 42px; height: 42px; border-radius: 8px; object-fit: cover; }
+        .mini-player .mini-info { flex: 1; min-width: 0; }
+        .mini-player .mini-title { font-size: 0.8rem; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .mini-player .mini-artist { font-size: 0.65rem; color: var(--text-secondary); }
+        .mini-player .mini-controls { display: flex; gap: 4px; }
+        .mini-player .mini-controls button {
+            width: 32px; height: 32px; border-radius: 50%; border: 1px solid var(--border);
+            background: var(--bg-card); color: var(--text-primary); cursor: pointer;
+            display: flex; align-items: center; justify-content: center; font-size: 12px;
+        }
+        .mini-player .mini-controls .play {
+            background: linear-gradient(135deg, var(--gold), var(--gold-dark)); color: #0b0e12; border: none; width: 36px; height: 36px;
+        }
+        .mini-player .mini-progress {
+            position: absolute; top: 0; left: 0; right: 0; height: 3px; background: var(--border);
+        }
+        .mini-player .mini-progress .bar {
+            height: 100%; background: linear-gradient(90deg, var(--gold), var(--gold-dark)); width: 0%;
+        }
+
+        /* Toast */
+        .toast-container {
+            position: fixed; top: 16px; left: 50%; transform: translateX(-50%); z-index: 5000; pointer-events: none;
+        }
+        .toast {
+            background: var(--bg-card); border: 1px solid var(--border); padding: 10px 20px; border-radius: 12px;
+            box-shadow: var(--shadow); display: flex; align-items: center; gap: 8px;
+            opacity: 0; transform: translateY(-16px); transition: all 0.35s ease;
+            font-weight: 600; font-size: 0.85rem;
+        }
+        .toast.show { opacity: 1; transform: translateY(0); }
+
+        @media (max-width: 600px) {
+            .app { padding: 10px 12px 100px; }
+            .sections-grid { grid-template-columns: 1fr; }
+            .section-card .card-img { height: 140px; }
+            .album-wrap { width: 140px; height: 140px; }
+            .controls .primary { width: 54px; height: 54px; font-size: 22px; }
+            .controls .secondary { width: 36px; height: 36px; font-size: 14px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="toast-container" id="toastContainer"></div>
+    <div class="bg-layer"></div>
+
+    <div class="app">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-brand">
+                <div class="logo"><i class="fas fa-quran"></i></div>
+                <div>
+                    <div class="name">القرآن الكريم</div>
+                    <div class="sub">اختر التلاوة</div>
+                </div>
+            </div>
+            <div class="header-actions">
+                <button id="themeToggle" title="تبديل السمة"><i class="fas fa-moon"></i></button>
+            </div>
+        </header>
+
+        <!-- ========== شاشة الأقسام الكبيرة ========== -->
+        <div class="sections-view" id="sectionsView">
+            <div class="sections-title">
+                <h1>اختر المصحف أو الجزء</h1>
+                <p>اضغط على أي قسم لفتح قائمة السور والتشغيل</p>
+            </div>
+            <div class="sections-grid">
+                <!-- المنشاوي -->
+                <div class="section-card" data-section="minshawi">
+                    <span class="card-badge">114 سورة</span>
+                    <img class="card-img" src="https://telegra.ph/file/910f99e7342f4f58450a1.jpg" alt="المنشاوي">
+                    <div class="card-body">
+                        <h2>القرآن الكريم · المنشاوي</h2>
+                        <p>المصحف المرتل بصوت الشيخ محمد صديق المنشاوي</p>
+                        <div class="card-meta">
+                            <span><i class="fas fa-microphone"></i> محمد صديق المنشاوي</span>
+                            <span><i class="fas fa-list"></i> 114</span>
+                        </div>
+                    </div>
+                </div>
+                <!-- البنا -->
+                <div class="section-card" data-section="banna">
+                    <span class="card-badge">114 سورة</span>
+                    <img class="card-img" src="https://telegra.ph/file/910f99e7342f4f58450a1.jpg" alt="البنا">
+                    <div class="card-body">
+                        <h2>القرآن الكريم · محمود علي البنا</h2>
+                        <p>المصحف المرتل بصوت الشيخ محمود علي البنا</p>
+                        <div class="card-meta">
+                            <span><i class="fas fa-microphone"></i> محمود علي البنا</span>
+                            <span><i class="fas fa-list"></i> 114</span>
+                        </div>
+                    </div>
+                </div>
+                <!-- المصحف المعلم المنشاوي -->
+                <div class="section-card" data-section="teacher">
+                    <span class="card-badge">114 سورة</span>
+                    <img class="card-img" src="https://s5files.mobeasy.com/static/u/722316/file-722316-492535.jpg" alt="المصحف المعلم">
+                    <div class="card-body">
+                        <h2>المصحف المعلم · المنشاوي</h2>
+                        <p>المصحف المعلم (تعليم وترديد) بصوت المنشاوي</p>
+                        <div class="card-meta">
+                            <span><i class="fas fa-chalkboard-teacher"></i> المصحف المعلم</span>
+                            <span><i class="fas fa-list"></i> 114</span>
+                        </div>
+                    </div>
+                </div>
+                <!-- جزء قد سمع -->
+                <div class="section-card" data-section="qadsami">
+                    <span class="card-badge">9 سور</span>
+                    <img class="card-img" src="https://www.aicpmadih.de/wp-content/uploads/2019/12/q03-1-670x263.jpg" alt="جزء قد سمع">
+                    <div class="card-body">
+                        <h2>جزء قد سمع</h2>
+                        <p>سور جزء قد سمع من المجادلة إلى التحريم</p>
+                        <div class="card-meta">
+                            <span><i class="fas fa-book"></i> جزء قد سمع</span>
+                            <span><i class="fas fa-list"></i> 9</span>
+                        </div>
+                    </div>
+                </div>
+                <!-- جزء تبارك -->
+                <div class="section-card" data-section="tabarak">
+                    <span class="card-badge">11 سورة</span>
+                    <img class="card-img" src="https://s5files.mobeasy.com/static/u/722316/file-722316-627212.jpg" alt="جزء تبارك">
+                    <div class="card-body">
+                        <h2>جزء تبارك</h2>
+                        <p>الجزء 29: الملك حتى المرسلات</p>
+                        <div class="card-meta">
+                            <span><i class="fas fa-book"></i> جزء تبارك</span>
+                            <span><i class="fas fa-list"></i> 11</span>
+                        </div>
+                    </div>
+                </div>
+                <!-- جزء عم -->
+                <div class="section-card" data-section="amma">
+                    <span class="card-badge">37 سورة</span>
+                    <img class="card-img" src="https://s5files.mobeasy.com/static/u/722316/file-722316-419435.jpg" alt="جزء عم">
+                    <div class="card-body">
+                        <h2>جزء عم</h2>
+                        <p>الجزء 30 · القارئ محمد معروف — من النبأ إلى الناس</p>
+                        <div class="card-meta">
+                            <span><i class="fas fa-microphone"></i> محمد معروف</span>
+                            <span><i class="fas fa-list"></i> 37</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ========== شاشة المشغل ========== -->
+        <div class="player-view" id="playerView">
+            <button class="back-btn" id="backBtn"><i class="fas fa-arrow-right"></i> العودة للأقسام</button>
+
+            <div class="banner">
+                <img class="banner-img" id="bannerImg" src="" alt="">
+                <div class="banner-info">
+                    <h1 id="bannerTitle">—</h1>
+                    <div class="desc" id="bannerDesc">—</div>
+                    <div class="meta">
+                        <span id="bannerMeta"><i class="fas fa-list"></i> —</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="search-bar">
+                <div class="search-wrap">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="searchInput" placeholder="ابحث عن سورة (اسم أو رقم)...">
+                </div>
+            </div>
+
+            <div class="main-grid">
+                <div class="player-card">
+                    <div class="album-wrap">
+                        <div class="album-glow" id="albumGlow"></div>
+                        <img id="albumArt" src="" alt="">
+                    </div>
+                    <div class="track-info">
+                        <div class="title" id="trackTitle">—</div>
+                        <div class="artist" id="trackArtist">—</div>
+                        <div class="badge" id="trackBadge">—</div>
+                    </div>
+                    <div class="progress-section">
+                        <div class="progress-track" id="progressTrack">
+                            <div class="buffer" id="bufferBar"></div>
+                            <div class="bar" id="progressBar"></div>
+                            <div class="thumb" id="progressThumb"></div>
+                        </div>
+                        <div class="time-row">
+                            <span id="currentTime">00:00</span>
+                            <span id="durationLabel">00:00</span>
+                        </div>
+                    </div>
+                    <div class="controls">
+                        <button class="secondary" id="shuffleBtn" title="عشوائي"><i class="fas fa-shuffle"></i></button>
+                        <button class="secondary" id="prevBtn"><i class="fas fa-backward-step"></i></button>
+                        <button class="primary" id="playBtn"><i class="fas fa-play"></i></button>
+                        <button class="secondary" id="nextBtn"><i class="fas fa-forward-step"></i></button>
+                        <button class="secondary" id="repeatBtn"><i class="fas fa-repeat"></i></button>
+                    </div>
+                    <div class="extras">
+                        <button id="backwardBtn"><i class="fas fa-rotate-left"></i> 10ث</button>
+                        <button id="forwardBtn"><i class="fas fa-rotate-right"></i> 10ث</button>
+                        <button id="downloadBtn"><i class="fas fa-download"></i> تحميل</button>
+                        <button id="shareBtn"><i class="fas fa-share-nodes"></i> مشاركة</button>
+                        <button id="likeBtn"><i class="far fa-heart"></i> إعجاب</button>
+                    </div>
+                    <div class="volume-row">
+                        <button id="muteBtn"><i class="fas fa-volume-high"></i></button>
+                        <input type="range" id="volumeSlider" min="0" max="100" value="80">
+                        <span class="vol-label" id="volLabel">80%</span>
+                    </div>
+                </div>
+
+                <div class="playlist-card">
+                    <div class="head">
+                        <h3><i class="fas fa-list" style="color:var(--gold);margin-left:6px;"></i>السور</h3>
+                        <span class="count" id="playlistCount">0</span>
+                    </div>
+                    <div class="playlist-scroll" id="playlistBody"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mini Player -->
+    <div class="mini-player" id="miniPlayer">
+        <div class="mini-progress"><div class="bar" id="miniProgressBar"></div></div>
+        <img class="mini-img" id="miniImg" src="" alt="">
+        <div class="mini-info">
+            <div class="mini-title" id="miniTitle">—</div>
+            <div class="mini-artist" id="miniArtist">—</div>
+        </div>
+        <div class="mini-controls">
+            <button id="miniPrev"><i class="fas fa-backward-step"></i></button>
+            <button class="play" id="miniPlay"><i class="fas fa-play"></i></button>
+            <button id="miniNext"><i class="fas fa-forward-step"></i></button>
+            <button id="miniClose"><i class="fas fa-times"></i></button>
+        </div>
+    </div>
+
+    <audio id="audioPlayer" preload="auto"></audio>
+
+    <script>
+        // ========== البيانات ==========
+        const COVER = "https://telegra.ph/file/910f99e7342f4f58450a1.jpg";
+        const COVER_QADSAMI = "https://www.aicpmadih.de/wp-content/uploads/2019/12/q03-1-670x263.jpg";
+
+        const SURAH_NAMES = [
+            "الفاتحة","البقرة","آل عمران","النساء","المائدة","الأنعام","الأعراف","الأنفال","التوبة","يونس",
+            "هود","يوسف","الرعد","إبراهيم","الحجر","النحل","الإسراء","الكهف","مريم","طه",
+            "الأنبياء","الحج","المؤمنون","النور","الفرقان","الشعراء","النمل","القصص","العنكبوت","الروم",
+            "لقمان","السجدة","الأحزاب","سبأ","فاطر","يس","الصافات","ص","الزمر","غافر",
+            "فصلت","الشورى","الزخرف","الدخان","الجاثية","الأحقاف","محمد","الفتح","الحجرات","ق",
+            "الذاريات","الطور","النجم","القمر","الرحمن","الواقعة","الحديد","المجادلة","الحشر","الممتحنة",
+            "الصف","الجمعة","المنافقون","التغابن","الطلاق","التحريم","الملك","القلم","الحاقة","المعارج",
+            "نوح","الجن","المزمل","المدثر","القيامة","الإنسان","المرسلات","النبأ","النازعات","عبس",
+            "التكوير","الانفطار","المطففين","الانشقاق","البروج","الطارق","الأعلى","الغاشية","الفجر","البلد",
+            "الشمس","الليل","الضحى","الشرح","التين","العلق","القدر","البينة","الزلزلة","العاديات",
+            "القارعة","التكاثر","العصر","الهمزة","الفيل","قريش","الماعون","الكوثر","الكافرون","النصر",
+            "المسد","الإخلاص","الفلق","الناس"
+        ];
+
+        // المنشاوي
+        const minshawiSongs = SURAH_NAMES.map((name, i) => {
+            const num = String(i + 1).padStart(3, '0');
+            return {
+                name: "سورة " + name,
+                iurl: COVER,
+                surl: `https://download.quran.islamway.net/quran3/1032/10587/128/${num}.mp3`,
+                art: "محمد صديق المنشاوي"
+            };
+        });
+
+        // محمود علي البنا
+        const bannaSongs = SURAH_NAMES.map((name, i) => {
+            const num = String(i + 1).padStart(3, '0');
+            return {
+                name: "سورة " + name,
+                iurl: COVER,
+                surl: `https://quran.islamway.net/quran3/145/${num}.mp3`,
+                art: "محمود علي البنا"
+            };
+        });
+
+        // المصحف المعلم المنشاوي (Archive.org)
+        const COVER_TEACHER = "https://s5files.mobeasy.com/static/u/722316/file-722316-492535.jpg";
+        const teacherSongs = SURAH_NAMES.map((name, i) => {
+            const num = String(i + 1).padStart(3, '0');
+            return {
+                name: "سورة " + name,
+                iurl: COVER_TEACHER,
+                surl: `https://archive.org/download/Quran_Teacher_Menshawe/Quran_Teacher_Menshawe_${num}.mp3`,
+                art: "المصحف المعلم · المنشاوي"
+            };
+        });
+
+        // جزء قد سمع
+        const qadsamiSongs = [
+            { name: "سورة المجادلة", iurl: COVER_QADSAMI, surl: "https://www.aicpmadih.de/Multimedia/quran/Jouz_Qad_Sami3/058.mp3", art: "جزء قد سمع" },
+            { name: "سورة الحشر", iurl: COVER_QADSAMI, surl: "https://www.aicpmadih.de/Multimedia/quran/Jouz_Qad_Sami3/059.mp3", art: "جزء قد سمع" },
+            { name: "سورة الممتحنة", iurl: COVER_QADSAMI, surl: "https://www.aicpmadih.de/Multimedia/quran/Jouz_Qad_Sami3/060.mp3", art: "جزء قد سمع" },
+            { name: "سورة الصف", iurl: COVER_QADSAMI, surl: "https://www.aicpmadih.de/Multimedia/quran/Jouz_Qad_Sami3/061.mp3", art: "جزء قد سمع" },
+            { name: "سورة الجمعة", iurl: COVER_QADSAMI, surl: "https://www.aicpmadih.de/Multimedia/quran/Jouz_Qad_Sami3/062.mp3", art: "جزء قد سمع" },
+            { name: "سورة المنافقون", iurl: COVER_QADSAMI, surl: "https://www.aicpmadih.de/Multimedia/quran/Jouz_Qad_Sami3/063.mp3", art: "جزء قد سمع" },
+            { name: "سورة التغابن", iurl: COVER_QADSAMI, surl: "https://www.aicpmadih.de/Multimedia/quran/Jouz_Qad_Sami3/064.mp3", art: "جزء قد سمع" },
+            { name: "سورة الطلاق", iurl: COVER_QADSAMI, surl: "https://www.aicpmadih.de/Multimedia/quran/Jouz_Qad_Sami3/065.mp3", art: "جزء قد سمع" },
+            { name: "سورة التحريم", iurl: COVER_QADSAMI, surl: "https://www.aicpmadih.de/Multimedia/quran/Jouz_Qad_Sami3/066.mp3", art: "جزء قد سمع" }
+        ];
+
+        // جزء تبارك
+        const COVER_TABARAK = "https://s5files.mobeasy.com/static/u/722316/file-722316-627212.jpg";
+        const tabarakSongs = [
+            { name: "سورة الملك", iurl: COVER_TABARAK, surl: "https://www.aicpmadih.de/Multimedia/quran/Jouz_Tabarak/1.mp3", art: "جزء تبارك" },
+            { name: "سورة القلم", iurl: COVER_TABARAK, surl: "https://www.aicpmadih.de/Multimedia/quran/Jouz_Tabarak/2.mp3", art: "جزء تبارك" },
+            { name: "سورة الحاقة", iurl: COVER_TABARAK, surl: "https://www.aicpmadih.de/Multimedia/quran/Jouz_Tabarak/3.mp3", art: "جزء تبارك" },
+            { name: "سورة المعارج", iurl: COVER_TABARAK, surl: "https://www.aicpmadih.de/Multimedia/quran/Jouz_Tabarak/4.mp3", art: "جزء تبارك" },
+            { name: "سورة نوح", iurl: COVER_TABARAK, surl: "https://www.aicpmadih.de/Multimedia/quran/Jouz_Tabarak/5.mp3", art: "جزء تبارك" },
+            { name: "سورة الجن", iurl: COVER_TABARAK, surl: "https://www.aicpmadih.de/Multimedia/quran/Jouz_Tabarak/6.mp3", art: "جزء تبارك" },
+            { name: "سورة المزمل", iurl: COVER_TABARAK, surl: "https://www.aicpmadih.de/Multimedia/quran/Jouz_Tabarak/7.mp3", art: "جزء تبارك" },
+            { name: "سورة المدثر", iurl: COVER_TABARAK, surl: "https://www.aicpmadih.de/Multimedia/quran/Jouz_Tabarak/8.mp3", art: "جزء تبارك" },
+            { name: "سورة القيامة", iurl: COVER_TABARAK, surl: "https://www.aicpmadih.de/Multimedia/quran/Jouz_Tabarak/9.mp3", art: "جزء تبارك" },
+            { name: "سورة الإنسان", iurl: COVER_TABARAK, surl: "https://www.aicpmadih.de/Multimedia/quran/Jouz_Tabarak/10.mp3", art: "جزء تبارك" },
+            { name: "سورة المرسلات", iurl: COVER_TABARAK, surl: "https://www.aicpmadih.de/Multimedia/quran/Jouz_Tabarak/11.mp3", art: "جزء تبارك" }
+        ];
+
+        // جزء عم - محمد معروف
+        const COVER_AMMA = "https://s5files.mobeasy.com/static/u/722316/file-722316-419435.jpg";
+        const ammaSongs = [
+            { name: "سورة النبأ", iurl: COVER_AMMA, surl: "https://www.aicpmadih.de/Multimedia/quran/Jouz_Amma_tajweed/01.mp3", art: "محمد معروف" },
+            { name: "سورة النازعات", iurl: COVER_AMMA, surl: "https://www.aicpmadih.de/Multimedia/quran/Jouz_Amma_tajweed/02.mp3", art: "محمد معروف" },
+            { name: "سورة عبس", iurl: COVER_AMMA, surl: "https://www.aicpmadih.de/Multimedia/quran/Jouz_Amma_tajweed/03.mp3", art: "محمد معروف" },
+            { name: "سورة التكوير", iurl: COVER_AMMA, surl: "https://www.aicpmadih.de/Multimedia/quran/Jouz_Amma_tajweed/04.mp3", art: "محمد معروف" },
+            { name: "سورة الانفطار", iurl: COVER_AMMA, surl: "https://www.aicpmadih.de/Multimedia/quran/Jouz_Amma_tajweed/05.mp3", art: "محمد معروف" },
+            { name: "سورة المطففين", iurl: COVER_AMMA, surl: "https://www.aicpmadih.de/Multimedia/quran/Jouz_Amma_tajweed/06.mp3", art: "محمد معروف" },
+            { name: "سورة الانشقاق", iurl: COVER_AMMA, surl: "https://www.aicpmadih.de/Multimedia/quran/Jouz_Amma_tajweed/07.mp3", art: "محمد معروف" },
+            { name: "سورة البروج", iurl: COVER_AMMA, surl: "https://www.aicpmadih.de/Multimedia/quran/Jouz_Amma_tajweed/08.mp3", art: "محمد معروف" },
+            { name: "سورة الطارق", iurl: COVER_AMMA, surl: "https://www.aicpmadih.de/Multimedia/quran/Jouz_Amma_tajweed/09.mp3", art: "محمد معروف" },
+            { name: "سورة الأعلى", iurl: COVER_AMMA, surl: "https://www.aicpmadih.de/Multimedia/quran/Jouz_Amma_tajweed/10.mp3", art: "محمد معروف" },
+            { name: "سورة الغاشية", iurl: COVER_AMMA, surl: "https://www.aicpmadih.de/Multimedia/quran/Jouz_Amma_tajweed/11.mp3", art: "محمد معروف" },
+            { name: "سورة الفجر", iurl: COVER_AMMA, surl: "https://www.aicpmadih.de/Multimedia/quran/Jouz_Amma_tajweed/12.mp3", art: "محمد معروف" },
+            { name: "سورة البلد", iurl: COVER_AMMA, surl: "https://www.aicpmadih.de/Multimedia/quran/Jouz_Amma_tajweed/13.mp3", art: "محمد معروف" },
+            { name: "سورة الشمس", iurl: COVER_AMMA, surl: "https://www.aicpmadih.de/Multimedia/quran/Jouz_Amma_tajweed/14.mp3", art: "محمد معروف" },
+            { name: "سورة الليل", iurl: COVER_AMMA, surl: "https://www.aicpmadih.de/Multimedia/quran/Jouz_Amma_tajweed/15.mp3", art: "محمد معروف" },
+            { name: "سورة الضحى", iurl: COVER_AMMA, surl: "https://www.aicpmadih.de/Multimedia/quran/Jouz_Amma_tajweed/16.mp3", art: "محمد معروف" },
+            { name: "سورة الشرح", iurl: COVER_AMMA, surl: "https://www.aicpmadih.de/Multimedia/quran/Jouz_Amma_tajweed/17.mp3", art: "محمد معروف" },
+            { name: "سورة التين", iurl: COVER_AMMA, surl: "https://www.aicpmadih.de/Multimedia/quran/Jouz_Amma_tajweed/18.mp3", art: "محمد معروف" },
+            { name: "سورة العلق", iurl: COVER_AMMA, surl: "https://www.aicpmadih.de/Multimedia/quran/Jouz_Amma_tajweed/19.mp3", art: "محمد معروف" },
+            { name: "سورة القدر", iurl: COVER_AMMA, surl: "https://www.aicpmadih.de/Multimedia/quran/Jouz_Amma_tajweed/20.mp3", art: "محمد معروف" },
+            { name: "سورة البينة", iurl: COVER_AMMA, surl: "https://www.aicpmadih.de/Multimedia/quran/Jouz_Amma_tajweed/21.mp3", art: "محمد معروف" },
+            { name: "سورة الزلزلة", iurl: COVER_AMMA, surl: "https://www.aicpmadih.de/Multimedia/quran/Jouz_Amma_tajweed/22.mp3", art: "محمد معروف" },
+            { name: "سورة العاديات", iurl: COVER_AMMA, surl: "https://www.aicpmadih.de/Multimedia/quran/Jouz_Amma_tajweed/23.mp3", art: "محمد معروف" },
+            { name: "سورة القارعة", iurl: COVER_AMMA, surl: "https://www.aicpmadih.de/Multimedia/quran/Jouz_Amma_tajweed/24.mp3", art: "محمد معروف" },
+            { name: "سورة التكاثر", iurl: COVER_AMMA, surl: "https://www.aicpmadih.de/Multimedia/quran/Jouz_Amma_tajweed/25.mp3", art: "محمد معروف" },
+            { name: "سورة العصر", iurl: COVER_AMMA, surl: "https://www.aicpmadih.de/Multimedia/quran/Jouz_Amma_tajweed/26.mp3", art: "محمد معروف" },
+            { name: "سورة الهمزة", iurl: COVER_AMMA, surl: "https://www.aicpmadih.de/Multimedia/quran/Jouz_Amma_tajweed/27.mp3", art: "محمد معروف" },
+            { name: "سورة الفيل", iurl: COVER_AMMA, surl: "https://www.aicpmadih.de/Multimedia/quran/Jouz_Amma_tajweed/28.mp3", art: "محمد معروف" },
+            { name: "سورة قريش", iurl: COVER_AMMA, surl: "https://www.aicpmadih.de/Multimedia/quran/Jouz_Amma_tajweed/29.mp3", art: "محمد معروف" },
+            { name: "سورة الماعون", iurl: COVER_AMMA, surl: "https://www.aicpmadih.de/Multimedia/quran/Jouz_Amma_tajweed/30.mp3", art: "محمد معروف" },
+            { name: "سورة الكوثر", iurl: COVER_AMMA, surl: "https://www.aicpmadih.de/Multimedia/quran/Jouz_Amma_tajweed/31.mp3", art: "محمد معروف" },
+            { name: "سورة الكافرون", iurl: COVER_AMMA, surl: "https://www.aicpmadih.de/Multimedia/quran/Jouz_Amma_tajweed/32.mp3", art: "محمد معروف" },
+            { name: "سورة النصر", iurl: COVER_AMMA, surl: "https://www.aicpmadih.de/Multimedia/quran/Jouz_Amma_tajweed/33.mp3", art: "محمد معروف" },
+            { name: "سورة المسد", iurl: COVER_AMMA, surl: "https://www.aicpmadih.de/Multimedia/quran/Jouz_Amma_tajweed/34.mp3", art: "محمد معروف" },
+            { name: "سورة الإخلاص", iurl: COVER_AMMA, surl: "https://www.aicpmadih.de/Multimedia/quran/Jouz_Amma_tajweed/35.mp3", art: "محمد معروف" },
+            { name: "سورة الفلق", iurl: COVER_AMMA, surl: "https://www.aicpmadih.de/Multimedia/quran/Jouz_Amma_tajweed/36.mp3", art: "محمد معروف" },
+            { name: "سورة الناس", iurl: COVER_AMMA, surl: "https://www.aicpmadih.de/Multimedia/quran/Jouz_Amma_tajweed/37.mp3", art: "محمد معروف" }
+        ];
+
+        const SECTIONS = {
+            minshawi: {
+                id: 'minshawi',
+                title: 'القرآن الكريم · المنشاوي',
+                desc: 'المصحف المرتل بصوت الشيخ محمد صديق المنشاوي',
+                cover: COVER,
+                count: 114,
+                songs: minshawiSongs
+            },
+            banna: {
+                id: 'banna',
+                title: 'القرآن الكريم · محمود علي البنا',
+                desc: 'المصحف المرتل بصوت الشيخ محمود علي البنا',
+                cover: COVER,
+                count: 114,
+                songs: bannaSongs
+            },
+            teacher: {
+                id: 'teacher',
+                title: 'المصحف المعلم · المنشاوي',
+                desc: 'المصحف المعلم (تعليم وترديد) بصوت المنشاوي — 114 سورة',
+                cover: COVER_TEACHER,
+                count: 114,
+                songs: teacherSongs
+            },
+            qadsami: {
+                id: 'qadsami',
+                title: 'جزء قد سمع',
+                desc: 'سور جزء قد سمع (المجادلة إلى التحريم)',
+                cover: COVER_QADSAMI,
+                count: 9,
+                songs: qadsamiSongs
+            },
+            tabarak: {
+                id: 'tabarak',
+                title: 'جزء تبارك',
+                desc: 'الجزء التاسع والعشرون: الملك حتى المرسلات',
+                cover: COVER_TABARAK,
+                count: 11,
+                songs: tabarakSongs
+            },
+            amma: {
+                id: 'amma',
+                title: 'جزء عم',
+                desc: 'الجزء الثلاثون · القارئ محمد معروف — من النبأ إلى الناس',
+                cover: COVER_AMMA,
+                count: 37,
+                songs: ammaSongs
+            }
+        };
+
+        // ========== الحالة ==========
+        let currentSection = null;
+        let songs = [];
+        let currentIndex = 0;
+        let isPlaying = false;
+        let isShuffle = false;
+        let repeatMode = 0;
+        let isDragging = false;
+        let lastVolume = 0.8;
+        let likedSet = new Set();
+
+        // ========== العناصر ==========
+        const audio = document.getElementById('audioPlayer');
+        const sectionsView = document.getElementById('sectionsView');
+        const playerView = document.getElementById('playerView');
+        const backBtn = document.getElementById('backBtn');
+        const playBtn = document.getElementById('playBtn');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const shuffleBtn = document.getElementById('shuffleBtn');
+        const repeatBtn = document.getElementById('repeatBtn');
+        const progressBar = document.getElementById('progressBar');
+        const bufferBar = document.getElementById('bufferBar');
+        const progressThumb = document.getElementById('progressThumb');
+        const progressTrack = document.getElementById('progressTrack');
+        const currentTimeEl = document.getElementById('currentTime');
+        const durationLabel = document.getElementById('durationLabel');
+        const albumArt = document.getElementById('albumArt');
+        const albumGlow = document.getElementById('albumGlow');
+        const trackTitle = document.getElementById('trackTitle');
+        const trackArtist = document.getElementById('trackArtist');
+        const trackBadge = document.getElementById('trackBadge');
+        const volumeSlider = document.getElementById('volumeSlider');
+        const volLabel = document.getElementById('volLabel');
+        const muteBtn = document.getElementById('muteBtn');
+        const playlistBody = document.getElementById('playlistBody');
+        const searchInput = document.getElementById('searchInput');
+        const themeToggle = document.getElementById('themeToggle');
+        const miniPlayer = document.getElementById('miniPlayer');
+        const miniImg = document.getElementById('miniImg');
+        const miniTitle = document.getElementById('miniTitle');
+        const miniArtist = document.getElementById('miniArtist');
+        const miniPlay = document.getElementById('miniPlay');
+        const miniPrev = document.getElementById('miniPrev');
+        const miniNext = document.getElementById('miniNext');
+        const miniClose = document.getElementById('miniClose');
+        const miniProgressBar = document.getElementById('miniProgressBar');
+        const toastContainer = document.getElementById('toastContainer');
+
+        // ========== أدوات ==========
+        function formatTime(sec) {
+            if (isNaN(sec) || !isFinite(sec)) return '00:00';
+            const m = Math.floor(sec / 60);
+            const s = Math.floor(sec % 60);
+            return m.toString().padStart(2, '0') + ':' + s.toString().padStart(2, '0');
+        }
+        function showToast(msg, icon = 'fa-check') {
+            const el = document.createElement('div');
+            el.className = 'toast';
+            el.innerHTML = `<i class="fas ${icon}" style="color:var(--gold)"></i><span>${msg}</span>`;
+            toastContainer.appendChild(el);
+            requestAnimationFrame(() => el.classList.add('show'));
+            setTimeout(() => { el.classList.remove('show'); setTimeout(() => el.remove(), 300); }, 2500);
+        }
+        function vibrate(ms = 35) { if (navigator.vibrate) navigator.vibrate(ms); }
+
+        // ========== فتح قسم ==========
+        function openSection(id) {
+            if (!SECTIONS[id]) return;
+            currentSection = id;
+            songs = SECTIONS[id].songs;
+            currentIndex = 0;
+
+            const sec = SECTIONS[id];
+            document.getElementById('bannerImg').src = sec.cover;
+            document.getElementById('bannerTitle').textContent = sec.title;
+            document.getElementById('bannerDesc').textContent = sec.desc;
+            document.getElementById('bannerMeta').innerHTML = `<i class="fas fa-list"></i> ${sec.count} سورة`;
+
+            sectionsView.classList.add('hidden');
+            playerView.classList.add('active');
+            searchInput.value = '';
+            loadTrack(0, false);
+            renderPlaylist();
+            showToast(sec.title, 'fa-book-quran');
+        }
+
+        function backToSections() {
+            if (isPlaying) audio.pause();
+            playerView.classList.remove('active');
+            sectionsView.classList.remove('hidden');
+            miniPlayer.classList.remove('visible');
+        }
+
+        document.querySelectorAll('.section-card').forEach(card => {
+            card.addEventListener('click', () => openSection(card.dataset.section));
+        });
+        backBtn.addEventListener('click', backToSections);
+
+        // ========== تحميل مقطع ==========
+        function loadTrack(index, autoplay = false) {
+            if (index < 0) index = songs.length - 1;
+            if (index >= songs.length) index = 0;
+            currentIndex = index;
+            const song = songs[index];
+            audio.src = song.surl;
+            audio.load();
+
+            albumArt.src = song.iurl;
+            miniImg.src = song.iurl;
+            trackTitle.textContent = song.name;
+            trackArtist.textContent = song.art;
+            trackBadge.textContent = `${index + 1} / ${songs.length}`;
+            miniTitle.textContent = song.name;
+            miniArtist.textContent = song.art;
+
+            document.querySelectorAll('.playlist-item').forEach(el => {
+                el.classList.toggle('active', parseInt(el.dataset.index) === index);
+            });
+            updateLikeButton();
+            updateMediaSession();
+
+            if (autoplay) setTimeout(() => audio.play().catch(() => {}), 100);
+        }
+
+        // ========== تشغيل ==========
+        function togglePlay() {
+            vibrate();
+            if (isPlaying) audio.pause();
+            else {
+                if (!audio.src) { loadTrack(currentIndex, true); return; }
+                audio.play().catch(() => loadTrack(currentIndex, true));
+            }
+        }
+        function updatePlayUI(playing) {
+            isPlaying = playing;
+            const icon = playing ? 'fa-pause' : 'fa-play';
+            playBtn.innerHTML = `<i class="fas ${icon}"></i>`;
+            miniPlay.innerHTML = `<i class="fas ${icon}"></i>`;
+            albumArt.classList.toggle('spinning', playing);
+            albumGlow.classList.toggle('active', playing);
+            if (playing) miniPlayer.classList.add('visible');
+        }
+        audio.addEventListener('play', () => updatePlayUI(true));
+        audio.addEventListener('pause', () => updatePlayUI(false));
+        audio.addEventListener('ended', () => {
+            if (repeatMode === 2) { audio.currentTime = 0; audio.play().catch(() => {}); return; }
+            if (isShuffle) playNext();
+            else if (currentIndex + 1 < songs.length) playNext();
+            else if (repeatMode === 1) loadTrack(0, true);
+            else updatePlayUI(false);
+        });
+        audio.addEventListener('loadedmetadata', () => {
+            if (audio.duration) {
+                durationLabel.textContent = formatTime(audio.duration);
+                songs[currentIndex].dur = formatTime(audio.duration);
+                renderPlaylist(searchInput.value);
+            }
+        });
+
+        function playNext() {
+            let idx = isShuffle
+                ? (() => { let i; do { i = Math.floor(Math.random() * songs.length); } while (i === currentIndex && songs.length > 1); return i; })()
+                : (currentIndex + 1) % songs.length;
+            loadTrack(idx, true);
+        }
+        function playPrev() {
+            loadTrack(currentIndex - 1 < 0 ? songs.length - 1 : currentIndex - 1, true);
+        }
+
+        // ========== شريط التقدم ==========
+        function updateProgress() {
+            if (isDragging) return;
+            const pct = audio.duration ? (audio.currentTime / audio.duration) * 100 : 0;
+            const c = Math.min(100, Math.max(0, pct));
+            progressBar.style.width = c + '%';
+            progressThumb.style.right = c + '%';
+            miniProgressBar.style.width = c + '%';
+            currentTimeEl.textContent = formatTime(audio.currentTime);
+            durationLabel.textContent = formatTime(audio.duration);
+        }
+        audio.addEventListener('timeupdate', updateProgress);
+        audio.addEventListener('progress', () => {
+            if (audio.buffered.length && audio.duration) {
+                bufferBar.style.width = Math.min(100, (audio.buffered.end(audio.buffered.length - 1) / audio.duration) * 100) + '%';
+            }
+        });
+
+        (function setupSeek() {
+            let dragging = false;
+            function getPct(e) {
+                const rect = progressTrack.getBoundingClientRect();
+                const x = e.touches ? e.touches[0].clientX : e.clientX;
+                return Math.max(0, Math.min(100, ((rect.right - x) / rect.width) * 100));
+            }
+            function start(e) {
+                e.preventDefault(); dragging = true; isDragging = true;
+                progressThumb.classList.add('dragging');
+                const p = getPct(e);
+                progressBar.style.width = p + '%'; progressThumb.style.right = p + '%';
+                if (audio.duration) audio.currentTime = (p / 100) * audio.duration;
+            }
+            function move(e) {
+                if (!dragging) return; e.preventDefault();
+                const p = getPct(e);
+                progressBar.style.width = p + '%'; progressThumb.style.right = p + '%';
+                if (audio.duration) audio.currentTime = (p / 100) * audio.duration;
+                currentTimeEl.textContent = formatTime(audio.currentTime);
+            }
+            function end() { if (dragging) { dragging = false; isDragging = false; progressThumb.classList.remove('dragging'); } }
+            progressTrack.addEventListener('mousedown', start);
+            progressTrack.addEventListener('touchstart', start, { passive: false });
+            document.addEventListener('mousemove', move);
+            document.addEventListener('touchmove', move, { passive: false });
+            document.addEventListener('mouseup', end);
+            document.addEventListener('touchend', end);
+        })();
+
+        // ========== صوت ==========
+        function updateVolIcon(v) {
+            const i = muteBtn.querySelector('i');
+            if (audio.muted || v === 0) i.className = 'fas fa-volume-xmark';
+            else if (v < 0.4) i.className = 'fas fa-volume-low';
+            else i.className = 'fas fa-volume-high';
+        }
+        volumeSlider.addEventListener('input', function () {
+            const v = parseFloat(this.value) / 100;
+            audio.volume = v; audio.muted = false;
+            volLabel.textContent = Math.round(v * 100) + '%';
+            lastVolume = v; updateVolIcon(v);
+        });
+        muteBtn.addEventListener('click', () => {
+            vibrate();
+            if (audio.muted || audio.volume === 0) {
+                audio.muted = false; audio.volume = lastVolume || 0.8;
+                volumeSlider.value = (lastVolume || 0.8) * 100;
+                volLabel.textContent = Math.round((lastVolume || 0.8) * 100) + '%';
+                updateVolIcon(audio.volume);
+            } else {
+                lastVolume = audio.volume; audio.muted = true;
+                volumeSlider.value = 0; volLabel.textContent = '0%'; updateVolIcon(0);
+            }
+        });
+
+        // ========== تكرار / عشوائي ==========
+        function updateRepeatIcon() {
+            const icons = ['fa-repeat', 'fa-repeat', 'fa-1'];
+            repeatBtn.innerHTML = `<i class="fas ${icons[repeatMode]}"></i>`;
+            repeatBtn.classList.toggle('active', repeatMode > 0);
+        }
+        repeatBtn.addEventListener('click', () => {
+            vibrate();
+            repeatMode = (repeatMode + 1) % 3;
+            updateRepeatIcon();
+            showToast(['إلغاء التكرار', 'تكرار الكل', 'تكرار السورة'][repeatMode]);
+        });
+        shuffleBtn.addEventListener('click', () => {
+            vibrate();
+            isShuffle = !isShuffle;
+            shuffleBtn.classList.toggle('active', isShuffle);
+            showToast(isShuffle ? 'عشوائي مفعّل' : 'عشوائي ملغى');
+        });
+
+        // ========== أزرار إضافية ==========
+        document.getElementById('backwardBtn').addEventListener('click', () => {
+            vibrate(); audio.currentTime = Math.max(0, audio.currentTime - 10);
+        });
+        document.getElementById('forwardBtn').addEventListener('click', () => {
+            vibrate(); audio.currentTime = Math.min(audio.duration || Infinity, audio.currentTime + 10);
+        });
+        document.getElementById('downloadBtn').addEventListener('click', () => {
+            vibrate();
+            const s = songs[currentIndex];
+            const a = document.createElement('a'); a.href = s.surl; a.download = s.name + '.mp3'; a.target = '_blank'; a.click();
+            showToast('جاري التحميل...', 'fa-download');
+        });
+        document.getElementById('shareBtn').addEventListener('click', () => {
+            vibrate();
+            const s = songs[currentIndex];
+            const t = `📖 ${s.name}\n🎙️ ${s.art}\n🔗 ${s.surl}`;
+            if (navigator.share) navigator.share({ title: s.name, text: t, url: s.surl }).catch(() => {});
+            else navigator.clipboard?.writeText(t).then(() => showToast('تم النسخ'));
+        });
+        document.getElementById('likeBtn').addEventListener('click', () => {
+            vibrate();
+            const key = currentSection + '_' + currentIndex;
+            if (likedSet.has(key)) { likedSet.delete(key); showToast('ألغيت الإعجاب'); }
+            else { likedSet.add(key); showToast('تم الإعجاب'); }
+            updateLikeButton();
+        });
+        function updateLikeButton() {
+            const liked = likedSet.has(currentSection + '_' + currentIndex);
+            document.getElementById('likeBtn').innerHTML = liked
+                ? '<i class="fas fa-heart"></i> أعجبني' : '<i class="far fa-heart"></i> إعجاب';
+            document.getElementById('likeBtn').classList.toggle('liked', liked);
+        }
+
+        // ========== قائمة التشغيل ==========
+        function renderPlaylist(filter = '') {
+            const q = filter.trim().toLowerCase();
+            const filtered = songs.filter((s, i) => s.name.toLowerCase().includes(q) || String(i + 1).includes(q));
+            playlistBody.innerHTML = '';
+            filtered.forEach(song => {
+                const idx = songs.indexOf(song);
+                const item = document.createElement('div');
+                item.className = 'playlist-item' + (idx === currentIndex ? ' active' : '');
+                item.dataset.index = idx;
+                item.innerHTML = `
+                    <span class="pl-num">${idx + 1}</span>
+                    <img class="pl-img" src="${song.iurl}" loading="lazy" alt="">
+                    <div class="pl-info">
+                        <div class="pl-title">${song.name}</div>
+                        <div class="pl-artist">${song.art}</div>
+                    </div>
+                    <div class="pl-dur">${song.dur || '--:--'}</div>
+                `;
+                item.addEventListener('click', () => { vibrate(); loadTrack(idx, true); });
+                playlistBody.appendChild(item);
+            });
+            document.getElementById('playlistCount').textContent = filtered.length;
+        }
+        searchInput.addEventListener('input', () => renderPlaylist(searchInput.value));
+
+        // ========== Media Session ==========
+        function updateMediaSession() {
+            if (!('mediaSession' in navigator) || !songs[currentIndex]) return;
+            const s = songs[currentIndex];
+            navigator.mediaSession.metadata = new MediaMetadata({
+                title: s.name, artist: s.art, album: SECTIONS[currentSection]?.title || '',
+                artwork: [{ src: s.iurl, sizes: '512x512', type: 'image/jpeg' }]
+            });
+            navigator.mediaSession.setActionHandler('play', () => audio.play().catch(() => {}));
+            navigator.mediaSession.setActionHandler('pause', () => audio.pause());
+            navigator.mediaSession.setActionHandler('previoustrack', playPrev);
+            navigator.mediaSession.setActionHandler('nexttrack', playNext);
+        }
+
+        // ========== أحداث ==========
+        playBtn.addEventListener('click', togglePlay);
+        miniPlay.addEventListener('click', togglePlay);
+        prevBtn.addEventListener('click', () => { vibrate(); playPrev(); });
+        nextBtn.addEventListener('click', () => { vibrate(); playNext(); });
+        miniPrev.addEventListener('click', () => { vibrate(); playPrev(); });
+        miniNext.addEventListener('click', () => { vibrate(); playNext(); });
+        miniClose.addEventListener('click', () => miniPlayer.classList.remove('visible'));
+
+        themeToggle.addEventListener('click', () => {
+            vibrate();
+            const isLight = document.documentElement.getAttribute('data-theme') === 'light';
+            if (isLight) {
+                document.documentElement.removeAttribute('data-theme');
+                themeToggle.innerHTML = '<i class="fas fa-moon"></i>';
+            } else {
+                document.documentElement.setAttribute('data-theme', 'light');
+                themeToggle.innerHTML = '<i class="fas fa-sun"></i>';
+            }
+        });
+
+        document.addEventListener('keydown', e => {
+            if (e.target.tagName === 'INPUT' || !playerView.classList.contains('active')) return;
+            if (e.code === 'Space') { e.preventDefault(); togglePlay(); }
+            if (e.code === 'ArrowRight') { e.preventDefault(); playNext(); }
+            if (e.code === 'ArrowLeft') { e.preventDefault(); playPrev(); }
+        });
+
+        // ========== تهيئة ==========
+        audio.volume = 0.8;
+        updateVolIcon(0.8);
+        updateRepeatIcon();
+        console.log('✅ مشغل القرآن (المنشاوي · البنا · جزء قد سمع) جاهز');
+    </script>
+</body>
+</html>
