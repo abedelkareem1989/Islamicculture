@@ -214,6 +214,45 @@
       font-size: 14px;
     }
 
+    /* تهنئة 12 ربيع الأول */
+    .mawlid-greeting {
+      display: none;
+      margin-top: 14px;
+      padding: 14px 16px;
+      border-radius: 18px;
+      background: linear-gradient(135deg, rgba(212,175,55,0.22), rgba(255,255,255,0.10));
+      border: 1px solid rgba(240,208,128,0.55);
+      border-right: 4px solid var(--gold);
+      text-align: center;
+      position: relative;
+      z-index: 1;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.12);
+    }
+
+    .mawlid-greeting.show {
+      display: block;
+      animation: mawlidFadeIn 0.5s ease;
+    }
+
+    .mawlid-greeting .mawlid-title {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--gold-light);
+      margin-bottom: 6px;
+    }
+
+    .mawlid-greeting .mawlid-text {
+      font-size: 16px;
+      line-height: 1.8;
+      font-weight: 600;
+      color: #fff;
+    }
+
+    @keyframes mawlidFadeIn {
+      from { opacity: 0; transform: translateY(-6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
     .ayah-hadith {
       display: flex;
       flex-direction: column;
@@ -241,6 +280,26 @@
       line-height: 1.6;
       margin-top: 4px;
       font-weight: 300;
+    }
+
+    .ayah-meaning-box {
+      width: 100%;
+    }
+
+    .ayah-meaning-box .label {
+      color: var(--gold-light);
+      opacity: 1;
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0;
+    }
+
+    .ayah-meaning-box p {
+      white-space: pre-line;
+      line-height: 1.9;
+      font-size: 15px;
+      font-weight: 400;
+      text-align: right;
     }
 
     /* sections grid */
@@ -1196,55 +1255,6 @@
     @keyframes splashSpin {
       to { transform: rotate(360deg); }
     }
-
-    /* ===== شريط الرجوع داخل الأقسام ===== */
-    .page-back-bar {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      padding: 10px 16px 4px;
-      margin-bottom: 4px;
-    }
-    .page-back-btn {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      background: var(--card-bg);
-      border: 1px solid rgba(212, 175, 55, 0.35);
-      color: var(--text);
-      border-radius: 40px;
-      padding: 8px 16px;
-      font-size: 14px;
-      font-weight: 600;
-      font-family: inherit;
-      cursor: pointer;
-      box-shadow: 0 4px 14px rgba(0,0,0,0.06);
-      transition: transform 0.15s, background 0.2s;
-      backdrop-filter: blur(6px);
-      -webkit-backdrop-filter: blur(6px);
-    }
-    .page-back-btn:active {
-      transform: scale(0.96);
-      background: rgba(15, 92, 71, 0.12);
-    }
-    body.dark .page-back-btn:active {
-      background: rgba(212, 175, 55, 0.12);
-    }
-    .page-back-btn .back-arrow {
-      font-size: 16px;
-      line-height: 1;
-      color: var(--gold);
-    }
-    .page-back-title {
-      font-size: 14px;
-      font-weight: 600;
-      opacity: 0.75;
-      flex: 1;
-      min-width: 0;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
   </style>
 </head>
 <body>
@@ -1319,9 +1329,15 @@
         <h2 id="greetingText">السلام عليكم ورحمة الله</h2>
         <p id="welcomeSub">مرحباً بك في موسوعتك الإسلامية الشاملة</p>
         <p id="hijriDate" style="margin-top:6px;font-size:13px;opacity:0.85;"></p>
+        <div id="mawlidGreeting" class="mawlid-greeting" role="status" aria-live="polite">
+          <div class="mawlid-title">🌙 تهنئة بمناسبة ذكرى المولد النبوي الشريف</div>
+          <div class="mawlid-text">كل عام وأنتم بخير بمناسبة ذكرى المولد النبوي الشريف</div>
+        </div>
         <div class="ayah-hadith">
-          <div class="ayah-box"><div class="label">آية اليوم</div><p id="ayahDisplay">جاري التحميل...</p></div>
-          <div class="hadith-box"><div class="label">حديث اليوم</div><p id="hadithDisplay">جاري التحميل...</p></div>
+          <div class="ayah-box ayah-meaning-box">
+            <div class="label" id="ayahMeaningLabel">آية ومعنى</div>
+            <p id="ayahMeaningDisplay">جاري التحميل...</p>
+          </div>
         </div>
       </div>
     </div>
@@ -1331,7 +1347,7 @@
       <div class="section-card" data-external-url="https://abedelkareem1989.github.io/Islamicculture2/12.index.html"><div class="icon">🎧</div><h4>الدروس الصوتية</h4></div>
       <div class="section-card" data-section="radios"><div class="icon">📻</div><h4>الإذاعات</h4></div>
       <div class="section-card" data-section="awrad"><div class="icon">🛡️</div><h4>أوراد التحصين</h4></div>
-      <div class="section-card" data-external-url="https://abedelkareem1989.github.io/Islamicculture/10.index.html"><img class="section-cover" src="https://s5files.mobeasy.com/static/u/722316/file-722316-345170.jpg" alt="أذكاري"><h4>أذكاري</h4></div>
+      <div class="section-card" data-external-url="https://abedelkareem1989.github.io/Adhkar"><img class="section-cover" src="https://s5files.mobeasy.com/static/u/722316/file-722316-345170.jpg" alt="أذكاري"><h4>أذكاري</h4></div>
       <div class="section-card" data-external-url="https://abedelkareem1989.github.io/Islamicculture/8.index.html"><div class="icon">🎵</div><h4>المدائح</h4></div>
       <div class="section-card" data-external-url="https://abedelkareem1989.github.io/Islamiclibrary"><div class="icon">📚</div><h4>المكتبة الإسلامية</h4></div>
       <div class="section-card" data-external-url="https://abedelkareem1989.github.io/Islamicculture/4.index.html"><div class="icon">📄</div><h4>المكتبة الإسلامية PDF</h4></div>
@@ -1467,14 +1483,11 @@
       if (!container) return;
       let items = DATA.filter(d => d.category === category);
       if (filter) items = items.filter(d => d.title.includes(filter) || d.description.includes(filter));
-      const title = PAGE_TITLES[category] || category;
-      const back = pageBackBarHTML(title);
       if (items.length === 0) {
-        container.innerHTML = back + `<div class="card" style="text-align:center;padding:30px;">لا توجد عناصر</div>`;
-        bindPageBackButtons(container);
+        container.innerHTML = `<div class="card" style="text-align:center;padding:30px;">لا توجد عناصر</div>`;
         return;
       }
-      container.innerHTML = back + items.map((item, idx) => {
+      container.innerHTML = items.map((item, idx) => {
         const isFav = favorites.includes(item.title) ? '⭐' : '☆';
         return `
           <div class="item-card" data-url="${item.url}" data-title="${item.title}">
@@ -1488,7 +1501,6 @@
         `;
       }).join('');
 
-      bindPageBackButtons(container);
       container.querySelectorAll('.item-card').forEach(el => {
         el.addEventListener('click', (e) => {
           if (e.target.closest('.fav-btn')) return;
@@ -1517,20 +1529,17 @@
     function renderFavorites() {
       const container = $('favoritesContent');
       const favItems = DATA.filter(d => favorites.includes(d.title));
-      const back = pageBackBarHTML(PAGE_TITLES.favorites);
       if (favItems.length === 0) {
-        container.innerHTML = back + `<div class="card" style="text-align:center;padding:30px;">لا توجد مفضلات</div>`;
-        bindPageBackButtons(container);
+        container.innerHTML = `<div class="card" style="text-align:center;padding:30px;">لا توجد مفضلات</div>`;
         return;
       }
-      container.innerHTML = back + favItems.map(item => `
+      container.innerHTML = favItems.map(item => `
         <div class="item-card" data-url="${item.url}">
           <img src="${item.image}" loading="lazy" class="lazy" onload="this.classList.add('loaded')">
           <div class="info"><h4>${item.title}</h4><p>${item.description}</p></div>
           <button class="fav-btn" data-title="${item.title}">⭐</button>
         </div>
       `).join('');
-      bindPageBackButtons(container);
       container.querySelectorAll('.item-card').forEach(el => {
         el.addEventListener('click', (e) => {
           if (e.target.closest('.fav-btn')) return;
@@ -1615,7 +1624,7 @@
     function renderSettings() {
       const container = $('settingsContent');
       const countText = window.__visitorCountFormatted || '...';
-      container.innerHTML = pageBackBarHTML(PAGE_TITLES.settings) + `
+      container.innerHTML = `
         <h3><span></span> الإعدادات</h3>
         <div class="card">
           <div class="settings-visitor">
@@ -1626,7 +1635,6 @@
           <div class="setting-item"><span>📱 عن التطبيق</span><button id="aboutAppBtn" style="background:var(--gold);border:none;padding:8px 20px;border-radius:40px;cursor:pointer;font-weight:600;">عرض</button></div>
         </div>
       `;
-      bindPageBackButtons(container);
       document.getElementById('darkToggleSetting').addEventListener('click', toggleDark);
       document.getElementById('aboutAppBtn').addEventListener('click', showAboutModal);
     }
@@ -1634,7 +1642,7 @@
     function renderMore() {
       const container = $('moreContent');
       if (!container) return;
-      container.innerHTML = pageBackBarHTML(PAGE_TITLES.more) + `
+      container.innerHTML = `
         <h3><span></span> المزيد</h3>
         <div class="section-grid" style="grid-template-columns: 1fr 1fr; padding: 0; margin-top: 8px;">
           <div class="section-card" data-more="radios"><div class="icon">📻</div><h4>الإذاعات</h4></div>
@@ -1649,7 +1657,6 @@
           <div class="section-card" data-more="settings"><div class="icon">⚙️</div><h4>الإعدادات</h4></div>
         </div>
       `;
-      bindPageBackButtons(container);
       container.querySelectorAll('.section-card').forEach(card => {
         card.addEventListener('click', () => {
           const externalUrl = card.dataset.moreUrl;
@@ -1801,7 +1808,7 @@
       if (!container) return;
       const station = RADIO_STATIONS[currentRadioIndex];
 
-      container.innerHTML = pageBackBarHTML(PAGE_TITLES.radios) + `
+      container.innerHTML = `
         <h3><span></span> إذاعات أهل السنة</h3>
 
         <div class="radio-now-playing">
@@ -1864,7 +1871,6 @@
           if (statusEl) statusEl.innerHTML = '⏳ جاري التحميل...';
         });
       }
-      bindPageBackButtons(container);
     }
 
     // ========== AWRAD PLAYER ==========
@@ -2014,7 +2020,7 @@
       if (!container) return;
       const track = AWRAD_TRACKS[currentAwradIndex];
 
-      container.innerHTML = pageBackBarHTML(PAGE_TITLES.awrad) + `
+      container.innerHTML = `
         <h3><span></span> أوراد التحصين</h3>
 
         <div class="awrad-player">
@@ -2124,57 +2130,12 @@
         audio.load();
       }
       updateAwradUI();
-      bindPageBackButtons(container);
     }
 
-    // ========== NAVIGATION + HISTORY (رجوع داخل التطبيق) ==========
-    const PAGE_TITLES = {
-      home: 'الرئيسية',
-      more: 'المزيد',
-      search: 'نتائج البحث',
-      gallery: 'الصور',
-      video: 'الفيديوهات',
-      apps: 'التطبيقات',
-      favorites: 'المفضلة',
-      settings: 'الإعدادات',
-      radios: 'الإذاعات',
-      awrad: 'أوراد التحصين'
-    };
-
-    function goBackToHome() {
-      navigate('home', { push: false, replace: true });
-    }
-
-    function bindPageBackButtons(root) {
-      if (!root) return;
-      root.querySelectorAll('.page-back-btn').forEach(btn => {
-        btn.addEventListener('click', (e) => {
-          e.preventDefault();
-          e.stopPropagation();
-          goBackToHome();
-        });
-      });
-    }
-
-    function pageBackBarHTML(title) {
-      return `
-        <div class="page-back-bar">
-          <button type="button" class="page-back-btn" aria-label="الرجوع للقائمة الرئيسية">
-            <span class="back-arrow">→</span>
-            <span>رجوع</span>
-          </button>
-          <span class="page-back-title">${title || ''}</span>
-        </div>
-      `;
-    }
-
-    function navigate(page, options = {}) {
-      const { push = true, replace = false } = options;
-      if (!pages[page]) page = 'home';
-
-      const prevPage = currentPage;
+    // ========== NAVIGATION ==========
+    function navigate(page) {
       Object.keys(pages).forEach(key => pages[key].classList.remove('active'));
-      pages[page].classList.add('active');
+      if (pages[page]) pages[page].classList.add('active');
       currentPage = page;
       document.querySelectorAll('.bottom-nav button').forEach(b => b.classList.remove('active'));
 
@@ -2193,29 +2154,8 @@
       else if (page === 'radios') renderRadios();
       else if (page === 'awrad') renderAwrad();
       else if (page === 'home') { renderLatest(); }
-
-      // إدارة سجل المتصفح: الدخول لقسم يُضاف للسجل، والرجوع يعود داخل التطبيق
-      try {
-        const state = { page };
-        if (replace || page === 'home') {
-          history.replaceState(state, '', location.pathname + location.search + (page === 'home' ? '' : '#' + page));
-        } else if (push && page !== prevPage) {
-          history.pushState(state, '', location.pathname + location.search + '#' + page);
-        }
-      } catch (err) {}
-
       window.scrollTo(0, 0);
     }
-
-    // زر رجوع الجهاز / المتصفح → داخل التطبيق بدل الخروج
-    window.addEventListener('popstate', (e) => {
-      const page = (e.state && e.state.page) ? e.state.page : 'home';
-      if (page === 'home' || !pages[page]) {
-        navigate('home', { push: false, replace: true });
-      } else {
-        navigate(page, { push: false });
-      }
-    });
 
     // ========== DARK MODE ==========
     function toggleDark() {
@@ -2234,13 +2174,12 @@
       if (results.length === 0) { showToast('❌ لا نتائج'); return; }
       navigate('search');
       const container = document.getElementById('searchResultsContent');
-      container.innerHTML = pageBackBarHTML(PAGE_TITLES.search) + `<h3><span></span> نتائج البحث</h3>` + results.map(item => `
+      container.innerHTML = `<h3><span></span> نتائج البحث</h3>` + results.map(item => `
         <div class="item-card" data-url="${item.url}">
           <img src="${item.image}" loading="lazy" class="lazy" onload="this.classList.add('loaded')">
           <div class="info"><h4>${item.title}</h4><p>${item.description}</p></div>
         </div>
       `).join('');
-      bindPageBackButtons(container);
       container.querySelectorAll('.item-card').forEach(el => {
         el.addEventListener('click', () => {
           const url = el.dataset.url;
@@ -2356,12 +2295,6 @@
     function init() {
       if (darkMode) document.body.classList.add('dark');
       document.getElementById('darkToggle').textContent = darkMode ? '☀️' : '🌙';
-
-      // تثبيت حالة البداية في سجل المتصفح حتى يعمل زر الرجوع داخل التطبيق
-      try {
-        history.replaceState({ page: 'home' }, '', location.pathname + location.search);
-      } catch (e) {}
-
       renderLatest();
       renderSettings();
       loadRealVisitorCount(); // عدّاد الزوار الحقيقي
@@ -2409,78 +2342,74 @@
       }, 1800);
     }
 
-    // ========== تحية + آية وحديث اليوم + التاريخ الهجري ==========
-    const DAILY_AYAHS = [
-      { text: 'وَمَن يَتَّقِ اللَّهَ يَجْعَل لَّهُ مَخْرَجًا', ref: 'الطلاق: 2' },
-      { text: 'إِنَّ مَعَ الْعُسْرِ يُسْرًا', ref: 'الشرح: 6' },
-      { text: 'وَقُل رَّبِّ زِدْنِي عِلْمًا', ref: 'طه: 114' },
-      { text: 'فَاذْكُرُونِي أَذْكُرْكُمْ وَاشْكُرُوا لِي وَلَا تَكْفُرُونِ', ref: 'البقرة: 152' },
-      { text: 'وَبَشِّرِ الصَّابِرِينَ', ref: 'البقرة: 155' },
-      { text: 'أَلَا بِذِكْرِ اللَّهِ تَطْمَئِنُّ الْقُلُوبُ', ref: 'الرعد: 28' },
-      { text: 'وَمَا تَوْفِيقِي إِلَّا بِاللَّهِ', ref: 'هود: 88' },
-      { text: 'رَبَّنَا آتِنَا فِي الدُّنْيَا حَسَنَةً وَفِي الْآخِرَةِ حَسَنَةً وَقِنَا عَذَابَ النَّارِ', ref: 'البقرة: 201' },
-      { text: 'وَاعْتَصِمُوا بِحَبْلِ اللَّهِ جَمِيعًا وَلَا تَفَرَّقُوا', ref: 'آل عمران: 103' },
-      { text: 'إِنَّ اللَّهَ مَعَ الصَّابِرِينَ', ref: 'البقرة: 153' },
-      { text: 'وَتَوَكَّلْ عَلَى اللَّهِ ۚ وَكَفَىٰ بِاللَّهِ وَكِيلًا', ref: 'الأحزاب: 3' },
-      { text: 'يَا أَيُّهَا الَّذِينَ آمَنُوا اتَّقُوا اللَّهَ وَقُولُوا قَوْلًا سَدِيدًا', ref: 'الأحزاب: 70' },
-      { text: 'وَاسْتَعِينُوا بِالصَّبْرِ وَالصَّلَاةِ', ref: 'البقرة: 45' },
-      { text: 'فَإِنَّ مَعَ الْعُسْرِ يُسْرًا', ref: 'الشرح: 5' },
-      { text: 'وَمَن يَتَوَكَّلْ عَلَى اللَّهِ فَهُوَ حَسْبُهُ', ref: 'الطلاق: 3' },
-      { text: 'وَاللَّهُ غَالِبٌ عَلَىٰ أَمْرِهِ وَلَٰكِنَّ أَكْثَرَ النَّاسِ لَا يَعْلَمُونَ', ref: 'يوسف: 21' },
-      { text: 'إِنَّ اللَّهَ لَا يُضِيعُ أَجْرَ الْمُحْسِنِينَ', ref: 'التوبة: 120' },
-      { text: 'وَمَا كَانَ اللَّهُ لِيُضِيعَ إِيمَانَكُمْ', ref: 'البقرة: 143' },
-      { text: 'قُلْ هُوَ اللَّهُ أَحَدٌ', ref: 'الإخلاص: 1' },
-      { text: 'اللَّهُ نُورُ السَّمَاوَاتِ وَالْأَرْضِ', ref: 'النور: 35' },
-      { text: 'وَنَحْنُ أَقْرَبُ إِلَيْهِ مِنْ حَبْلِ الْوَرِيدِ', ref: 'ق: 16' },
-      { text: 'فَمَن يَعْمَلْ مِثْقَالَ ذَرَّةٍ خَيْرًا يَرَهُ', ref: 'الزلزلة: 7' },
-      { text: 'وَلَا تَيْأَسُوا مِن رَّوْحِ اللَّهِ', ref: 'يوسف: 87' },
-      { text: 'إِنَّ اللَّهَ مَعَ الَّذِينَ اتَّقَوا وَّالَّذِينَ هُم مُّحْسِنُونَ', ref: 'النحل: 128' },
-      { text: 'وَقُل رَّبِّ أَدْخِلْنِي مُدْخَلَ صِدْقٍ وَأَخْرِجْنِي مُخْرَجَ صِدْقٍ', ref: 'الإسراء: 80' },
-      { text: 'رَبِّ اشْرَحْ لِي صَدْرِي وَيَسِّرْ لِي أَمْرِي', ref: 'طه: 25-26' },
-      { text: 'وَمَن يَعْمَلْ سُوءًا أَوْ يَظْلِمْ نَفْسَهُ ثُمَّ يَسْتَغْفِرِ اللَّهَ يَجِدِ اللَّهَ غَفُورًا رَّحِيمًا', ref: 'النساء: 110' },
-      { text: 'فَإِن تَوَلَّوْا فَقُلْ حَسْبِيَ اللَّهُ لَا إِلَٰهَ إِلَّا هُوَ', ref: 'التوبة: 129' },
-      { text: 'وَالَّذِينَ جَاهَدُوا فِينَا لَنَهْدِيَنَّهُمْ سُبُلَنَا', ref: 'العنكبوت: 69' },
-      { text: 'فَاذْكُرُونِي أَذْكُرْكُمْ', ref: 'البقرة: 152' }
+    // ========== تحية + آية ومعنى اليومية + التاريخ الهجري ==========
+    const DAILY_AYAH_MEANINGS = [
+      "قوله تعالى ( وهو القاهر فوق عباده ) معناه فوقهم بالقهر والغلبة وليس بالحيز والمكان كما ذكر القرطبي في تفسيره فالله تعالى منزه عن التحيز في المكان والجهة.",
+      "﴿الرَّحمنُ عَلَى العَرشِ استَوى﴾ [طه: ٥]\nمعناه الله تعالى قهر العرش وليس معنى استوى هنا جلس لأن الجلوس صفة المخلوق والله تعالى لا يوصف بذلك كما ذكر مثل هذا الرازي في تفسيره.",
+      "قوله تعالى ( والفتنة أشد من القتل ) \nمعناه الفتنة في الدين أي الكفر أشد من القتل وليس معنى الفتنة هنا النميمة فالقتل أعظم وأشد من النميمة ولا يجوز اعتقاد أن النميمة ذنبها أكبر من القتل",
+      "قوله تعالى عن سفينة نوح ( تجري بأعيننا ) \nمعناه تجري بحفظنا فالعين هنا معناها الحفظ وليس معناها العين الجارحة لأن الله تعالى منزه عن ذلك فسفينة نوح كانت تجري وسط الموج بحفظ الله تعالى.",
+      "قوله تعالى ( وهو معكم أينما كنتم )\nمعناه بعلمه وليس معناه أن الله تعالى متحيز في كل مكان كما يقول بعض الناس ( الله موجود في كل مكان ) بل هذا الكلام لا يجوز لأن الله تعالى هو خالق الأمكنة ولا يحتاجها.",
+      "قوله تعالى ( يوم يكشف عن ساق ) \nمعناه يكشف عن شدة من الأمر وأهوال وليس معنى الساق هنا الساق الذي هو العضو الجارح لأن الله تعالى منزه عن الأعضاء والجوارح، فمن الضلال ما يقوله البعض أن الله يكشف عن ساقه التي هي العضو.",
+      "قوله تعالى ( ما منعك أن تسجد لما خلقت بيديّ ) \nيجوز أن يكون المراد باليدين الحفظ والعناية أي أن ءادم عليه السلام خلقه الله بعنايته وحفظه لأنه مشرف عند الله ولا يجوز أن نفسر اليدين بالعضو الجارح لأن الله منزه عن ذلك.",
+      "قوله تعالى ( فنفخنا فيه من روحنا ) \nمعناه أن الله تعالى أمر جبريل عليه السلام أن ينفخ في مريم الروح التي هي مخلوقة لله وملك له ومشرفة عنده ولا يجوز أن يقال إن لله روحا وعيسى جزء منها فالله منزه عن ذلك.",
+      "قوله تعالى ( أن طهّرا بيتي للطائفين ) \nمعناه البيت الذي هو مشرف عند الله وليس معناه أن الله تعالى يسكن الكعبة لأن الله تعالى منزه عن التحيز في المكان فإضافة البيت لله تعالى إضافة تشريف.",
+      "قوله تعالى ( وجاء ربك والملك صفا صفا ) \nمعناه جاء أمر ربك أي أثر من ءاثار ربك كما ثبت عن الإمام أحمد أنه قال جاءت قدرته، وليس معناه مجىء الحركة والانتقال لأن الله تعالى منزه عن الحركة والسكون لأنهما من خلق الله تعالى وهما من صفات المخلوقين.",
+      "قوله تعالى ( ونحن أقرب إليه من حبل الوريد )\nمعناه أن الله تعالى أعلم بالعبد من نفسه، وليس معناه أن الله قريب منا حسا فالله منزه عن المكان، والوريد عِرقان في الإنسان من جانبي الرقبة ينزلان من الرأس ويتصلان بعِرق القلب.",
+      "قوله تعالى ( فأينما تولوا فثَمّ وجه الله )\nمعناه أينما وجهتم وجوهكم في صلاة النفل في السفر فتلك الوجهة التي توجهتم لها هي قبلة لكم، ولا يراد بالوجه العضو الجارح لأن الله منزه عن ذلك.",
+      "قوله تعالى ( الله نور السموات والأرض ) \nمعناه أن الله تعالى هادي أهل السموات ومن شاء من أهل الأرض لنور الإيمان كما قال ابن عباس ولا يجوز تفسير النور بالضوء لأن الله تعالى ليس نورا بمعنى الضوء فالله هو خالق الضوء.",
+      "قوله تعالى ( إنما أمره إذا أراد شيئا أن يقول له كن فيكون ) \nمعناه أن الله تعالى يوجد الأشياء بدون تعب ومشقة وليس معناه أن الله كلما أراد أن يخلق شيئا يقول هذان الحرفان ( كن ) لأن كلام الله ليس حرفا وكلامه لا يشبه كلامنا ..",
+      "قوله تعالى ( ومكروا ومكر الله والله خير الماكرين )\nمعناه أن الله تعالى أقوى في إيصال الضرر إلى الماكرين من كل ماكر جزاء لهم على مكرهم ولا يجوز وصف الله تعالى بالمكر الذي هو الاحتيال لأنه مستحيل على الله.",
+      "قوله تعالى ( ومن لم يؤمن بالله ورسوله فإنا أعتدنا للكافرين سعيرا )\nمعناه من لم يَجمَع الإيمان بالنبي إلى الإيمان بالله تعالى إلى أن مات ولم يحصل ذلك فلا يكون مؤمنا وقد هيأ الله له نار جهنم جزاء في الآخرة.",
+      "قوله تعالى ( إن الدين عند الله الإسلام )\nمعناه الدين الوحيد المقبول في الآخرة هو الإسلام وهو دين جميع الأنبياء من ءادم لمحمد عليهم الصلاة والسلام فمن عدل عنه فقد خاب وخسر.",
+      "قوله تعالى ( إن الله لعن الكافرين وأعد لهم سعيرا خالدين فيها أبدا )\nمعناه أن من مات كافرا مأواه في الآخرة جهنم خالدا فيها أبدا ولا ينقطع عنه العذاب في الآخرة إلى ما لا نهاية له وما هو بخارج من النار لأن النار باقية لا تفنى.",
+      "قوله تعالى ( اليوم ننساكم كما نسيتم لقاء يومكم هذا )\nمعناه تركناكم من رحمتنا كما أنتم تركتم طاعة الله في الدنيا بترك الإيمان، وليس معناه أن الله يوصف بالنسيان المعروف لأن هذا فيه تشبيه الله بخلقه.",
+      "قوله تعالى ( إن الله لا يستحي أن يضرب مثلا ما بعوضة فما فوقها ) \nمعناه أن الله لا يحب ترك إظهار الحق فلا يتركه للاستحياء كما يفعل الخلق وليس معناه وصف الله بالاستحياء المعروف للخلق فهذا مستحيل على الله.",
+      "قوله تعالى ( ويبقى وجه ربك ذو الجلال والإكرام )\nمعناه يبقى ذات الله تعالى الذي ليس جسما ، فوجه الله هنا معناه ذاته الذي لا يشبه الذوات والله تعالى باق لا نهاية لوجوده.",
+      "قوله تعالى حكاية عن الملائكة ( قالوا أتجعل فيها من يفسد فيها ويسفك الدماء ) فالملائكة قالوا هذا للاستعلام عن الحكمة وليس اعتراضا على الله، وهم علموا ذلك لأنهم اطّلعوا عليه في اللوح المحفوظ.",
+      "قوله تعالى ( ولن تستطيعوا أن تعدلوا بين النساء ولو حرصتم )\nمعناه لن تستطيعوا أن تسووا بين الزوجات في المحبة القلبية وليس معناه أن الرجل لا يستطيع أن يعدل بين نساءه في النفقة والمبيت.",
+      "قوله تعالى ( اليوم أكملت لكم دينكم ) سورة النساء/٣\nمعناها أنه كَمُلَ معظم الدين كما ذكر ابن حجر في الفتح، وليس معناها أنه لا يجوز للمجتهدين من أمة محمد صلى الله عليه وسلم أن يُحدِثوا ما يوافق الشرع كعمل المولد النبوي مثلا.",
+      "قوله تعالى ( قد جاءكم من الله نور وكتاب مبين ) سورة المائدة/١٥\nمعنى النور في الآية أي القرءان وسمّي نورا لكشف ظلمات الشرك أو لأنه ظاهر الإعجاز ، وليس معناها أن النبي محمدا خُلِق من نور.",
+      "قوله تعالى ( تعلمُ ما في نفسي ولا أعلمُ ما في نفسِك ) سورة المائدة/١١٦\nمعناه تعلمُ يا الله ما في سرّي ولا أعلم ما في غَيبِكَ، وليس المعنى أن الله له نَفْس بمعنى الروح، بل الله هو خالق الروح.",
+      "قوله تعالى ( لقد خلقنا الإنسان في أحسن تقويم ) سورة التين/٤\nمعناه أن الله خلق الإنسان في أحسن صورة، وهذا يدل على بطلان قول الملاحدة إن أصل الإنسان قرد والعياذ بالله، فأول البشر هو ءادم عليه السلام وكان جميلا.",
+      "قوله تعالى ( ولقد همّتْ به وهمّ بها لولا أن رءا برهان ربه ) سورة يوسف/٢٤\nمن معاني هذه الآية أن امرأة العزيز همّت بأن تدفع يوسف عليه السلام ليزني بها وهمّ يوسف بدفعها ليخلص منها، فيوسف ما همّ بالزنى ولا فعل الزنى.",
+      "قوله تعالى ( الآن خفف الله عنكم وعلِم أن فيكم ضعفا ) سورة الأنفال/٦٦\nفقوله تعالى ( وعلِم ) ليس راجعا لقوله تعالى ( الآن ) بل المعنى أنه تعالى خفَّفَ عنكم الآن لأنه علِم بعلمه السابق في الأزل أنه يكون فيكم ضعف.",
+      "قوله تعالى ( يخافون ربهم من فوقهم ) سورة النحل/٥٠\nمعناه يخافون ربهم  من أن يُنزّل عليهم العذاب من فوقهم والله موصوف بالعلو وفوقية الرتبة والعظمة ومنزه عن الكون في مكان وعن المحاذاة.",
+      "قوله تعالى ( فمن شاء فليؤمن ومن شاء فليكفر ) سورة الكهف/٢٩\nهذه الآية تهديد ووعيد لمن كفر بالنار وليس إذنا وتخييرا لهم بالكفر كما زعم بعض المحرفين، وهذه الآية ليست دليلا على أن الله أعطى الحرية للكافرين في اعتقاد ما شاؤوا ولو كان كفرا.",
+      "قوله تعالى ( وذا النون إذ ذهب مغاضبا فظنّ أن لن نقدر عليه ) سورة الأنبياء/٨٧\nمعناه سيدنا يونس غضب على قومه لأنهم لم يؤمنوا بدعوته ومعنى فظن أن لن نقدر عليه أي ظن أن لن نضيّق عليه ولم يشكّ يونس في قدرة الله عليه.",
+      "قوله تعالى ( فأولئك يبدل الله سيئاتهم حسنات ) سورة الفرقان/٧٠\nمعناه يبدّل الله في الدنيا سيئاتهم بأن يمحو سوابق معاصيهم ويثبت مكانها لواحق طاعاتهم، وليس معناها أن عين المعصية تتحول حسنة.",
+      "قوله تعالى ( إنك لا تهدي من أحببت ولكن الله يهدي من يشاء ) سورة القصص/٥٦\nمعناه إنك يا محمد لا تهدي من أحببتَ هدايته ولكن الله يهدي من يشاء أن يهديه من خلقه بتوفيقه للإيمان بالله ورسوله. فمعنى من أحببتَ في الآية أي أحببت هدايته.",
+      "قوله تعالى ( إن الصلاة تنهى عن الفحشاء والمنكر ولذكر الله أكبر ) سورة العنكبوت/٤٥\nفمعنى ولذكر الله أكبر أي ذكر الله إياكم أكبر من ذكركم إياه، وليس معنى الآية أن التسبيح ونحوه باللسان أفضل من الصلوات الخمس.",
+      "قوله تعالى ( والسماء بنيناها بأييد وإنا لموسعون ) سورة الذاريات/٤٧\nمعنى بأييد هنا أي بقدرة كما قال ابن عباس وليس المقصود باليد هنا اليد الجارحة فالله منزه عن ذلك واليد تأتي بمعنى القدرة والقدرة هي القوة.",
+      "قوله تعالى ( ثم دنا فتدلى فكان قاب قوسين أو أدنى ) سورة النجم/ ٨-٩\nمعناه أن جبريل اقترب من النبي عليه الصلاة والسلام فكان ما بينهما من المسافة بمقدار ذراعين أو أقرب واقترب جبريل من النبي فرحا به. وليس معناه أن الله دنا بذاته من النبي لأن الله لا يحويه مكان.",
+      "قوله تعالى ( كل يوم هو في شأن ) سورة الرحمن/٢٩\nمعنى الآية كما فسرها النبي بقوله ( يغفر ذنبا ويكشف كربا ويرفع قوما ويضع ءاخرين ). وليس المعنى أن الله تعالى يتغير من حال إلى حال كل يوم بل الله يغير ولا يتغير.",
+      "قوله تعالى ( ءأمنتم من في السماء أن يخسف بكم الأرض) سورة الملك/١٦\nقال القرطبي أي ءأمنتم خالق من في السماء، وقال بعضهم ءأمنتم جبريل الموكل بالخسف أن يخسف بكم الأرض بأمر من الله، وليس معنى الآية أن الله يسكن السماء فالله لا يحتاج للسماء ولا يسكن المكان.",
+      "قوله تعالى ( سبح اسم ربك الأعلى ) سورة الأعلى/١\nمعناه أنزه ربي الأعلى أي الذي هو أعلى من كل علي علو قدر لا علو حيز ومكان لأن الشأن في علو القدر وليس في علو المكان.",
+      "قوله تعالى ( والأرض جميعا قبضته يوم القيامة ) سورة الزمر/٦٧\nمعناه قبضته هنا أي في سلطانه وملكه فلا ملك يومئذ إلا الله، وليس معنى قبضته هنا أن الله له يد جارحة ويقبض بها الأرض كما يفعل المخلوق فالله لا يوصف بالجارحة.",
+      "قوله تعالى ( فقلت استغفروا ربكم إنه كان غفارا ) سورة نوح/١٠\nمعناه اطلبوا من الله المغفرة بترك الكفر والدخول في الإسلام بالنطق بالشهادتين، وليس معناه أن الكافر يدخل في الإسلام بقول استغفر الله بل لا بد للدخول في الإسلام من النطق بالشهادتين.",
+      "قوله تعالى ( إن الله لعن الكافرين وأعد لهم سعيرا خالدين فيها أبدا لا يجدون وليّا ولا نصيرا ) سورة الأحزاب/٦٤-٦٥\nمعناه أن الكفار يخلدون في نار جهنم ولا ينقطع عنهم العذاب في الآخرة، فجهنم باقية لا نهاية لها والكافر لا يخفف عنه العذاب فيها.",
+      "قوله تعالى ( وما يعلم جنود ربك إلا هو ) سورة المدثر/٣١\nيعني أن الملائكة الذين خلقهم الله لتعذيب أهل النار لا يعلم عددهم إلا الله، وخزنة النار تسعة عشر ولهم من الأعوان والجنود من الملائكة ما لا يعلم إلا الله، وليس معنى جنود ربك أن الملائكة أعوان الله فالله لا يحتاج أحدا من خلقه.",
+      "قوله تعالى ( ووجدك ضالا فهدى ) سورة الضحى/٧\nمعناه أنك يا محمد لم تكن تدري القرءان وتفاصيل الشرائع فهداك الله أي أرشدك إلى معرفة القرءان وشرائع الإسلام.",
+      "قوله تعالى ( وكلم الله موسى تكليما ) سورة النساء/١٦٤\nمعناه أن الله تعالى أسمع موسى كلامه الأزلي الأبدي الذي لا يشبه كلام المخلوقين، فالله متصف بكلام ليس حرفا وليس صوتا وليس لغة ليس ككلام خلقه.",
+      "قوله تعالى ( الله الصمد ) سورة الإخلاص/٢\nمعناه أن الله تعالى هو الذي يُحتاج له في الأمور كلها وأما الله فلا يحتاج أحدا من خلقه، فالله هو المستغني عن كل ما سواه، ولا يحتاج للعرش ولا للسماء ولا للملائكة.",
+      "قوله تعالى ( وهو السميع البصير ) سورة الشورى/١١\nمعناه أن الله تعالى متصف بالسمع والبصر، والله يسمع كل المسموعات بلا حاجة إلى أذن ولا ءالة أخرى، سمعه ليس كسمعنا، ويرى كل المبصرات بلا حاجة إلى حدقة ولا عين جارحة، بصره ليس كبصرنا.",
+      "قوله تعالى ( هو الأول والآخر ) سورة الحديد/٣\nفالله هو الأول الذي لا بداية لوجوده فهو وحده القديم الأزلي الذي ليس لوجوده ابتداء وكذلك هو الآخر الذي لا نهاية لوجوده فلا يفنى فهو الأبدي الذي ليس لوجوده انتهاء، وكذلك سائر صفاته أزلية أبدية.",
+      "قوله تعالى ( ولله المثل الأعلى ) سورة النحل/٦٠\nأي لله الوصف الذي لا يشبه وصف غيره، فالله تعالى موصوف بصفات الكمال اللائقة به وهو منزه عن كل نقص سبحانه وتعالى كالجسم والعجز والجهل والمكان والحيز.",
+      "قال الله تعالى: “وروحٌ منه” [النساء: 171]\n\n. ومعناها أن روح المسيح روح خلقها الله وشرَّفها، فهي من عند الله تعالى خلقًا وتكوينًا ومشرفة عند الله عز وجل. الإضافة هنا إضافة ملكية وتعظيم، وليست إضافة جزئية."
     ];
 
-    const DAILY_HADITHS = [
-      { text: 'خيركم من تعلم القرآن وعلمه', ref: 'البخاري' },
-      { text: 'إنما الأعمال بالنيات', ref: 'البخاري ومسلم' },
-      { text: 'المسلم من سلم المسلمون من لسانه ويده', ref: 'البخاري' },
-      { text: 'لا يؤمن أحدكم حتى يحب لأخيه ما يحب لنفسه', ref: 'البخاري ومسلم' },
-      { text: 'من حسن إسلام المرء تركه ما لا يعنيه', ref: 'الترمذي' },
-      { text: 'الدين النصيحة', ref: 'مسلم' },
-      { text: 'اتق الله حيثما كنت', ref: 'الترمذي' },
-      { text: 'الكلمة الطيبة صدقة', ref: 'البخاري ومسلم' },
-      { text: 'تبسمك في وجه أخيك صدقة', ref: 'الترمذي' },
-      { text: 'من كان يؤمن بالله واليوم الآخر فليقل خيرا أو ليصمت', ref: 'البخاري ومسلم' },
-      { text: 'الحياء شعبة من الإيمان', ref: 'البخاري ومسلم' },
-      { text: 'طلب العلم فريضة على كل مسلم', ref: 'ابن ماجه' },
-      { text: 'يسروا ولا تعسروا وبشروا ولا تنفروا', ref: 'البخاري' },
-      { text: 'أحب الأعمال إلى الله أدومها وإن قل', ref: 'البخاري ومسلم' },
-      { text: 'من سلك طريقا يلتمس فيه علما سهل الله له طريقا إلى الجنة', ref: 'مسلم' },
-      { text: 'الراحمون يرحمهم الرحمن', ref: 'الترمذي' },
-      { text: 'من لا يرحم الناس لا يرحمه الله', ref: 'البخاري ومسلم' },
-      { text: 'ليس الشديد بالصرعة إنما الشديد الذي يملك نفسه عند الغضب', ref: 'البخاري ومسلم' },
-      { text: 'من كان في حاجة أخيه كان الله في حاجته', ref: 'البخاري ومسلم' },
-      { text: 'المؤمن للمؤمن كالبنيان يشد بعضه بعضا', ref: 'البخاري ومسلم' },
-      { text: 'لا يدخل الجنة من كان في قلبه مثقال ذرة من كبر', ref: 'مسلم' },
-      { text: 'الطهور شطر الإيمان', ref: 'مسلم' },
-      { text: 'من أحدث في أمرنا هذا ما ليس منه فهو رد', ref: 'البخاري ومسلم' },
-      { text: 'كل معروف صدقة', ref: 'البخاري ومسلم' },
-      { text: 'من غشنا فليس منا', ref: 'مسلم' },
-      { text: 'ازهد في الدنيا يحبك الله وازهد فيما عند الناس يحبك الناس', ref: 'ابن ماجه' },
-      { text: 'ما نقصت صدقة من مال', ref: 'مسلم' },
-      { text: 'من ستر مسلما ستره الله في الدنيا والآخرة', ref: 'مسلم' },
-      { text: 'إن الله يحب إذا عمل أحدكم عملا أن يتقنه', ref: 'الطبراني' },
-      { text: 'الدعاء هو العبادة', ref: 'الترمذي' }
-    ];
+    // تبدأ الدورة من آية ومعنى (١) بتاريخ 18 أغسطس 2026، ثم تتقدم كل يوم عنصرًا واحدًا.
+    const DAILY_MEANING_START = { year: 2026, month: 7, day: 18 }; // month: 7 = أغسطس
 
-    function getDayOfYear() {
+    function getDailyMeaningIndex() {
       const now = new Date();
-      const start = new Date(now.getFullYear(), 0, 0);
-      const diff = now - start;
-      return Math.floor(diff / (1000 * 60 * 60 * 24));
+      const todayUtc = Date.UTC(now.getFullYear(), now.getMonth(), now.getDate());
+      const startUtc = Date.UTC(DAILY_MEANING_START.year, DAILY_MEANING_START.month, DAILY_MEANING_START.day);
+      const diffDays = Math.floor((todayUtc - startUtc) / 86400000);
+      return ((diffDays % DAILY_AYAH_MEANINGS.length) + DAILY_AYAH_MEANINGS.length) % DAILY_AYAH_MEANINGS.length;
+    }
+
+    function toArabicDigits(value) {
+      return String(value).replace(/\d/g, d => '٠١٢٣٤٥٦٧٨٩'[Number(d)]);
     }
 
     function updateGreeting() {
@@ -2534,18 +2463,46 @@
       }
     }
 
+    function updateMawlidGreeting() {
+      const greeting = document.getElementById('mawlidGreeting');
+      if (!greeting) return;
+
+      try {
+        const today = new Date();
+        today.setHours(12, 0, 0, 0);
+
+        // نفس تعديل التاريخ المستخدم في عرض التاريخ الهجري أعلاه
+        const adj = new Date(today);
+        adj.setDate(adj.getDate() - 1);
+
+        // استخدام تنسيق إنجليزي للحصول على أرقام ثابتة يمكن مقارنتها برمجيًا
+        const parts = new Intl.DateTimeFormat('en-US-u-ca-islamic', {
+          day: 'numeric',
+          month: 'numeric'
+        }).formatToParts(adj);
+
+        const hijriDay = Number(parts.find(part => part.type === 'day')?.value);
+        const hijriMonth = Number(parts.find(part => part.type === 'month')?.value);
+
+        // 12 ربيع الأول = اليوم 12 من الشهر الهجري الثالث
+        greeting.classList.toggle('show', hijriDay === 12 && hijriMonth === 3);
+      } catch (e) {
+        greeting.classList.remove('show');
+      }
+    }
+
     function updateDailyContent() {
       updateGreeting();
       updateHijriDate();
+      updateMawlidGreeting();
 
-      const day = getDayOfYear();
-      const ayah = DAILY_AYAHS[day % DAILY_AYAHS.length];
-      const hadith = DAILY_HADITHS[day % DAILY_HADITHS.length];
+      const index = getDailyMeaningIndex();
+      const item = DAILY_AYAH_MEANINGS[index];
+      const labelEl = document.getElementById('ayahMeaningLabel');
+      const displayEl = document.getElementById('ayahMeaningDisplay');
 
-      const ayahEl = document.getElementById('ayahDisplay');
-      const hadithEl = document.getElementById('hadithDisplay');
-      if (ayahEl) ayahEl.textContent = `"${ayah.text}" (${ayah.ref})`;
-      if (hadithEl) hadithEl.textContent = `"${hadith.text}" (${hadith.ref})`;
+      if (labelEl) labelEl.textContent = `آية ومعنى (${toArabicDigits(index + 1)})`;
+      if (displayEl) displayEl.textContent = item;
     }
 
     document.addEventListener('DOMContentLoaded', init);
